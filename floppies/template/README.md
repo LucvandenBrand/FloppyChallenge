@@ -10,3 +10,7 @@ For Linux, this comes down to:
 1. `mkdir build && cd build`
 2. `cmake ..`
 3. `make`
+
+### Dependencies
+For this project to compile, you will need:
+- The SDL2 development library.
