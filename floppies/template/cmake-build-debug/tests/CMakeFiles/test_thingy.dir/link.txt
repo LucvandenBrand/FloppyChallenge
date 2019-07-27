@@ -1,0 +1,1 @@
+/usr/bin/cc -g   CMakeFiles/test_thingy.dir/main.c.o CMakeFiles/test_thingy.dir/suites/add.c.o  -o test_thingy ../source/library/libthingylib.a -lcheck_pic -lrt -lm -lsubunit -lpthread 

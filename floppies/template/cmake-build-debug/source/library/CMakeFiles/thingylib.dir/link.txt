@@ -1,0 +1,2 @@
+/usr/bin/ar qc libthingylib.a  CMakeFiles/thingylib.dir/add.c.o
+/usr/bin/ranlib libthingylib.a

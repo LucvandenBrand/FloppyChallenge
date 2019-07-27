@@ -1,0 +1,2 @@
+/usr/bin/ar qc libthingy.a  CMakeFiles/thingy.dir/argparser.c.o
+/usr/bin/ranlib libthingy.a

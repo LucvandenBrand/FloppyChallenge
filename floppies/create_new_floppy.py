@@ -44,3 +44,6 @@ def update_project_file(file_name):
 
 update_project_file('README.md')
 update_project_file('CMakeLists.txt')
+update_project_file('source/CMakeLists.txt')
+update_project_file('source/library/CMakeLists.txt')
+update_project_file('tests/CMakeLists.txt')

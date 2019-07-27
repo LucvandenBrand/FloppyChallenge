@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="http://check.sourceforge.net/xml/check_unittest.xslt"?>
+<testsuites xmlns="http://check.sourceforge.net/ns">
+  <datetime>2019-07-27 21:17:13</datetime>
+  <suite>
+    <title>Add Test Suite</title>
+    <test result="success">
+      <path>/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/tests/suites</path>
+      <fn>add.c:7</fn>
+      <id>testAdd</id>
+      <iteration>0</iteration>
+      <duration>0.005035</duration>
+      <description>Test Cases</description>
+      <message>Passed</message>
+    </test>
+  </suite>
+  <duration>0.061711</duration>
+</testsuites>

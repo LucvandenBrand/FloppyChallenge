@@ -1,25 +1,14 @@
 cmake_minimum_required(VERSION 3.9)
-project({{PROJECT_NAME}})
+project({{PROJECY_NAME}})
 
-# Add app sources
-file(GLOB_RECURSE PROJECT_SOURCES source/*.c source/*.h)
-add_executable({{PROJECT_NAME}} ${PROJECT_SOURCES})
+# Custom cmake modules
+set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
-# Compilation settings
-set_property(TARGET {{PROJECT_NAME}} PROPERTY C_STANDARD 99)
-target_compile_options({{PROJECT_NAME}} PUBLIC -Os -ffunction-sections -fdata-sections)
-target_link_libraries({{PROJECT_NAME}} -Wl,--gc-sections)
-set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -s")
+# Make libraries statically linked
+set(BUILD_SHARED_LIBS OFF)
 
-# Setup SDL
-INCLUDE(FindPkgConfig)
+add_subdirectory(source)
 
-PKG_SEARCH_MODULE(SDL2 REQUIRED sdl2)
-PKG_SEARCH_MODULE(SDL2IMAGE REQUIRED SDL2_image>=2.0.0)
-PKG_SEARCH_MODULE(SDL2TTF REQUIRED SDL2_ttf>=2.0.0)
-PKG_SEARCH_MODULE(SDL2MIXER REQUIRED SDL2_mixer>=2.0.0)
+enable_testing()
 
-INCLUDE_DIRECTORIES(${SDL2_INCLUDE_DIRS} ${SDL2IMAGE_INCLUDE_DIRS} ${SDL2TTF_INCLUDE_DIRS} ${SDL2MIXER_INCLUDE_DIRS})
-
-# Link
-TARGET_LINK_LIBRARIES({{PROJECT_NAME}} ${SDL2_LIBRARIES} ${SDL2IMAGE_LIBRARIES} ${SDL2TTF_LIBRARIES} ${SDL2MIXER_LIBRARIES})
+add_subdirectory(tests)

@@ -1,7 +1,9 @@
 #include <stdio.h>
+#include <add.h>
 
 int main()
 {
-  printf("Hello, World!");
-  return 0;
+    int result = add(2, 4);
+    printf("Result: %d\n", result);
+    return 0;
 }
