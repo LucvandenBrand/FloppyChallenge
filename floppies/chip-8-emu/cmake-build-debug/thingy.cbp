@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="thingy"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;CMake Files\source\;CMake Files\source\library\;CMake Files\tests\;CMake Files\cmake\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="test">
+				<Option working_dir="/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/cmake-build-debug/Makefile&quot;  VERBOSE=1 test"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="thingy">
+				<Option output="/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/cmake-build-debug/source/thingy" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/cmake-build-debug/source"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/source/library/includes"/>
+					<Add directory="/usr/include/c++/8"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/8"/>
+					<Add directory="/usr/include/c++/8/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/8/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/8/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/cmake-build-debug/source/Makefile&quot;  VERBOSE=1 thingy"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/cmake-build-debug/source/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/cmake-build-debug/source/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/cmake-build-debug/source/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="thingy/fast">
+				<Option output="/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/cmake-build-debug/source/thingy" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/cmake-build-debug/source"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/source/library/includes"/>
+					<Add directory="/usr/include/c++/8"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/8"/>
+					<Add directory="/usr/include/c++/8/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/8/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/8/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/cmake-build-debug/source/Makefile&quot;  VERBOSE=1 thingy/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/cmake-build-debug/source/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/cmake-build-debug/source/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/cmake-build-debug/source/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="thingylib">
+				<Option output="/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/cmake-build-debug/source/library/libthingylib.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/cmake-build-debug/source/library"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/source/library/includes"/>
+					<Add directory="/usr/include/c++/8"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/8"/>
+					<Add directory="/usr/include/c++/8/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/8/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/8/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/cmake-build-debug/source/library/Makefile&quot;  VERBOSE=1 thingylib"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/cmake-build-debug/source/library/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/cmake-build-debug/source/library/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/cmake-build-debug/source/library/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="thingylib/fast">
+				<Option output="/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/cmake-build-debug/source/library/libthingylib.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/cmake-build-debug/source/library"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/source/library/includes"/>
+					<Add directory="/usr/include/c++/8"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/8"/>
+					<Add directory="/usr/include/c++/8/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/8/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/8/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/cmake-build-debug/source/library/Makefile&quot;  VERBOSE=1 thingylib/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/cmake-build-debug/source/library/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/cmake-build-debug/source/library/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/cmake-build-debug/source/library/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="test_thingy">
+				<Option output="/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/cmake-build-debug/tests/test_thingy" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/cmake-build-debug/tests"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/source/library/includes"/>
+					<Add directory="/usr/include/c++/8"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/8"/>
+					<Add directory="/usr/include/c++/8/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/8/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/8/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/cmake-build-debug/tests/Makefile&quot;  VERBOSE=1 test_thingy"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/cmake-build-debug/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/cmake-build-debug/tests/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/cmake-build-debug/tests/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="test_thingy/fast">
+				<Option output="/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/cmake-build-debug/tests/test_thingy" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/cmake-build-debug/tests"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/source/library/includes"/>
+					<Add directory="/usr/include/c++/8"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/8"/>
+					<Add directory="/usr/include/c++/8/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/8/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/8/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/cmake-build-debug/tests/Makefile&quot;  VERBOSE=1 test_thingy/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/cmake-build-debug/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/cmake-build-debug/tests/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/cmake-build-debug/tests/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="valgrind_test_thingy">
+				<Option working_dir="/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/cmake-build-debug/tests"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/cmake-build-debug/tests/Makefile&quot;  VERBOSE=1 valgrind_test_thingy"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/cmake-build-debug/tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/cmake-build-debug/tests/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/cmake-build-debug/tests/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/source/library/add.c">
+			<Option target="thingylib"/>
+		</Unit>
+		<Unit filename="/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/source/main.c">
+			<Option target="thingy"/>
+		</Unit>
+		<Unit filename="/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/tests/main.c">
+			<Option target="test_thingy"/>
+		</Unit>
+		<Unit filename="/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/tests/suites/add.c">
+			<Option target="test_thingy"/>
+		</Unit>
+		<Unit filename="/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+		<Unit filename="/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/source/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\source\"/>
+		</Unit>
+		<Unit filename="/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/source/library/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\source\library\"/>
+		</Unit>
+		<Unit filename="/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/tests/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\tests\"/>
+		</Unit>
+		<Unit filename="/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/cmake/FindCheck.cmake">
+			<Option virtualFolder="CMake Files\cmake\"/>
+		</Unit>
+		<Unit filename="/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/cmake/FindValgrind.cmake">
+			<Option virtualFolder="CMake Files\cmake\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

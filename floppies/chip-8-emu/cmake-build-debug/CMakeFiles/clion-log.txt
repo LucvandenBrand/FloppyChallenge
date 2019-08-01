@@ -1,0 +1,6 @@
+/home/luc/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/192.5728.100/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy
+-- Valgrind Prefix: 
+-- Found VALGRIND: /usr/include  
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/thingy/cmake-build-debug

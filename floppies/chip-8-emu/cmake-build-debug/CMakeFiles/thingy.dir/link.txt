@@ -1,0 +1,1 @@
+/usr/bin/cc -g   CMakeFiles/thingy.dir/source/main.c.o  -o thingy -Wl,--gc-sections -lSDL2 -lSDL2_image -lSDL2 -lSDL2_ttf -lSDL2 -lSDL2_mixer -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer 
