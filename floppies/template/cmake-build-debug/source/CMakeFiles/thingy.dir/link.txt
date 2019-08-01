@@ -1,1 +1,0 @@
-/usr/bin/cc -g   CMakeFiles/thingy.dir/main.c.o  -o thingy library/libthingylib.a 
