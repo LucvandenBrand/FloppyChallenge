@@ -12,7 +12,7 @@ For Linux, this comes down to:
 3. `make`
 
 ### Testing
-This project is tested using the Check. To perform the the test, replace step 3 above with: `make test`.
+This project is tested using Check. To perform the the test, replace step 3 above with: `make test`.
 
 Valgrind tests are also supported: `make valgrind_test_{{PROJECT_NAME}}`.
 
