@@ -1,11 +1,12 @@
 #include <check.h>
 #include <stdlib.h>
 
-#define NUM_SUITES 1
+#define NUM_SUITES 2
 
-Suite * makeAddSuite();
+Suite * make_file_system_suite();
+Suite * make_binary_blob_suite();
 
-SRunner * createSuiteRunner(Suite** suites, int numSuites)
+SRunner * create_suite_runner(Suite** suites, int numSuites)
 {
     if (numSuites < 1)
         return NULL;
@@ -23,10 +24,11 @@ SRunner * createSuiteRunner(Suite** suites, int numSuites)
 int main()
 {
     Suite * suites[NUM_SUITES] = {
-            makeAddSuite()
+            make_file_system_suite(),
+            make_binary_blob_suite()
     };
 
-    SRunner * suiteRunner = createSuiteRunner(suites, NUM_SUITES);
+    SRunner * suiteRunner = create_suite_runner(suites, NUM_SUITES);
     srunner_run_all(suiteRunner, CK_VERBOSE);
 
     int numberFailed = srunner_ntests_failed(suiteRunner);
