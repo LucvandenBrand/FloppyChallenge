@@ -5,7 +5,7 @@
 void print_help()
 {
     printf(" ----------------------------------------------------------------- \n");
-    printf("| Chip-8-emu : a tiny chip-8 emulator by Luc van den Brand.       |\n");
+    printf("| chip-8-emu : a tiny CHIP-8 emulator by Luc van den Brand.       |\n");
     printf("| Created as part of a challenge: https://www.floppychallenge.com |\n");
     printf(" ----------------------------------------------------------------- \n");
     printf("-> Usage: chip-8-emu path/to/rom/file\n");
