@@ -3,7 +3,7 @@
 #include <limits.h>
 #include <cmd_interface.h>
 #include <file_system.h>
-#include <emulator.h>
+#include <emulator/emulator.h>
 
 int main(int argc, char ** argv)
 {

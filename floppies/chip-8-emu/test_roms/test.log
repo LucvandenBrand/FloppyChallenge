@@ -3,6 +3,8 @@ Running suite FileSystem Suite
 /home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/chip-8-emu/tests/suites/file_system_suite.c:18:P:Test Cases:test_get_missing_file_size:0: Passed
 Running suite BinaryBlob Suite
 /home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/chip-8-emu/tests/suites/binary_blob_suite.c:8:P:Test Cases:test_malloc_free_blob:0: Passed
-/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/chip-8-emu/tests/suites/binary_blob_suite.c:16:P:Test Cases:test_malloc_invalid_blob:0: Passed
+/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/chip-8-emu/tests/suites/binary_blob_suite.c:17:P:Test Cases:test_malloc_invalid_blob:0: Passed
+Running suite System Suite
+/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/chip-8-emu/tests/suites/system_suite.c:35:P:Test Cases:test_init_system:0: Passed
 Results for all suites run:
-100%: Checks: 4, Failures: 0, Errors: 0
+100%: Checks: 5, Failures: 0, Errors: 0

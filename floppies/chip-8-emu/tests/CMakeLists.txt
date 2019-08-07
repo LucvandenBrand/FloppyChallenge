@@ -30,4 +30,5 @@ include(FindValgrind)
 add_custom_target(valgrind_test_chip-8-emu
     COMMAND ${VALGRIND_PROGRAM} --leak-check=full $<TARGET_FILE:test_chip-8-emu>
     DEPENDS test_chip-8-emu
+    WORKING_DIRECTORY ../../test_roms
 )

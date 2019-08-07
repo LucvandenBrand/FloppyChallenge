@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <file_system.h>
+#include <cmd_interface.h>
 
 char * get_full_path(const char * file_name, char * full_path)
 {
@@ -17,7 +18,12 @@ int file_path_exists(const char * file_path)
 BinaryBlob * read_binary_file(const char * file_path, BinaryBlob * blob)
 {
     FILE *file_pointer = fopen(file_path, "rb");
-    fread(blob->data, sizeof(uint8_t), blob->num_bytes, file_pointer);
+    if (file_pointer == NULL)
+    {
+        log_message(ERROR, "Could not read file %s.", file_path);
+        exit(EXIT_FAILURE);
+    }
+    unsigned long bytes_read = fread(blob->data, blob->num_bytes, 1, file_pointer);
     fclose(file_pointer);
     return blob;
 }

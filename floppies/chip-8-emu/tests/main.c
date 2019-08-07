@@ -1,10 +1,11 @@
 #include <check.h>
 #include <stdlib.h>
 
-#define NUM_SUITES 2
+#define NUM_SUITES 3
 
 Suite * make_file_system_suite();
 Suite * make_binary_blob_suite();
+Suite * make_system_suite();
 
 SRunner * create_suite_runner(Suite** suites, int numSuites)
 {
@@ -25,7 +26,8 @@ int main()
 {
     Suite * suites[NUM_SUITES] = {
             make_file_system_suite(),
-            make_binary_blob_suite()
+            make_binary_blob_suite(),
+            make_system_suite()
     };
 
     SRunner * suiteRunner = create_suite_runner(suites, NUM_SUITES);
