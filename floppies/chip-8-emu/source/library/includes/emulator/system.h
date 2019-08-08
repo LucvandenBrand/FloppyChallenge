@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 #include <binary_blob.h>
+#include <stdbool.h>
 
 #define MAIN_MEMORY_SIZE 4096
 #define VIDEO_WIDTH 64
@@ -15,6 +16,9 @@
 #define ADDRESS_ROM 0x200
 
 typedef struct {
+    bool is_running;
+    bool video_changed;
+    bool audio_triggered;
     uint8_t main_memory[MAIN_MEMORY_SIZE];
     uint8_t video_memory[VIDEO_MEMORY_SIZE];
     uint8_t v_registers[NUM_V_REGISTERS];

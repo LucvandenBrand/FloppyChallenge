@@ -13,6 +13,9 @@ START_TEST(test_init_system)
     System system = init_system(&rom);
     free_binary_blob(&rom);
 
+    ck_assert(system.is_running == true);
+    ck_assert(system.video_changed == true);
+    ck_assert(system.audio_triggered == false);
     ck_assert_int_eq(system.index_register, 0);
     ck_assert_int_eq(system.program_counter, ADDRESS_ROM);
     ck_assert_int_eq(system.stack_pointer, 0);

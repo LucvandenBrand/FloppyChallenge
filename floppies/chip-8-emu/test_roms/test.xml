@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <?xml-stylesheet type="text/xsl" href="http://check.sourceforge.net/xml/check_unittest.xslt"?>
 <testsuites xmlns="http://check.sourceforge.net/ns">
-  <datetime>2019-08-07 12:16:44</datetime>
+  <datetime>2019-08-08 10:25:07</datetime>
   <suite>
     <title>FileSystem Suite</title>
     <test result="success">
@@ -9,7 +9,7 @@
       <fn>file_system_suite.c:11</fn>
       <id>test_get_file_size</id>
       <iteration>0</iteration>
-      <duration>0.010348</duration>
+      <duration>0.000082</duration>
       <description>Test Cases</description>
       <message>Passed</message>
     </test>
@@ -18,7 +18,7 @@
       <fn>file_system_suite.c:18</fn>
       <id>test_get_missing_file_size</id>
       <iteration>0</iteration>
-      <duration>0.000893</duration>
+      <duration>0.000014</duration>
       <description>Test Cases</description>
       <message>Passed</message>
     </test>
@@ -30,7 +30,7 @@
       <fn>binary_blob_suite.c:8</fn>
       <id>test_malloc_free_blob</id>
       <iteration>0</iteration>
-      <duration>0.001330</duration>
+      <duration>0.000015</duration>
       <description>Test Cases</description>
       <message>Passed</message>
     </test>
@@ -39,7 +39,7 @@
       <fn>binary_blob_suite.c:17</fn>
       <id>test_malloc_invalid_blob</id>
       <iteration>0</iteration>
-      <duration>0.000784</duration>
+      <duration>0.000012</duration>
       <description>Test Cases</description>
       <message>Passed</message>
     </test>
@@ -48,13 +48,34 @@
     <title>System Suite</title>
     <test result="success">
       <path>/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/chip-8-emu/tests/suites</path>
-      <fn>system_suite.c:35</fn>
+      <fn>system_suite.c:38</fn>
       <id>test_init_system</id>
       <iteration>0</iteration>
-      <duration>0.049672</duration>
+      <duration>0.004244</duration>
       <description>Test Cases</description>
       <message>Passed</message>
     </test>
   </suite>
-  <duration>0.148881</duration>
+  <suite>
+    <title>Emulator Suite</title>
+    <test result="success">
+      <path>/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/chip-8-emu/tests/suites</path>
+      <fn>emulator_suite.c:36</fn>
+      <id>test_step_timers</id>
+      <iteration>0</iteration>
+      <duration>0.000030</duration>
+      <description>Test Cases</description>
+      <message>Passed</message>
+    </test>
+    <test result="success">
+      <path>/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/chip-8-emu/tests/suites</path>
+      <fn>emulator_suite.c:14</fn>
+      <id>test_op_code_set_index_reg</id>
+      <iteration>0</iteration>
+      <duration>0.000015</duration>
+      <description>Op Code Test Cases</description>
+      <message>Passed</message>
+    </test>
+  </suite>
+  <duration>0.005442</duration>
 </testsuites>

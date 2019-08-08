@@ -5,6 +5,9 @@ Running suite BinaryBlob Suite
 /home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/chip-8-emu/tests/suites/binary_blob_suite.c:8:P:Test Cases:test_malloc_free_blob:0: Passed
 /home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/chip-8-emu/tests/suites/binary_blob_suite.c:17:P:Test Cases:test_malloc_invalid_blob:0: Passed
 Running suite System Suite
-/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/chip-8-emu/tests/suites/system_suite.c:35:P:Test Cases:test_init_system:0: Passed
+/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/chip-8-emu/tests/suites/system_suite.c:38:P:Test Cases:test_init_system:0: Passed
+Running suite Emulator Suite
+/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/chip-8-emu/tests/suites/emulator_suite.c:36:P:Test Cases:test_step_timers:0: Passed
+/home/luc/Documents/Work/Side_Projects/Floppy_Challenge/Repo/floppies/chip-8-emu/tests/suites/emulator_suite.c:14:P:Op Code Test Cases:test_op_code_set_index_reg:0: Passed
 Results for all suites run:
-100%: Checks: 5, Failures: 0, Errors: 0
+100%: Checks: 7, Failures: 0, Errors: 0

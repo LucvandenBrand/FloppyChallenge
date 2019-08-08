@@ -5,6 +5,9 @@
 System init_system(const BinaryBlob *  rom)
 {
     System system;
+    system.is_running = true;
+    system.video_changed = true;
+    system.audio_triggered = false;
     system.program_counter = ADDRESS_ROM;
     system.index_register = 0;
     system.stack_pointer = 0;
