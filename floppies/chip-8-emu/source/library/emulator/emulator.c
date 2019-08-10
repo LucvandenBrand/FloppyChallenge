@@ -2,9 +2,11 @@
 #include <io/cmd_interface.h>
 #include <emulator/emulator.h>
 #include <stdlib.h>
+#include <rendering/render_context.h>
 
 void emulate_rom(const BinaryBlob * rom)
 {
+    RenderContext render_context = create_render_context("CHIP-8-emu", VIDEO_WIDTH, VIDEO_HEIGHT);
     System system = init_system(rom);
     while (system.is_running)
     {
@@ -12,6 +14,7 @@ void emulate_rom(const BinaryBlob * rom)
         //render_system_video_memory(system.video_memory);
         //update_system_key_states(system.key_states);
     }
+    free_render_context(&render_context);
 }
 
 void step_system_cpu(System * system)
