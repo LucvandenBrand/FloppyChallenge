@@ -25,11 +25,11 @@ RenderContext create_render_context(const char * title, unsigned int screen_widt
     }
 
     RenderContext context = {
-            window,
-            renderer,
-            screen_width,
-            screen_height,
-            title
+        window,
+        renderer,
+        screen_width,
+        screen_height,
+        title
     };
 
     return context;
@@ -39,5 +39,6 @@ void free_render_context(RenderContext * renderContext)
 {
     SDL_DestroyRenderer(renderContext->renderer);
     SDL_DestroyWindow(renderContext->window);
+    SDL_QuitSubSystem(SDL_INIT_EVERYTHING);
     SDL_Quit();
 }
