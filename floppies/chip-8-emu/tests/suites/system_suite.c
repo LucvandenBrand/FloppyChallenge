@@ -1,6 +1,6 @@
 #include <check.h>
 #include <emulator/system.h>
-#include <file_system.h>
+#include <io/file_system.h>
 #include <limits.h>
 
 START_TEST(test_init_system)

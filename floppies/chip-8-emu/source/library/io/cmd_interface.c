@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdarg.h>
-#include <cmd_interface.h>
+#include <io/cmd_interface.h>
 
 void print_help()
 {

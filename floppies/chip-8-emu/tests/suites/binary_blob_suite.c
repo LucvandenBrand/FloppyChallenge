@@ -1,5 +1,5 @@
 #include <check.h>
-#include <file_system.h>
+#include <io/file_system.h>
 
 START_TEST(test_malloc_free_blob)
 {

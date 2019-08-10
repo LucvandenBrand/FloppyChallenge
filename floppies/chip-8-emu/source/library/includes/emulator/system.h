@@ -2,7 +2,7 @@
 #define SYSTEM_H
 
 #include <stdint.h>
-#include <binary_blob.h>
+#include <io/binary_blob.h>
 #include <stdbool.h>
 
 #define MAIN_MEMORY_SIZE 4096

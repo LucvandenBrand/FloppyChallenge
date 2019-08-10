@@ -1,5 +1,5 @@
-#include <binary_blob.h>
-#include <cmd_interface.h>
+#include <io/binary_blob.h>
+#include <io/cmd_interface.h>
 #include <emulator/emulator.h>
 #include <stdlib.h>
 

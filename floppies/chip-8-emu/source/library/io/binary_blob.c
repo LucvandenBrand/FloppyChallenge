@@ -1,4 +1,4 @@
-#include <binary_blob.h>
+#include <io/binary_blob.h>
 #include <stdlib.h>
 
 BinaryBlob malloc_binary_blob(int num_bytes)

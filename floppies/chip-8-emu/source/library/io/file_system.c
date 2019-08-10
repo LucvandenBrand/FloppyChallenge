@@ -1,9 +1,9 @@
-#include <binary_blob.h>
+#include <io/binary_blob.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdio.h>
-#include <file_system.h>
-#include <cmd_interface.h>
+#include <io/file_system.h>
+#include <io/cmd_interface.h>
 
 char * get_full_path(const char * file_name, char * full_path)
 {
