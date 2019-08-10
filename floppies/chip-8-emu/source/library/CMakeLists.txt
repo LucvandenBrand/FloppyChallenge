@@ -1,3 +1,8 @@
 file(GLOB_RECURSE PROJECT_SOURCES *.c)
 add_library(chip-8-emulib ${PROJECT_SOURCES})
 target_include_directories(chip-8-emulib PUBLIC includes)
+
+INCLUDE(FindPkgConfig)
+PKG_SEARCH_MODULE(SDL2 REQUIRED sdl2)
+INCLUDE_DIRECTORIES(${SDL2_INCLUDE_DIRS})
+TARGET_LINK_LIBRARIES(chip-8-emulib ${SDL2_LIBRARIES})
