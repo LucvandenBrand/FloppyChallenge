@@ -3,17 +3,24 @@
 #include <emulator/emulator.h>
 #include <stdlib.h>
 #include <rendering/render_context.h>
+#include <rendering/frame_buffer.h>
 
 void emulate_rom(const BinaryBlob * rom)
 {
     RenderContext render_context = create_render_context("CHIP-8-emu", VIDEO_WIDTH, VIDEO_HEIGHT);
+    FrameBuffer frame_buffer = create_frame_buffer(render_context, VIDEO_WIDTH, VIDEO_HEIGHT);
     System system = init_system(rom);
     while (system.is_running)
     {
         step_system_cpu(&system);
-        //render_system_video_memory(system.video_memory);
+        if (system.video_changed)
+        {
+            //copy_system_video_memory(system.video_memory, frame_buffer);
+            //present_frame_buffer(render_context, frame_buffer);
+        }
         //update_system_key_states(system.key_states);
     }
+    free_frame_buffer(&frame_buffer);
     free_render_context(&render_context);
 }
 

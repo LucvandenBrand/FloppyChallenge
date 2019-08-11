@@ -1,13 +1,14 @@
 #include <check.h>
 #include <stdlib.h>
 
-#define NUM_SUITES 5
+#define NUM_SUITES 6
 
 Suite * make_file_system_suite();
 Suite * make_binary_blob_suite();
 Suite * make_system_suite();
 Suite * make_emulator_suite();
 Suite * make_render_context_suite();
+Suite * make_frame_buffer_suite();
 
 SRunner * create_suite_runner(Suite** suites, int numSuites)
 {
@@ -31,7 +32,8 @@ int main()
             make_binary_blob_suite(),
             make_system_suite(),
             make_emulator_suite(),
-            make_render_context_suite()
+            make_render_context_suite(),
+            make_frame_buffer_suite()
     };
 
     SRunner * suiteRunner = create_suite_runner(suites, NUM_SUITES);
