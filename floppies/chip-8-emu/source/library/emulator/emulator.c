@@ -32,7 +32,7 @@ void step_system_cpu(System * system)
         exit(EXIT_FAILURE);
     }
 
-    uint16_t op_code = system->main_memory[system->program_counter] |
+    uint16_t op_code = system->main_memory[system->program_counter] << 8 |
                        system->main_memory[system->program_counter + 1];
 
     process_op_code(system, op_code);
@@ -47,8 +47,16 @@ void process_op_code(System * system, uint16_t op_code)
             system->index_register = op_code & 0x0FFF;
             system->program_counter += 2;
             break;
+        case 0x2000: // 2NNN: Call the subroutine at address NNN.
+            system->stack[system->stack_pointer] = system->program_counter;
+            system->stack_pointer++;
+            system->program_counter = op_code & 0x0FFF;
+            break;
+        case 0xB000: // BNNN: Jump to location NNN + V0.
+            system->program_counter = op_code & 0x0FFF + system->v_registers[0];
+            break;
         default:
-            log_message(ERROR, "Unknown op code: 0x%X.", op_code);
+            log_message(ERROR, "Unknown op code: 0x%04X.", op_code);
             exit(EXIT_FAILURE);
     }
 }
