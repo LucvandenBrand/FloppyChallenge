@@ -2,13 +2,78 @@
 #include <emulator/system.h>
 #include <emulator/emulator.h>
 
-START_TEST(test_op_code_set_index_reg)
+System create_empty_system()
 {
     BinaryBlob empty_rom = malloc_binary_blob(0);
     System system = init_system(&empty_rom);
     free_binary_blob(&empty_rom);
+    return system;
+}
 
-    ck_assert_int_eq(system.program_counter, 0x200);
+START_TEST(test_clear_display) // 00E0
+{
+    System system = create_empty_system();
+    memset(system.video_memory, 10, sizeof(system.video_memory));
+    for (int index = 0; index < VIDEO_MEMORY_SIZE; index++)
+        ck_assert_int_eq(system.video_memory[index], 10);
+    process_op_code(&system, 0x00E0);
+    for (int index = 0; index < VIDEO_MEMORY_SIZE; index++)
+        ck_assert_int_eq(system.video_memory[index], 0);
+
+    ck_assert_int_eq(system.video_changed, true);
+    ck_assert_int_eq(system.program_counter, 0x202);
+}
+END_TEST
+
+START_TEST(test_return_from_subroutine) // 00EE
+{
+    System system = create_empty_system();
+    system.stack[0] = 0x300;
+    system.stack_pointer = 1;
+    process_op_code(&system, 0x00EE);
+    ck_assert_int_eq(system.program_counter, 0x300);
+    ck_assert_int_eq(system.stack_pointer,0);
+}
+END_TEST
+
+START_TEST(test_jump_to_location) // 1NNN
+{
+    System system = create_empty_system();
+    process_op_code(&system, 0x1434);
+    ck_assert_int_eq(system.stack_pointer, 0x434);
+}
+END_TEST
+
+START_TEST(test_call_subroutine) // 2NNN
+{
+    System system = create_empty_system();
+    process_op_code(&system, 0x2345);
+    ck_assert_int_eq(system.stack_pointer, 1);
+    ck_assert_int_eq(system.stack[0], 0x200);
+    ck_assert_int_eq(system.program_counter, 0x345);
+}
+END_TEST
+
+START_TEST(test_skip_if_equal) // 3XKK
+{
+    System system = create_empty_system();
+    process_op_code(&system, 0x3011);
+    ck_assert_int_eq(system.program_counter, 0x202);
+    system.v_registers[0] = 0x11;
+    process_op_code(&system, 0x3011);
+    ck_assert_int_eq(system.program_counter, 0x206);
+
+    process_op_code(&system, 0x3133);
+    ck_assert_int_eq(system.program_counter, 0x208);
+    system.v_registers[0] = 0x33;
+    process_op_code(&system, 0x3133);
+    ck_assert_int_eq(system.program_counter, 0x212);
+}
+END_TEST
+
+START_TEST(test_op_code_set_index_reg) // ANNN
+{
+    System system = create_empty_system();
     process_op_code(&system, 0xA123);
     ck_assert_int_eq(system.index_register, 0x0123);
     ck_assert_int_eq(system.program_counter, 0x202);
@@ -66,6 +131,9 @@ Suite * make_emulator_suite()
     suite_add_tcase(suite, test_case);
 
     TCase * op_code_test_case = tcase_create("Op Code Test Cases");
+    tcase_add_test(op_code_test_case, test_clear_display);
+    tcase_add_test(op_code_test_case, test_return_from_subroutine);
+    tcase_add_test(op_code_test_case, test_jump_to_location);
     tcase_add_test(op_code_test_case, test_op_code_set_index_reg);
     suite_add_tcase(suite, op_code_test_case);
 

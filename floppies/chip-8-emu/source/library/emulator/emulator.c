@@ -41,6 +41,21 @@ void step_system_cpu(System * system)
 
 void process_op_code(System * system, uint16_t op_code)
 {
+    switch (op_code)
+    {
+        case 0x00EE: // Return from a subroutine, restore from stack.
+            system->program_counter = system->stack[system->stack_pointer - 1];
+            system->stack_pointer--;
+            return;
+        case 0x00E0: // Clear video memory.
+            memset(system->video_memory, 0, sizeof(system->video_memory));
+            system->video_changed = true;
+            system->program_counter += 2;
+            return;
+        default:
+            break;
+    }
+
     switch (op_code & 0xF000)
     {
         case 0xA000: // ANNN: Sets index register to address NNN.
@@ -54,6 +69,10 @@ void process_op_code(System * system, uint16_t op_code)
             break;
         case 0xB000: // BNNN: Jump to location NNN + V0.
             system->program_counter = op_code & 0x0FFF + system->v_registers[0];
+            break;
+        case 0x6000: // 6xkk: Put the value kk into register x.
+            system->v_registers[op_code & 0x0F00] = op_code & 0x00FF;
+            system->program_counter += 2;
             break;
         default:
             log_message(ERROR, "Unknown op code: 0x%04X.", op_code);
