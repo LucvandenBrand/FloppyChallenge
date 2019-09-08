@@ -54,7 +54,7 @@ START_TEST(test_call_subroutine) // 2NNN
 }
 END_TEST
 
-START_TEST(test_skip_if_equal) // 3XKK
+START_TEST(test_skip_if_register_equal) // 3XKK
 {
     System system = create_empty_system();
     process_op_code(&system, 0x3011);
@@ -68,6 +68,56 @@ START_TEST(test_skip_if_equal) // 3XKK
     system.v_registers[0] = 0x33;
     process_op_code(&system, 0x3133);
     ck_assert_int_eq(system.program_counter, 0x212);
+}
+END_TEST
+
+START_TEST(test_skip_if_register_not_equal) // 4XKK
+{
+    System system = create_empty_system();
+    process_op_code(&system, 0x4011);
+    ck_assert_int_eq(system.program_counter, 0x204);
+    system.v_registers[0] = 0x11;
+    process_op_code(&system, 0x4011);
+    ck_assert_int_eq(system.program_counter, 0x206);
+
+    process_op_code(&system, 0x4133);
+    ck_assert_int_eq(system.program_counter, 0x210);
+    system.v_registers[0] = 0x33;
+    process_op_code(&system, 0x4133);
+    ck_assert_int_eq(system.program_counter, 0x212);
+}
+END_TEST
+
+START_TEST(test_skip_if_registers_equal) // 5XY0
+{
+    System system = create_empty_system();
+    system.v_registers[1] = 0x11;
+    system.v_registers[3] = 0x33;
+    process_op_code(&system, 0x5130);
+    ck_assert_int_eq(system.program_counter, 0x202);
+    system.v_registers[3] = 0x11;
+    process_op_code(&system, 0x5130);
+    ck_assert_int_eq(system.program_counter, 0x206);
+}
+END_TEST
+
+START_TEST(test_set_register_to_value) // 6XKK
+{
+    System system = create_empty_system();
+    ck_assert_int_eq(system.v_registers[1], 0);
+    process_op_code(&system, 0x6112);
+    ck_assert_int_eq(system.v_registers[1], 0x12);
+    ck_assert_int_eq(system.program_counter, 0x202);
+}
+END_TEST
+
+START_TEST(test_add_value_to_register) // 7XKK
+{
+    System system = create_empty_system();
+    system.v_registers[1] = 0x11;
+    process_op_code(&system, 0x7112);
+    ck_assert_int_eq(system.v_registers[1], 0x23);
+    ck_assert_int_eq(system.program_counter, 0x202);
 }
 END_TEST
 
@@ -134,6 +184,10 @@ Suite * make_emulator_suite()
     tcase_add_test(op_code_test_case, test_clear_display);
     tcase_add_test(op_code_test_case, test_return_from_subroutine);
     tcase_add_test(op_code_test_case, test_jump_to_location);
+    tcase_add_test(op_code_test_case, test_call_subroutine);
+    tcase_add_test(op_code_test_case, test_skip_if_register_equal);
+    tcase_add_test(op_code_test_case, test_skip_if_register_not_equal);
+    tcase_add_test(op_code_test_case, test_skip_if_registers_equal);
     tcase_add_test(op_code_test_case, test_op_code_set_index_reg);
     suite_add_tcase(suite, op_code_test_case);
 
