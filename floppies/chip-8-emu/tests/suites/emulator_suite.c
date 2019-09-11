@@ -121,6 +121,149 @@ START_TEST(test_add_value_to_register) // 7XKK
 }
 END_TEST
 
+START_TEST(test_load_register_in_register) // 8XY0
+{
+    System system = create_empty_system();
+    system.v_registers[2] = 0x33;
+    process_op_code(&system, 0x8120);
+    ck_assert_int_eq(system.v_registers[1], 0x33);
+    ck_assert_int_eq(system.program_counter, 0x202);
+}
+END_TEST
+
+START_TEST(test_bitwise_or_registers) // 8XY1
+{
+    System system = create_empty_system();
+    system.v_registers[0] = 0x01;
+    system.v_registers[1] = 0x10;
+    process_op_code(&system, 0x8011);
+    ck_assert_int_eq(system.v_registers[0], 0x11);
+    ck_assert_int_eq(system.program_counter, 0x202);
+}
+END_TEST
+
+START_TEST(test_bitwise_and_registers) // 8XY2
+{
+    System system = create_empty_system();
+    system.v_registers[0] = 0x01;
+    system.v_registers[1] = 0x10;
+    process_op_code(&system, 0x8012);
+    ck_assert_int_eq(system.v_registers[0], 0x00);
+    ck_assert_int_eq(system.program_counter, 0x202);
+}
+END_TEST
+
+START_TEST(test_bitwise_xor_registers) // 8XY3
+{
+    System system = create_empty_system();
+    system.v_registers[0] = 0x11;
+    system.v_registers[1] = 0x10;
+    process_op_code(&system, 0x8013);
+    ck_assert_int_eq(system.v_registers[0], 0x01);
+    ck_assert_int_eq(system.program_counter, 0x202);
+}
+END_TEST
+
+START_TEST(test_add_registers) // 8XY4
+{
+    System system = create_empty_system();
+    system.v_registers[0] = 0x01;
+    system.v_registers[1] = 0x0F;
+    process_op_code(&system, 0x8014);
+    ck_assert_int_eq(system.v_registers[0], 0x10);
+    ck_assert_int_eq(system.program_counter, 0x202);
+    ck_assert_int_eq(system.v_registers[NUM_V_REGISTERS-1], 0x00);
+
+    system.v_registers[1] = 0xFF;
+    process_op_code(&system, 0x8014);
+    ck_assert_int_eq(system.v_registers[0], 0x0F);
+    ck_assert_int_eq(system.program_counter, 0x204);
+    ck_assert_int_eq(system.v_registers[NUM_V_REGISTERS-1], 0x01);
+}
+END_TEST
+
+START_TEST(test_subtract_registers) // 8XY5
+{
+    System system = create_empty_system();
+    system.v_registers[0] = 0x10;
+    system.v_registers[1] = 0x0F;
+    process_op_code(&system, 0x8015);
+    ck_assert_int_eq(system.v_registers[0], 0x01);
+    ck_assert_int_eq(system.program_counter, 0x202);
+    ck_assert_int_eq(system.v_registers[NUM_V_REGISTERS-1], 0x01);
+
+    process_op_code(&system, 0x8015);
+    ck_assert_int_eq(system.v_registers[0], 0xE0);
+    ck_assert_int_eq(system.program_counter, 0x204);
+    ck_assert_int_eq(system.v_registers[NUM_V_REGISTERS-1], 0x00);
+}
+END_TEST
+
+START_TEST(test_shift_register_right) // 8XY6
+{
+    System system = create_empty_system();
+    system.v_registers[1] = 0x10;
+    process_op_code(&system, 0x8106);
+    ck_assert_int_eq(system.v_registers[0], 0x08);
+    ck_assert_int_eq(system.program_counter, 0x202);
+    ck_assert_int_eq(system.v_registers[NUM_V_REGISTERS-1], 0x00);
+
+    system.v_registers[1] = 0x01;
+    process_op_code(&system, 0x8106);
+    ck_assert_int_eq(system.v_registers[0], 0x00);
+    ck_assert_int_eq(system.program_counter, 0x204);
+    ck_assert_int_eq(system.v_registers[NUM_V_REGISTERS-1], 0x01);
+}
+END_TEST
+
+START_TEST(test_subtract_registers_reverse) // 8XY7
+{
+    System system = create_empty_system();
+    system.v_registers[0] = 0x0F;
+    system.v_registers[1] = 0x10;
+    process_op_code(&system, 0x8017);
+    ck_assert_int_eq(system.v_registers[0], 0x01);
+    ck_assert_int_eq(system.program_counter, 0x202);
+    ck_assert_int_eq(system.v_registers[NUM_V_REGISTERS-1], 0x01);
+
+    system.v_registers[0] = 0x11;
+    process_op_code(&system, 0x8017);
+    ck_assert_int_eq(system.v_registers[0], 0x01);
+    ck_assert_int_eq(system.program_counter, 0x204);
+    ck_assert_int_eq(system.v_registers[NUM_V_REGISTERS-1], 0x00);
+}
+END_TEST
+
+START_TEST(test_shift_register_left) // 8XYE
+{
+    System system = create_empty_system();
+    system.v_registers[1] = 0x04;
+    process_op_code(&system, 0x810E);
+    ck_assert_int_eq(system.v_registers[0], 0x08);
+    ck_assert_int_eq(system.program_counter, 0x202);
+    ck_assert_int_eq(system.v_registers[NUM_V_REGISTERS-1], 0x00);
+
+    system.v_registers[1] = 0xF0;
+    process_op_code(&system, 0x810E);
+    ck_assert_int_eq(system.v_registers[0], 0xE0);
+    ck_assert_int_eq(system.program_counter, 0x204);
+    ck_assert_int_eq(system.v_registers[NUM_V_REGISTERS-1], 0x01);
+}
+END_TEST
+
+START_TEST(test_skip_if_registers_not_equal) // 9xy0
+{
+    System system = create_empty_system();
+    system.v_registers[1] = 0x11;
+    system.v_registers[3] = 0x33;
+    process_op_code(&system, 0x9130);
+    ck_assert_int_eq(system.program_counter, 0x204);
+    system.v_registers[3] = 0x11;
+    process_op_code(&system, 0x9130);
+    ck_assert_int_eq(system.program_counter, 0x206);
+}
+END_TEST
+
 START_TEST(test_op_code_set_index_reg) // ANNN
 {
     System system = create_empty_system();
