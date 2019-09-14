@@ -273,6 +273,27 @@ START_TEST(test_op_code_set_index_reg) // ANNN
 }
 END_TEST
 
+START_TEST(test_jump_to_location_plus_register) // BNNN
+{
+    System system = create_empty_system();
+    system.v_registers[0] = 0x29;
+    process_op_code(&system, 0xB300);
+    ck_assert_int_eq(system.program_counter, 0x329);
+}
+END_TEST
+
+START_TEST(test_random_masked) // CXKK
+{
+    System system = create_empty_system();
+    process_op_code(&system, 0xC30F);
+    ck_assert_int_eq(system.v_registers[3] & 0xF0, 0x00);
+    ck_assert_int_eq(system.program_counter, 0x202);
+    process_op_code(&system, 0xC3F0);
+    ck_assert_int_eq(system.v_registers[3] & 0x0F, 0x00);
+    ck_assert_int_eq(system.program_counter, 0x204);
+}
+END_TEST
+
 START_TEST(test_step_timers)
 {
     BinaryBlob empty_rom = malloc_binary_blob(0);
