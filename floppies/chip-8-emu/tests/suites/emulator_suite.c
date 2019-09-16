@@ -294,6 +294,45 @@ START_TEST(test_random_masked) // CXKK
 }
 END_TEST
 
+START_TEST(test_draw_sprite) // DXYN
+{
+    System system = create_empty_system();
+    uint8_t sprite[16] = {0x1, 0x0, 0x1, 0x1,
+                          0x1, 0x0, 0x1, 0x1,
+                          0x1, 0x0, 0x0, 0x1,
+                          0x1, 0x1, 0x0, 0x1};
+    memcpy(&system.main_memory[300], sprite, sizeof(sprite));
+    system.v_registers[0] = 0x1A;
+    system.v_registers[1] = 0x01;
+    system.index_register = 300;
+
+    process_op_code(&system, 0xD01F);
+    for (int pos_v=0; pos_v<5; pos_v++)
+    {
+        for (int pos_h = 0; pos_h < 5; pos_h++)
+        {
+            uint8_t video_value = system.video_memory[VIDEO_HEIGHT * (0x01 + pos_v) + 0x1A + pos_h];
+            uint8_t sprite_value = sprite[4 * pos_v + pos_h];
+            ck_assert_int_eq(video_value, sprite_value);
+        }
+    }
+    ck_assert_int_eq(system.v_registers[NUM_V_REGISTERS-1], 0x00);
+    ck_assert_int_eq(system.program_counter, 0x202);
+
+    process_op_code(&system, 0xD01F);
+    for (int pos_v=0; pos_v<5; pos_v++)
+    {
+        for (int pos_h = 0; pos_h < 5; pos_h++)
+        {
+            uint8_t video_value = system.video_memory[VIDEO_HEIGHT * (0x01 + pos_v) + 0x1A + pos_h];
+            ck_assert_int_eq(video_value, 0);
+        }
+    }
+    ck_assert_int_eq(system.v_registers[NUM_V_REGISTERS-1], 0x01);
+    ck_assert_int_eq(system.program_counter, 0x204);
+}
+END_TEST
+
 START_TEST(test_step_timers)
 {
     BinaryBlob empty_rom = malloc_binary_blob(0);
