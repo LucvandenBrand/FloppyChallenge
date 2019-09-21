@@ -264,7 +264,7 @@ START_TEST(test_skip_if_registers_not_equal) // 9xy0
 }
 END_TEST
 
-START_TEST(test_op_code_set_index_reg) // ANNN
+START_TEST(test_set_index_reg) // ANNN
 {
     System system = create_empty_system();
     process_op_code(&system, 0xA123);
@@ -333,6 +333,82 @@ START_TEST(test_draw_sprite) // DXYN
 }
 END_TEST
 
+START_TEST(test_skip_if_key_pressed) // EX9E
+{
+    System system = create_empty_system();
+    system.v_registers[3] = 0x0A;
+    process_op_code(&system, 0xE39E);
+    ck_assert_int_eq(system.program_counter, 0x202);
+    system.key_states[0xA] = 0x01;
+    process_op_code(&system, 0xE39E);
+    ck_assert_int_eq(system.program_counter, 0x206);
+}
+END_TEST
+
+START_TEST(test_skip_if_key_not_pressed) // EXA1
+{
+    System system = create_empty_system();
+    system.v_registers[3] = 0x0A;
+    process_op_code(&system, 0xE3A1);
+    ck_assert_int_eq(system.program_counter, 0x204);
+    system.key_states[0xA] = 0x01;
+    process_op_code(&system, 0xE3A1);
+    ck_assert_int_eq(system.program_counter, 0x206);
+}
+END_TEST
+
+START_TEST(test_get_delay_timer_value) // FX07
+{
+    System system = create_empty_system();
+    system.delay_timer = 0x42;
+    process_op_code(&system, 0xF407);
+    ck_assert_int_eq(system.delay_timer, system.v_registers[4]);
+    ck_assert_int_eq(system.program_counter, 0x202);
+}
+END_TEST
+
+START_TEST(test_wait_for_key_press) // FX0A
+{
+    System system = create_empty_system();
+    process_op_code(&system, 0xF50A);
+    ck_assert_int_eq(system.program_counter, 0x200);
+    system.key_states[5] = 0x01;
+    process_op_code(&system, 0xF50A);
+    ck_assert_int_eq(system.program_counter, 0x202);
+}
+END_TEST
+
+START_TEST(test_set_delay_timer) // FX15
+{
+    System system = create_empty_system();
+    system.v_registers[3] = 0x31;
+    process_op_code(&system, 0xF315);
+    ck_assert_int_eq(system.delay_timer, system.v_registers[3]);
+    ck_assert_int_eq(system.program_counter, 0x202);
+}
+END_TEST
+
+START_TEST(test_set_sound_timer) // FX18
+{
+    System system = create_empty_system();
+    system.v_registers[3] = 0x31;
+    process_op_code(&system, 0xF318);
+    ck_assert_int_eq(system.sound_timer, system.v_registers[3]);
+    ck_assert_int_eq(system.program_counter, 0x202);
+}
+END_TEST
+
+START_TEST(test_add_to_index) // FX1E
+{
+    System system = create_empty_system();
+    system.index_register = 0x05;
+    system.v_registers[7] = 0xF1;
+    process_op_code(&system, 0xF31E);
+    ck_assert_int_eq(system.index_register, 0x05 + 0xF1);
+    ck_assert_int_eq(system.program_counter, 0x202);
+}
+END_TEST
+
 START_TEST(test_step_timers)
 {
     BinaryBlob empty_rom = malloc_binary_blob(0);
@@ -391,7 +467,7 @@ Suite * make_emulator_suite()
     tcase_add_test(op_code_test_case, test_skip_if_register_equal);
     tcase_add_test(op_code_test_case, test_skip_if_register_not_equal);
     tcase_add_test(op_code_test_case, test_skip_if_registers_equal);
-    tcase_add_test(op_code_test_case, test_op_code_set_index_reg);
+    tcase_add_test(op_code_test_case, test_set_index_reg);
     suite_add_tcase(suite, op_code_test_case);
 
     return suite;
