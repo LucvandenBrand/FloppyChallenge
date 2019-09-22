@@ -409,6 +409,59 @@ START_TEST(test_add_to_index) // FX1E
 }
 END_TEST
 
+START_TEST(test_set_index_to_digit_sprite) // FX29
+{
+    System system = create_empty_system();
+    for (uint8_t digit = 0; digit < 10; digit++)
+    {
+        system.v_registers[0] = digit;
+        process_op_code(&system, 0xF029);
+        ck_assert_int_eq(system.index_register,  0x05 * digit);
+        ck_assert_int_eq(system.program_counter, 0x200 + 0x002 * digit);
+    }
+}
+END_TEST
+
+START_TEST(test_store_bcd_representation) // FX33
+{
+    // TODO: Test this!
+}
+END_TEST
+
+START_TEST(test_store_registers) // FX55
+{
+    System system = create_empty_system();
+    system.index_register = 0x300;
+    for (int index = 0; index < NUM_V_REGISTERS; index++)
+        system.v_registers[index] = index;
+
+    process_op_code(&system, 0xF555);
+    for (int index = 0; index < 5; index++)
+        ck_assert_int_eq(system.main_memory[0x300 + index], index);
+    for (int index = 5; index < NUM_V_REGISTERS; index++)
+        ck_assert_int_eq(system.main_memory[0x300 + index], 0x00);
+
+    ck_assert_int_eq(system.program_counter, 0x202);
+}
+END_TEST
+
+START_TEST(test_load_registers) // FX65
+{
+    System system = create_empty_system();
+    system.index_register = 0x300;
+    for (int index = 0; index < NUM_V_REGISTERS; index++)
+        system.main_memory[0x300 + index] = index;
+
+    process_op_code(&system, 0xF565);
+    for (int index = 0; index < 5; index++)
+        ck_assert_int_eq(system.v_registers[index], index);
+    for (int index = 5; index < NUM_V_REGISTERS; index++)
+        ck_assert_int_eq(system.v_registers[index], 0x00);
+
+    ck_assert_int_eq(system.program_counter, 0x202);
+}
+END_TEST
+
 START_TEST(test_step_timers)
 {
     BinaryBlob empty_rom = malloc_binary_blob(0);
@@ -467,7 +520,33 @@ Suite * make_emulator_suite()
     tcase_add_test(op_code_test_case, test_skip_if_register_equal);
     tcase_add_test(op_code_test_case, test_skip_if_register_not_equal);
     tcase_add_test(op_code_test_case, test_skip_if_registers_equal);
+    tcase_add_test(op_code_test_case, test_set_register_to_value);
+    tcase_add_test(op_code_test_case, test_add_value_to_register);
+    tcase_add_test(op_code_test_case, test_load_register_in_register);
+    tcase_add_test(op_code_test_case, test_bitwise_or_registers);
+    tcase_add_test(op_code_test_case, test_bitwise_and_registers);
+    tcase_add_test(op_code_test_case, test_bitwise_xor_registers);
+    tcase_add_test(op_code_test_case, test_add_registers);
+    tcase_add_test(op_code_test_case, test_subtract_registers);
+    tcase_add_test(op_code_test_case, test_shift_register_right);
+    tcase_add_test(op_code_test_case, test_subtract_registers_reverse);
+    tcase_add_test(op_code_test_case, test_shift_register_left);
+    tcase_add_test(op_code_test_case, test_skip_if_register_not_equal);
     tcase_add_test(op_code_test_case, test_set_index_reg);
+    tcase_add_test(op_code_test_case, test_jump_to_location_plus_register);
+    tcase_add_test(op_code_test_case, test_random_masked);
+    tcase_add_test(op_code_test_case, test_draw_sprite);
+    tcase_add_test(op_code_test_case, test_skip_if_key_pressed);
+    tcase_add_test(op_code_test_case, test_skip_if_key_not_pressed);
+    tcase_add_test(op_code_test_case, test_get_delay_timer_value);
+    tcase_add_test(op_code_test_case, test_wait_for_key_press);
+    tcase_add_test(op_code_test_case, test_set_delay_timer);
+    tcase_add_test(op_code_test_case, test_set_sound_timer);
+    tcase_add_test(op_code_test_case, test_add_to_index);
+    tcase_add_test(op_code_test_case, test_set_index_to_digit_sprite);
+    tcase_add_test(op_code_test_case, test_store_bcd_representation);
+    tcase_add_test(op_code_test_case, test_store_registers);
+    tcase_add_test(op_code_test_case, test_load_registers);
     suite_add_tcase(suite, op_code_test_case);
 
     return suite;
