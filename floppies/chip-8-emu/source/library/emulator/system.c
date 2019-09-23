@@ -20,7 +20,7 @@ System init_system(const BinaryBlob *  rom)
     memset(system.v_registers, 0, sizeof(system.v_registers));
     memset(system.key_states, 0, sizeof(system.key_states));
 
-    memcpy(system.main_memory, chip8_font, sizeof(chip8_font));
+    load_chip8_font(system.main_memory);
     memcpy(&(system.main_memory[ADDRESS_ROM]), rom->data, rom->num_bytes);
 
     return system;
