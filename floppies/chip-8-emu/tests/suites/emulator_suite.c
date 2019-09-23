@@ -1,6 +1,7 @@
 #include <check.h>
 #include <emulator/system.h>
 #include <emulator/emulator.h>
+#include <emulator/font.h>
 
 System create_empty_system()
 {
@@ -424,7 +425,14 @@ END_TEST
 
 START_TEST(test_store_bcd_representation) // FX33
 {
-    // TODO: Test this!
+    System system = create_empty_system();
+    system.index_register = 0x0300;
+    system.v_registers[1] = 145;
+    process_op_code(&system, 0xF133);
+    ck_assert_int_eq(system.main_memory[0x0300], 1);
+    ck_assert_int_eq(system.main_memory[0x0301], 4);
+    ck_assert_int_eq(system.main_memory[0x0302], 5);
+    ck_assert_int_eq(system.program_counter, 0x202);
 }
 END_TEST
 
