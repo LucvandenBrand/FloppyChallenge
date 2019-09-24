@@ -18,7 +18,7 @@ void emulate_rom(const BinaryBlob * rom)
             copy_system_video_memory(system, frame_buffer);
             present_frame_buffer(render_context, frame_buffer);
         }
-        //update_system_key_states(system);
+        update_system_key_states(&system);
     }
     free_frame_buffer(&frame_buffer);
     free_render_context(&render_context);
@@ -90,6 +90,76 @@ void step_timers(System * system)
     if (system->sound_timer == 1)
         system->audio_triggered = true;
     --system->sound_timer;
+}
+
+void update_system_key_states(System * system)
+{
+    SDL_Event event;
+    while (SDL_PollEvent(&event))
+        process_event(event, system);
+}
+
+void process_event(SDL_Event event, System * system)
+{
+    switch(event.type)
+    {
+        case SDL_KEYDOWN:
+            process_key_event(event.key, system);
+            break;
+        case SDL_KEYUP:
+            process_key_event(event.key, system);
+            break;
+        case SDL_WINDOWEVENT:
+            process_window_event(event.window, system);
+    }
+}
+
+void process_key_event(SDL_KeyboardEvent key, System * system)
+{
+    int index = map_key_to_index(key.keysym.sym);
+    if (index > 0)
+        system->key_states[index] = key.type == SDL_KEYDOWN;
+}
+
+int map_key_to_index(SDL_Keycode key_code)
+{
+    switch (key_code)
+    {
+        case SDLK_0:
+            return 0;
+        case SDLK_1:
+            return 1;
+        case SDLK_2:
+            return 2;
+        case SDLK_3:
+            return 3;
+        case SDLK_4:
+            return 4;
+        case SDLK_5:
+            return 5;
+        case SDLK_6:
+            return 6;
+        case SDLK_7:
+            return 7;
+        case SDLK_8:
+            return 8;
+        case SDLK_9:
+            return 9;
+        default:
+            return -1;
+    }
+}
+
+void process_window_event(SDL_WindowEvent window, System * system)
+{
+    switch (window.event)
+    {
+        case SDL_WINDOWEVENT_CLOSE:
+            system->is_running = false;
+            break;
+        default:
+            break;
+    }
 }
 
 void copy_system_video_memory(System system, FrameBuffer frame_buffer)
