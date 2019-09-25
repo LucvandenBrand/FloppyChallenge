@@ -32,7 +32,7 @@ START_TEST(test_return_from_subroutine) // 00EE
     system.stack[0] = 0x300;
     system.stack_pointer = 1;
     process_op_code(&system, 0x00EE);
-    ck_assert_int_eq(system.program_counter, 0x300);
+    ck_assert_int_eq(system.program_counter, 0x302);
     ck_assert_int_eq(system.stack_pointer,0);
 }
 END_TEST

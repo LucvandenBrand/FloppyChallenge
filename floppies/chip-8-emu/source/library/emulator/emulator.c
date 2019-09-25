@@ -19,6 +19,7 @@ void emulate_rom(const BinaryBlob * rom)
             present_frame_buffer(render_context, frame_buffer);
         }
         update_system_key_states(&system);
+        SDL_Delay(16);
     }
     free_frame_buffer(&frame_buffer);
     free_render_context(&render_context);
@@ -44,7 +45,7 @@ void process_op_code(System * system, uint16_t op_code)
     switch (op_code)
     {
         case 0x00EE: // Return from a subroutine, restore from stack.
-            system->program_counter = system->stack[system->stack_pointer - 1];
+            system->program_counter = system->stack[system->stack_pointer - 1] + 2;
             system->stack_pointer--;
             return;
         case 0x00E0: // Clear video memory.
