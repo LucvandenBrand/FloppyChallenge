@@ -57,23 +57,55 @@ void process_op_code(System * system, uint16_t op_code)
             break;
     }
 
+    int index_x, index_y, value;
     switch (op_code & 0xF000)
     {
-        case 0xA000: // ANNN: Sets index register to address NNN.
-            system->index_register = op_code & 0x0FFF;
-            system->program_counter += 2;
+        case 0x1000: // 1NNN Jump to location NNN.
+            system->program_counter = op_code & 0x0FFF;
             break;
         case 0x2000: // 2NNN: Call the subroutine at address NNN.
             system->stack[system->stack_pointer] = system->program_counter;
             system->stack_pointer++;
             system->program_counter = op_code & 0x0FFF;
             break;
-        case 0xB000: // BNNN: Jump to location NNN + V0.
-            system->program_counter = op_code & 0x0FFF + system->v_registers[0];
+        case 0x3000: // 3XKK: Skip instruction if V[X] == KK.
+            index_x = op_code & 0x0F00;
+            value = op_code & 0x00FF;
+            if (system->v_registers[index_x] == value)
+                system->program_counter += 2;
+            system->program_counter += 2;
             break;
-        case 0x6000: // 6xkk: Put the value kk into register x.
+        case 0x4000: // 4XKK: Skip instruction if V[X] != KK.
+            index_x = op_code & 0x0F00;
+            value = op_code & 0x00FF;
+            if (system->v_registers[index_x] != value)
+                system->program_counter += 2;
+            system->program_counter += 2;
+            break;
+        case 0x5000: // 5XY0: Skip instruction if V[X] == V[Y].
+            index_x = op_code & 0x0F00;
+            index_y = op_code & 0x00FF;
+            if (system->v_registers[index_x] == system->v_registers[index_y])
+                system->program_counter += 2;
+            system->program_counter += 2;
+            break;
+        case 0x6000: // 6XKK: Put the value KK into register X.
             system->v_registers[op_code & 0x0F00] = op_code & 0x00FF;
             system->program_counter += 2;
+            break;
+        case 0x7000: // 7XKK: Add the value KK to register X.
+            system->v_registers[op_code & 0x0F00] += op_code & 0x00FF;
+            system->program_counter += 2;
+            break;
+        case 0x8000: // 8XY0: Store V[Y] in V[X].
+            system->v_registers[op_code & 0x0F00] += system->v_registers[op_code & 0x00F0];
+            system->program_counter += 2;
+        case 0xA000: // ANNN: Sets index register to address NNN.
+            system->index_register = op_code & 0x0FFF;
+            system->program_counter += 2;
+            break;
+        case 0xB000: // BNNN: Jump to location NNN + V0.
+            system->program_counter = op_code & 0x0FFF + system->v_registers[0];
             break;
         default:
             log_message(ERROR, "Unknown op code: 0x%04X.", op_code);
