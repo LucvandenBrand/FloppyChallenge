@@ -57,7 +57,7 @@ void process_op_code(System * system, uint16_t op_code)
             break;
     }
 
-    int index_x, index_y, value;
+    unsigned int index_x, index_y, value_x, value_y, value;
     switch (op_code & 0xF000)
     {
         case 0x1000: // 1NNN Jump to location NNN.
@@ -97,9 +97,50 @@ void process_op_code(System * system, uint16_t op_code)
             system->v_registers[op_code & 0x0F00] += op_code & 0x00FF;
             system->program_counter += 2;
             break;
-        case 0x8000: // 8XY0: Store V[Y] in V[X].
-            system->v_registers[op_code & 0x0F00] += system->v_registers[op_code & 0x00F0];
-            system->program_counter += 2;
+        case 0x8000:
+            switch (op_code & 0x000F)
+            {
+                case 0x0000: // 8XY0: Store V[Y] in V[X].
+                    system->v_registers[op_code & 0x0F00] += system->v_registers[op_code & 0x00F0];
+                    system->program_counter += 2;
+                    break;
+                case 0x0001: // 8XY1: Set V[X] to v[X] or'ed with V[Y}
+                    system->v_registers[op_code & 0x0F00] |= system->v_registers[op_code & 0x00F0];
+                    system->program_counter += 2;
+                    break;
+                case 0x0002: // 8XY2: Set V[X] to v[X] and'ed with V[Y}
+                    system->v_registers[op_code & 0x0F00] &= system->v_registers[op_code & 0x00F0];
+                    system->program_counter += 2;
+                    break;
+                case 0x0003: // 8XY3: Set V[X] to v[X] and'ed with V[Y}
+                    system->v_registers[op_code & 0x0F00] ^= system->v_registers[op_code & 0x00F0];
+                    system->program_counter += 2;
+                    break;
+                case 0x0004: // 8XY4: Set V[X] to v[X] added to V[Y}
+                    value_x = system->v_registers[op_code & 0x0F00];
+                    value_y = system->v_registers[op_code & 0x00F0];
+                    value = value_x + value_y;
+                    system->v_registers[NUM_V_REGISTERS-1] = value > 255;
+                    system->v_registers[op_code & 0x0F00] = value & 0xFF;
+                    system->program_counter += 2;
+                    break;
+                case 0x0005: // 8XY5: Set V[X] to v[X] subtracted from V[Y}
+                    value_x = system->v_registers[op_code & 0x0F00];
+                    value_y = system->v_registers[op_code & 0x00F0];
+                    value = value_x - value_y;
+                    system->v_registers[NUM_V_REGISTERS-1] = value_x > value_y;
+                    system->v_registers[op_code & 0x0F00] = value & 0xFF;
+                    system->program_counter += 2;
+                    break;
+                case 0x0006: // 8XY6: Shift V[X} right.
+                    value_x = system->v_registers[op_code & 0x0F00];
+                    system->v_registers[NUM_V_REGISTERS-1] = value_x & 0x000F;
+                    system->v_registers[op_code & 0x0F00] = value >> 1;
+                    break;
+                default:
+                    break;
+            }
+            break;
         case 0xA000: // ANNN: Sets index register to address NNN.
             system->index_register = op_code & 0x0FFF;
             system->program_counter += 2;
