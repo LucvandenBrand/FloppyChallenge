@@ -42,24 +42,26 @@ void step_system_cpu(System * system)
 
 void process_op_code(System * system, uint16_t op_code)
 {
-    switch (op_code)
-    {
-        case 0x00EE: // Return from a subroutine, restore from stack.
-            system->program_counter = system->stack[system->stack_pointer - 1] + 2;
-            system->stack_pointer--;
-            return;
-        case 0x00E0: // Clear video memory.
-            memset(system->video_memory, 0, sizeof(system->video_memory));
-            system->video_changed = true;
-            system->program_counter += 2;
-            return;
-        default:
-            break;
-    }
-
     unsigned int index_x, index_y, value_x, value_y, value;
     switch (op_code & 0xF000)
     {
+        case 0x0000:
+            switch (op_code)
+            {
+                case 0x00EE: // Return from a subroutine, restore from stack.
+                    system->program_counter = system->stack[system->stack_pointer - 1] + 2;
+                    system->stack_pointer--;
+                    break;
+                case 0x00E0: // Clear video memory.
+                    memset(system->video_memory, 0, sizeof(system->video_memory));
+                    system->video_changed = true;
+                    system->program_counter += 2;
+                    break;
+                default:
+                    log_message(ERROR, "Unknown op code: 0x%04X.", op_code);
+                    exit(EXIT_FAILURE);
+            }
+            break;
         case 0x1000: // 1NNN Jump to location NNN.
             system->program_counter = op_code & 0x0FFF;
             break;
@@ -84,7 +86,7 @@ void process_op_code(System * system, uint16_t op_code)
             break;
         case 0x5000: // 5XY0: Skip instruction if V[X] == V[Y].
             index_x = op_code & 0x0F00;
-            index_y = op_code & 0x00FF;
+            index_y = op_code & 0x00F0;
             if (system->v_registers[index_x] == system->v_registers[index_y])
                 system->program_counter += 2;
             system->program_counter += 2;
@@ -124,7 +126,7 @@ void process_op_code(System * system, uint16_t op_code)
                     system->v_registers[op_code & 0x0F00] = value & 0xFF;
                     system->program_counter += 2;
                     break;
-                case 0x0005: // 8XY5: Set V[X] to v[X] subtracted from V[Y}
+                case 0x0005: // 8XY5: Set V[X] to V[Y] subtracted from V[X}
                     value_x = system->v_registers[op_code & 0x0F00];
                     value_y = system->v_registers[op_code & 0x00F0];
                     value = value_x - value_y;
@@ -134,12 +136,33 @@ void process_op_code(System * system, uint16_t op_code)
                     break;
                 case 0x0006: // 8XY6: Shift V[X} right.
                     value_x = system->v_registers[op_code & 0x0F00];
-                    system->v_registers[NUM_V_REGISTERS-1] = value_x & 0x000F;
-                    system->v_registers[op_code & 0x0F00] = value >> 1;
+                    system->v_registers[NUM_V_REGISTERS-1] = value_x & 0x01;
+                    system->v_registers[op_code & 0x0F00] = value_x >> 1;
+                    break;
+                case 0x0007: // 8XY7: Set V[X] to V[X] subtracted from V[Y}
+                    value_x = system->v_registers[op_code & 0x0F00];
+                    value_y = system->v_registers[op_code & 0x00F0];
+                    value = value_y - value_x;
+                    system->v_registers[NUM_V_REGISTERS-1] = value_y > value_x;
+                    system->v_registers[op_code & 0x0F00] = value & 0xFF;
+                    system->program_counter += 2;
+                    break;
+                case 0x000E: // 8XYE: Shift V[X} left.
+                    value_x = system->v_registers[op_code & 0x0F00];
+                    system->v_registers[NUM_V_REGISTERS-1] = value_x & 0x80;
+                    system->v_registers[op_code & 0x0F00] = value_x << 1;
                     break;
                 default:
-                    break;
+                    log_message(ERROR, "Unknown op code: 0x%04X.", op_code);
+                    exit(EXIT_FAILURE);
             }
+            break;
+        case 0x9000: // 9XY0: Skip instruction if V[X] != V[Y].
+            index_x = op_code & 0x0F00;
+            index_y = op_code & 0x00F0;
+            if (system->v_registers[index_x] != system->v_registers[index_y])
+                system->program_counter += 2;
+            system->program_counter += 2;
             break;
         case 0xA000: // ANNN: Sets index register to address NNN.
             system->index_register = op_code & 0x0FFF;
@@ -147,6 +170,10 @@ void process_op_code(System * system, uint16_t op_code)
             break;
         case 0xB000: // BNNN: Jump to location NNN + V0.
             system->program_counter = op_code & 0x0FFF + system->v_registers[0];
+            break;
+        case 0xC000: // CXKK: Set V[X] to a random byte and'ed with KK.
+            value = op_code & 0x00FF;
+            system->v_registers[op_code & 0x0F00] = rand() & value;
             break;
         default:
             log_message(ERROR, "Unknown op code: 0x%04X.", op_code);
