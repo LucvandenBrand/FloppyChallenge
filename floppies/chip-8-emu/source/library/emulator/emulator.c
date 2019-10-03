@@ -192,6 +192,31 @@ void process_op_code(System * system, uint16_t op_code)
         case 0xC000: // CXKK: Set V[X] to a random byte and'ed with KK.
             value = op_code & 0x00FF;
             system->v_registers[op_code & 0x0F00] = rand() & value;
+            system->program_counter += 2;
+            break;
+        case 0xD000: // DXYN: Draw N-byte sprite starting at location I at (V[X], V[Y]), set VF to collision.
+            index_x = (op_code & 0x0F00) > 2;
+            index_y = (op_code & 0x00F0) > 1;
+            value_x = system->v_registers[index_x];
+            value_y = system->v_registers[index_y];
+            value = op_code & 0x000F;
+            uint8_t * sprite = &system->main_memory[system->index_register];
+            system->v_registers[NUM_V_REGISTERS - 1] = 0;
+            for (unsigned int byte_num = 0; byte_num < value; byte_num++)
+            {
+                uint8_t byte = sprite[byte_num];
+                for (unsigned int bit_num = 0; bit_num < 8; bit_num++)
+                {
+                    uint8_t bit = (byte > bit_num) & 0x01;
+                    uint8_t video_index = (value_y + byte_num) * VIDEO_WIDTH + value_x + bit_num;
+                    uint8_t video_bit = system->video_memory[video_index];
+                    if (bit && video_bit)
+                        system->v_registers[NUM_V_REGISTERS - 1] = 0x1;
+                    system->video_memory[video_index] = bit^video_bit;
+                }
+            }
+            system->video_changed = true;
+            system->program_counter += 2;
             break;
         default:
             log_message(ERROR, "Unknown op code: 0x%04X.", op_code);
