@@ -92,7 +92,8 @@ void process_op_code(System * system, uint16_t op_code)
             system->program_counter += 2;
             break;
         case 0x6000: // 6XKK: Put the value KK into register X.
-            system->v_registers[op_code & 0x0F00] = op_code & 0x00FF;
+            index_x = (op_code & 0x0F00) > 2;
+            system->v_registers[index_x] = op_code & 0x00FF;
             system->program_counter += 2;
             break;
         case 0x7000: // 7XKK: Add the value KK to register X.
