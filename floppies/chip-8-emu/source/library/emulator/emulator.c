@@ -7,7 +7,8 @@
 
 void emulate_rom(const BinaryBlob * rom)
 {
-    RenderContext render_context = create_render_context("CHIP-8-emu", VIDEO_WIDTH, VIDEO_HEIGHT);
+    RenderContext render_context = create_render_context("CHIP-8-emu",
+            VIDEO_WIDTH*VIDEO_SCALE, VIDEO_HEIGHT * VIDEO_SCALE);
     FrameBuffer frame_buffer = create_frame_buffer(render_context, VIDEO_WIDTH, VIDEO_HEIGHT);
     System system = init_system(rom);
     while (system.is_running)
@@ -313,7 +314,7 @@ void copy_system_video_memory(System system, FrameBuffer frame_buffer)
         for (int ver_index = 0; ver_index < VIDEO_HEIGHT; ver_index++)
         {
             uint8_t pixel = system.video_memory[ver_index * VIDEO_WIDTH + hor_index];
-            frame_buffer.pixels[ver_index * frame_buffer.frame_width + hor_index] = (uint32_t) pixel;
+            frame_buffer.pixels[ver_index * frame_buffer.frame_width + hor_index] = (uint32_t) pixel * 0xFFFFFF;
         }
     }
 }

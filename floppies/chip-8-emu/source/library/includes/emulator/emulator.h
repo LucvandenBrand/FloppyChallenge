@@ -4,6 +4,8 @@
 #include <emulator/system.h>
 #include <rendering/frame_buffer.h>
 
+#define VIDEO_SCALE 12
+
 void emulate_rom(const BinaryBlob * rom);
 void step_system_cpu(System * system);
 void process_op_code(System * system, uint16_t op_code);
