@@ -279,10 +279,21 @@ void process_op_code(System * system, uint16_t op_code)
                     system->program_counter += 2;
                     break;
                 case 0x0029: // FX29: Set the index location to the sprite for digit V[X].
-                    // TODO : implement opcode.
+                    index_x = (op_code & 0x0F00) >> 8;
+                    value_x = system->v_registers[index_x];
+                    system->index_register = value_x * 0x05;
+                    system->program_counter += 2;
                     break;
                 case 0x0033: // FX33: Store the BCD representation of V[X] to the memory starting at the index register.
-                    // TODO : implement opcode.
+                    index_x = (op_code & 0x0F00) >> 8;
+                    value_x = system->v_registers[index_x];
+                    uint8_t hundreds = (value_x/100) % 10;
+                    system->main_memory[system->index_register] = hundreds;
+                    uint8_t tens = (value_x/10) % 10;
+                    system->main_memory[system->index_register+1] = tens;
+                    uint8_t ones = value_x % 10;
+                    system->main_memory[system->index_register+2] = ones;
+                    system->program_counter += 2;
                     break;
                 case 0x0055: // FX55: Store the registers in memory starting at the index register.
                     for (uint8_t reg_index = 0; reg_index < NUM_V_REGISTERS; reg_index++)
