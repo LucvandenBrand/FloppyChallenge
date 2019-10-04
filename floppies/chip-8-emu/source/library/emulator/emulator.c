@@ -247,19 +247,36 @@ void process_op_code(System * system, uint16_t op_code)
             switch (op_code & 0x00FF)
             {
                 case 0x0007: // FX07: Set V[X] to delay timer value.
-                    // TODO : implement opcode.
+                    index_x = (op_code & 0x0F00) >> 8;
+                    system->v_registers[index_x] = system->delay_timer;
+                    system->program_counter += 2;
                     break;
                 case 0x000A: // FX0A: Wait for a key to be pressed, then put that key in V[X].
-                    // TODO : implement opcode.
+                    index_x = (op_code & 0x0F00) >> 8;
+                    for (uint8_t key=0; key < NUM_KEYS; key++)
+                    {
+                        if (system->key_states[key])
+                        {
+                            system->v_registers[index_x] = key;
+                            system->program_counter += 2;
+                            break;
+                        }
+                    }
                     break;
                 case 0x0015: // FX15: Set the delay timer to V[X].
-                    // TODO : implement opcode.
+                    index_x = (op_code & 0x0F00) >> 8;
+                    system->delay_timer = system->v_registers[index_x];
+                    system->program_counter += 2;
                     break;
                 case 0x0018: // FX18: Set the sound timer to V[X].
-                    // TODO : implement opcode.
+                    index_x = (op_code & 0x0F00) >> 8;
+                    system->sound_timer = system->v_registers[index_x];
+                    system->program_counter += 2;
                     break;
                 case 0x001E: // FX1E: Add the value of V[X] to the index register.
-                    // TODO : implement opcode.
+                    index_x = (op_code & 0x0F00) >> 8;
+                    system->index_register += system->v_registers[index_x];
+                    system->program_counter += 2;
                     break;
                 case 0x0029: // FX29: Set the index location to the sprite for digit V[X].
                     // TODO : implement opcode.
@@ -268,10 +285,16 @@ void process_op_code(System * system, uint16_t op_code)
                     // TODO : implement opcode.
                     break;
                 case 0x0055: // FX55: Store the registers in memory starting at the index register.
-                    // TODO : implement opcode.
+                    for (uint8_t reg_index = 0; reg_index < NUM_V_REGISTERS; reg_index++)
+                    {
+                        system->main_memory[system->index_register + reg_index] = system->v_registers[reg_index];
+                    }
                     break;
                 case 0x0065: // FX65: Load the registers from memory starting at the index register.
-                    // TODO : implement opcode.
+                    for (uint8_t reg_index = 0; reg_index < NUM_V_REGISTERS; reg_index++)
+                    {
+                        system->v_registers[reg_index] = system->main_memory[system->index_register + reg_index];
+                    }
                     break;
                 default:
                     log_message(ERROR, "Unknown op code: 0x%04X.", op_code);
