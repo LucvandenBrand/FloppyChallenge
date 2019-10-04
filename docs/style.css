@@ -4,7 +4,8 @@
 }
 
 body {
-   background: gray;
+    background-image: url("memphis.png");
+    background-repeat: repeat;
 }
 
 .content {
@@ -21,6 +22,8 @@ body {
 
     text-align: justify;
     font-size: 1.2rem;
+
+    box-shadow: 0 5px 15px grey;
 }
 
 .content h1 {
@@ -35,62 +38,6 @@ body {
     font-weight: bold;
 }
 
-.floppyList {
-    border-radius: 0.3rem;
-    border: 1px solid black;
-    box-shadow: 0rem 0.2rem 0.3rem 0rem rgba(0,0,0,0.45);
-}
-
-.floppyList:last-child {
-    border-bottom: 0px solid black;
-}
-
-.floppyList .item {
-    height: 10rem;
-    border-bottom: 1px solid black;
-    display: flex;
-    flex-direction: row;
-}
-
-.floppyList .item .name {
-    text-align: center;
-    font-size: 1.2rem;
-    line-height: 5rem;
-    flex-basis: 10rem;
-    font-weight: bold;
-    border-right: 1px solid black;
-    font-family: VT323;
-
-    background-image: url(floppy.svg);
-    background-size: 90%;
-    background-repeat: no-repeat;
-    background-position: 50% 50%;
-}
-
-.floppyList .item .description {
-    flex-grow: 1;
-    border-right: 1px dashed black;
-    padding: 0.5rem;
-}
-
-.floppyList .item .download {
-    flex-basis: 5rem;
-    background-image: url("download.svg");
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: 50%;
-}
-
-@keyframes throb {
-  from {background-size:50%;}
-  to {background-size:60%;}
-}
-
-.floppyList .item .download:hover {
-    animation: throb 0.5s infinite;
-    animation-direction: alternate;
-}
-
 .centered {
    text-align: center;
 }
@@ -98,46 +45,71 @@ body {
 .link {
    text-decoration: none;
    font-weight: bold;
-   color: #87420e;
+   color: #cc00c9;
 }
 
 .link:visited {
-   color: #4f1e00;
+   color: #a800a5;
 }
 
 .link:hover {
-   color: #ffe542;
+   color: #ff00fb;
+}
+
+.item {
+    background-color: #d1d1d1;
+    border-color: #cccccc;
+    border-width: 3px;
+    border-style: outset;
+}
+
+.name {
+    font-family: VT323;
+    color: #FFFFFF;
+    background-color: #000e8c;
+    padding: 5px;
+    padding-left: 10px;
+    font-size: 1.5rem;
+}
+
+.description {
+    padding: 15px;
+}
+
+.button-bar {
+    padding-top: 10px;
+}
+
+.button {
+    display: inline-block;
+    padding: 4px;
+    padding-left: 18px;
+    padding-right: 18px;
+    margin: 4px;
+    border-color: #EFEFEF;
+    border-width: 3px;
+    border-style: outset;
+    color: #000000;
+    text-decoration: none;
+}
+
+.button:hover {
+    background-color: #c6c6c6;
+    border-style: inset;
+}
+
+.image {
+    float: right;
+    width: 128px;
+    height: 128px;
+    border-color: #EFEFEF;
+    border-width: 3px;
+    border-style: inset;
+    margin-left: 12px;
 }
 
 @media only screen and (max-width: 60rem) {
     body {
         background: white;
-    }
-
-    .content {
-        border-radius: 0;
-        padding-left: 1.5rem;
-        padding-right: 1.5rem;
-        padding-top: 0;
-        margin-top: 0;
-        min-height: 0;
-
-        font-size: 1rem;
-    }
-
-    .content h1 {
-        font-size: 4rem;
-    }
-
-    .floppyList .item {
-        height: 5rem;
-        border-bottom: 1px solid black;
-        display: flex;
-        flex-direction: row;
-    }
-
-    .floppyList .item .name {
-       font-size: 1.5rem;
-       background-image: none;
     }
 }
