@@ -221,6 +221,63 @@ void process_op_code(System * system, uint16_t op_code)
             system->video_changed = true;
             system->program_counter += 2;
             break;
+        case 0xE000:
+            switch (op_code & 0x00FF)
+            {
+                case 0x009E: // EX9E: Skip instruction if key V[X] is pressed.
+                    index_x = (op_code & 0x0F00) >> 8;
+                    value_x = system->v_registers[index_x];
+                    if (system->key_states[value_x])
+                        system->program_counter += 2;
+                    system->program_counter += 2;
+                    break;
+                case 0x00A1: // EX9E: Skip instruction if key V[X] is pressed.
+                    index_x = (op_code & 0x0F00) >> 8;
+                    value_x = system->v_registers[index_x];
+                    if (!system->key_states[value_x])
+                        system->program_counter += 2;
+                    system->program_counter += 2;
+                    break;
+                default:
+                    log_message(ERROR, "Unknown op code: 0x%04X.", op_code);
+                    exit(EXIT_FAILURE);
+            }
+            break;
+        case 0xF000:
+            switch (op_code & 0x00FF)
+            {
+                case 0x0007: // FX07: Set V[X] to delay timer value.
+                    // TODO : implement opcode.
+                    break;
+                case 0x000A: // FX0A: Wait for a key to be pressed, then put that key in V[X].
+                    // TODO : implement opcode.
+                    break;
+                case 0x0015: // FX15: Set the delay timer to V[X].
+                    // TODO : implement opcode.
+                    break;
+                case 0x0018: // FX18: Set the sound timer to V[X].
+                    // TODO : implement opcode.
+                    break;
+                case 0x001E: // FX1E: Add the value of V[X] to the index register.
+                    // TODO : implement opcode.
+                    break;
+                case 0x0029: // FX29: Set the index location to the sprite for digit V[X].
+                    // TODO : implement opcode.
+                    break;
+                case 0x0033: // FX33: Store the BCD representation of V[X] to the memory starting at the index register.
+                    // TODO : implement opcode.
+                    break;
+                case 0x0055: // FX55: Store the registers in memory starting at the index register.
+                    // TODO : implement opcode.
+                    break;
+                case 0x0065: // FX65: Load the registers from memory starting at the index register.
+                    // TODO : implement opcode.
+                    break;
+                default:
+                    log_message(ERROR, "Unknown op code: 0x%04X.", op_code);
+                    exit(EXIT_FAILURE);
+            }
+            break;
         default:
             log_message(ERROR, "Unknown op code: 0x%04X.", op_code);
             exit(EXIT_FAILURE);
