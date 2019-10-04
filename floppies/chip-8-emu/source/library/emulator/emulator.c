@@ -72,33 +72,33 @@ void process_op_code(System * system, uint16_t op_code)
             system->program_counter = op_code & 0x0FFF;
             break;
         case 0x3000: // 3XKK: Skip instruction if V[X] == KK.
-            index_x = (op_code & 0x0F00) > 2;
+            index_x = (op_code & 0x0F00) >> 8;
             value = op_code & 0x00FF;
             if (system->v_registers[index_x] == value)
                 system->program_counter += 2;
             system->program_counter += 2;
             break;
         case 0x4000: // 4XKK: Skip instruction if V[X] != KK.
-            index_x = (op_code & 0x0F00) > 2;
+            index_x = (op_code & 0x0F00) >> 8;
             value = op_code & 0x00FF;
             if (system->v_registers[index_x] != value)
                 system->program_counter += 2;
             system->program_counter += 2;
             break;
         case 0x5000: // 5XY0: Skip instruction if V[X] == V[Y].
-            index_x = (op_code & 0x0F00) > 2;
-            index_y = (op_code & 0x00F0) > 1;
+            index_x = (op_code & 0x0F00) >> 8;
+            index_y = (op_code & 0x00F0) >> 4;
             if (system->v_registers[index_x] == system->v_registers[index_y])
                 system->program_counter += 2;
             system->program_counter += 2;
             break;
         case 0x6000: // 6XKK: Put the value KK into register X.
-            index_x = (op_code & 0x0F00) > 2;
+            index_x = (op_code & 0x0F00) >> 8;
             system->v_registers[index_x] = op_code & 0x00FF;
             system->program_counter += 2;
             break;
         case 0x7000: // 7XKK: Add the value KK to register X.
-            index_x = (op_code & 0x0F00) > 2;
+            index_x = (op_code & 0x0F00) >> 8;
             system->v_registers[index_x] += op_code & 0x00FF;
             system->program_counter += 2;
             break;
@@ -106,32 +106,32 @@ void process_op_code(System * system, uint16_t op_code)
             switch (op_code & 0x000F)
             {
                 case 0x0000: // 8XY0: Store V[Y] in V[X].
-                    index_x = (op_code & 0x0F00) > 2;
-                    index_y = (op_code & 0x00F0) > 1;
+                    index_x = (op_code & 0x0F00) >> 8;
+                    index_y = (op_code & 0x00F0) >> 4;
                     system->v_registers[index_x] += system->v_registers[index_y];
                     system->program_counter += 2;
                     break;
                 case 0x0001: // 8XY1: Set V[X] to v[X] or'ed with V[Y}
-                    index_x = (op_code & 0x0F00) > 2;
-                    index_y = (op_code & 0x00F0) > 1;
+                    index_x = (op_code & 0x0F00) >> 8;
+                    index_y = (op_code & 0x00F0) >> 4;
                     system->v_registers[index_x] |= system->v_registers[index_y];
                     system->program_counter += 2;
                     break;
                 case 0x0002: // 8XY2: Set V[X] to v[X] and'ed with V[Y}
-                    index_x = (op_code & 0x0F00) > 2;
-                    index_y = (op_code & 0x00F0) > 1;
+                    index_x = (op_code & 0x0F00) >> 8;
+                    index_y = (op_code & 0x00F0) >> 4;
                     system->v_registers[index_x] &= system->v_registers[index_y];
                     system->program_counter += 2;
                     break;
                 case 0x0003: // 8XY3: Set V[X] to v[X] xor'ed with V[Y}
-                    index_x = (op_code & 0x0F00) > 2;
-                    index_y = (op_code & 0x00F0) > 1;
+                    index_x = (op_code & 0x0F00) >> 8;
+                    index_y = (op_code & 0x00F0) >> 4;
                     system->v_registers[index_x] ^= system->v_registers[index_y];
                     system->program_counter += 2;
                     break;
                 case 0x0004: // 8XY4: Set V[X] to v[X] added to V[Y}
-                    index_x = (op_code & 0x0F00) > 2;
-                    index_y = (op_code & 0x00F0) > 1;
+                    index_x = (op_code & 0x0F00) >> 8;
+                    index_y = (op_code & 0x00F0) >> 4;
                     value_x = system->v_registers[index_x];
                     value_y = system->v_registers[index_y];
                     value = value_x + value_y;
@@ -140,8 +140,8 @@ void process_op_code(System * system, uint16_t op_code)
                     system->program_counter += 2;
                     break;
                 case 0x0005: // 8XY5: Set V[X] to V[Y] subtracted from V[X}
-                    index_x = (op_code & 0x0F00) > 2;
-                    index_y = (op_code & 0x00F0) > 1;
+                    index_x = (op_code & 0x0F00) >> 8;
+                    index_y = (op_code & 0x00F0) >> 4;
                     value_x = system->v_registers[index_x];
                     value_y = system->v_registers[index_y];
                     value = value_x - value_y;
@@ -150,23 +150,23 @@ void process_op_code(System * system, uint16_t op_code)
                     system->program_counter += 2;
                     break;
                 case 0x0006: // 8XY6: Shift V[X} right.
-                    index_x = (op_code & 0x0F00) > 2;
+                    index_x = (op_code & 0x0F00) >> 8;
                     value_x = system->v_registers[index_x];
                     system->v_registers[NUM_V_REGISTERS-1] = value_x & 0x01;
                     system->v_registers[index_x] = value_x >> 1;
                     break;
                 case 0x0007: // 8XY7: Set V[X] to V[X] subtracted from V[Y}
-                    index_x = (op_code & 0x0F00) > 2;
-                    index_y = (op_code & 0x00F0) > 1;
+                    index_x = (op_code & 0x0F00) >> 8;
+                    index_y = (op_code & 0x00F0) >> 4;
                     value_x = system->v_registers[index_x];
                     value_y = system->v_registers[index_y];
                     value = value_y - value_x;
                     system->v_registers[NUM_V_REGISTERS-1] = value_y > value_x;
-                    system->v_registers[op_code & 0x0F00] = value & 0xFF;
+                    system->v_registers[index_x] = value & 0xFF;
                     system->program_counter += 2;
                     break;
                 case 0x000E: // 8XYE: Shift V[X} left.
-                    index_x = (op_code & 0x0F00) > 2;
+                    index_x = (op_code & 0x0F00) >> 8;
                     value_x = system->v_registers[index_x];
                     system->v_registers[NUM_V_REGISTERS-1] = value_x & 0x80;
                     system->v_registers[index_x] = value_x << 1;
@@ -177,8 +177,8 @@ void process_op_code(System * system, uint16_t op_code)
             }
             break;
         case 0x9000: // 9XY0: Skip instruction if V[X] != V[Y].
-            index_x = op_code & 0x0F00;
-            index_y = op_code & 0x00F0;
+            index_x = (op_code & 0x0F00) >> 8;
+            index_y = (op_code & 0x00F0) >> 4;
             if (system->v_registers[index_x] != system->v_registers[index_y])
                 system->program_counter += 2;
             system->program_counter += 2;
@@ -192,12 +192,13 @@ void process_op_code(System * system, uint16_t op_code)
             break;
         case 0xC000: // CXKK: Set V[X] to a random byte and'ed with KK.
             value = op_code & 0x00FF;
-            system->v_registers[op_code & 0x0F00] = rand() & value;
+            index_x = (op_code & 0x0F00) >> 8;
+            system->v_registers[index_x] = rand() & value;
             system->program_counter += 2;
             break;
         case 0xD000: // DXYN: Draw N-byte sprite starting at location I at (V[X], V[Y]), set VF to collision.
-            index_x = (op_code & 0x0F00) > 2;
-            index_y = (op_code & 0x00F0) > 1;
+            index_x = (op_code & 0x0F00) >> 8;
+            index_y = (op_code & 0x00F0) >> 4;
             value_x = system->v_registers[index_x];
             value_y = system->v_registers[index_y];
             value = op_code & 0x000F;
@@ -208,8 +209,9 @@ void process_op_code(System * system, uint16_t op_code)
                 uint8_t byte = sprite[byte_num];
                 for (unsigned int bit_num = 0; bit_num < 8; bit_num++)
                 {
-                    uint8_t bit = (byte > bit_num) & 0x01;
-                    uint8_t video_index = (value_y + byte_num) * VIDEO_WIDTH + value_x + bit_num;
+                    uint8_t bit = (byte & 0x80) >> 7;
+                    byte = byte << 1;
+                    unsigned int video_index = (value_y + byte_num) * VIDEO_WIDTH + value_x + bit_num;
                     uint8_t video_bit = system->video_memory[video_index];
                     if (bit && video_bit)
                         system->v_registers[NUM_V_REGISTERS - 1] = 0x1;
