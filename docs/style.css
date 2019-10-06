@@ -3,9 +3,21 @@
     src: url(VT323-Regular.ttf);
 }
 
+@font-face {
+    font-family: M;
+    src: url(M.ttf);
+}
+
+@keyframes animatedBackground {
+    from { background-position: 0 0; }
+    to { background-position: 1280px 1280px; }
+}
+
 body {
     background-image: url("memphis.png");
+    background-position: 0px 0px;
     background-repeat: repeat;
+    animation: animatedBackground 100s linear infinite;
 }
 
 .content {
@@ -27,11 +39,23 @@ body {
 }
 
 .content h1 {
+    margin-bottom: 0;
     text-align: center;
     text-transform: uppercase;
     font-size: 6rem;
     font-family: VT323;
-    text-shadow: 2px 0.4rem 0.1rem #b5b5b5;
+
+    background: -webkit-linear-gradient(#000e8c, #cc00c9);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.content h1.mirror {
+    margin-top: -3.5rem;
+    transform:rotateX(180deg);
+    background-image: linear-gradient(180deg,rgba(0,0,150,.0) 30%,rgba(0,0,150,.2));
+    -webkit-background-clip: text;
+    color: transparent;
 }
 
 .completion {
@@ -108,8 +132,14 @@ body {
     margin-left: 12px;
 }
 
-@media only screen and (max-width: 60rem) {
-    body {
-        background: white;
+@media only screen and (max-width: 70rem) {
+    .content h1 {
+        font-size: 4rem;
+    }
+
+    .content h1.mirror {
+        margin-top: -2.3rem;
+        margin-bottom: -2rem;
+        background-image: linear-gradient(180deg,rgba(0,0,150,.0) 10%,rgba(0,0,150,.2));
     }
 }
