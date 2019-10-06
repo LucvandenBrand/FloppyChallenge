@@ -11,8 +11,6 @@ void emulate_rom(const BinaryBlob * rom)
             VIDEO_WIDTH*VIDEO_SCALE, VIDEO_HEIGHT * VIDEO_SCALE);
     FrameBuffer frame_buffer = create_frame_buffer(render_context, VIDEO_WIDTH, VIDEO_HEIGHT);
     System system = init_system(rom);
-    uint64_t time_last = 0;
-    uint64_t time_now = SDL_GetPerformanceCounter();
     while (system.is_running)
     {
         step_system_cpu(&system);
@@ -23,12 +21,7 @@ void emulate_rom(const BinaryBlob * rom)
         }
         update_system_key_states(&system);
 
-        time_last = time_now;
-        time_now = SDL_GetPerformanceCounter();
-        double delta_time = (double)((time_now - time_last)*1000 / (double)SDL_GetPerformanceFrequency());
-        double wait_time = 100.0/6.0 - delta_time;
-        if (wait_time > 0)
-            SDL_Delay(wait_time);
+        SDL_Delay(10);
     }
     free_frame_buffer(&frame_buffer);
     free_render_context(&render_context);
@@ -119,25 +112,25 @@ void process_op_code(System * system, uint16_t op_code)
                     system->v_registers[index_x] = system->v_registers[index_y];
                     system->program_counter += 2;
                     break;
-                case 0x0001: // 8XY1: Set V[X] to v[X] or'ed with V[Y}
+                case 0x0001: // 8XY1: Set V[X] to v[X] or'ed with V[Y]
                     index_x = (op_code & 0x0F00) >> 8;
                     index_y = (op_code & 0x00F0) >> 4;
                     system->v_registers[index_x] |= system->v_registers[index_y];
                     system->program_counter += 2;
                     break;
-                case 0x0002: // 8XY2: Set V[X] to v[X] and'ed with V[Y}
+                case 0x0002: // 8XY2: Set V[X] to v[X] and'ed with V[Y]
                     index_x = (op_code & 0x0F00) >> 8;
                     index_y = (op_code & 0x00F0) >> 4;
                     system->v_registers[index_x] &= system->v_registers[index_y];
                     system->program_counter += 2;
                     break;
-                case 0x0003: // 8XY3: Set V[X] to v[X] xor'ed with V[Y}
+                case 0x0003: // 8XY3: Set V[X] to v[X] xor'ed with V[Y]
                     index_x = (op_code & 0x0F00) >> 8;
                     index_y = (op_code & 0x00F0) >> 4;
                     system->v_registers[index_x] ^= system->v_registers[index_y];
                     system->program_counter += 2;
                     break;
-                case 0x0004: // 8XY4: Set V[X] to v[X] added to V[Y}
+                case 0x0004: // 8XY4: Set V[X] to V[X] added to V[Y]
                     index_x = (op_code & 0x0F00) >> 8;
                     index_y = (op_code & 0x00F0) >> 4;
                     value_x = system->v_registers[index_x];
@@ -153,10 +146,10 @@ void process_op_code(System * system, uint16_t op_code)
                     value_x = system->v_registers[index_x];
                     value_y = system->v_registers[index_y];
                     system->v_registers[NUM_V_REGISTERS-1] = value_x > value_y;
-                    system->v_registers[index_x] = abs( value_x - value_y) & 0xFF;
+                    system->v_registers[index_x] = abs( (int)value_x - (int)value_y) & 0xFF;
                     system->program_counter += 2;
                     break;
-                case 0x0006: // 8XY6: Shift V[X} right.
+                case 0x0006: // 8XY6: Shift V[X] right.
                     index_x = (op_code & 0x0F00) >> 8;
                     value_x = system->v_registers[index_x];
                     system->v_registers[NUM_V_REGISTERS-1] = value_x & 0x01;
@@ -169,7 +162,7 @@ void process_op_code(System * system, uint16_t op_code)
                     value_x = system->v_registers[index_x];
                     value_y = system->v_registers[index_y];
                     system->v_registers[NUM_V_REGISTERS-1] = value_y > value_x;
-                    system->v_registers[index_x] = abs(value_y - value_x) & 0xFF;
+                    system->v_registers[index_x] = abs((int)value_y - (int)value_x) & 0xFF;
                     system->program_counter += 2;
                     break;
                 case 0x000E: // 8XYE: Shift V[X} left.
@@ -239,7 +232,7 @@ void process_op_code(System * system, uint16_t op_code)
                         system->program_counter += 2;
                     system->program_counter += 2;
                     break;
-                case 0x00A1: // EX9E: Skip instruction if key V[X] is pressed.
+                case 0x00A1: // EX9E: Skip instruction if key V[X] is not pressed.
                     index_x = (op_code & 0x0F00) >> 8;
                     value_x = system->v_registers[index_x];
                     if (!system->key_states[value_x])
@@ -331,13 +324,13 @@ void process_op_code(System * system, uint16_t op_code)
 void step_timers(System * system)
 {
     if (system->delay_timer > 0)
-        --system->delay_timer;
+        system->delay_timer -= 1;
     if (system->sound_timer <= 0)
         return;
 
     if (system->sound_timer == 1)
         system->audio_triggered = true;
-    --system->sound_timer;
+    system->sound_timer -= 1;
 }
 
 void update_system_key_states(System * system)
@@ -359,6 +352,9 @@ void process_event(SDL_Event event, System * system)
             break;
         case SDL_WINDOWEVENT:
             process_window_event(event.window, system);
+            break;
+        default:
+            break;
     }
 }
 
