@@ -28,3 +28,15 @@ void present_frame_buffer(RenderContext context, FrameBuffer frame_buffer)
     SDL_RenderCopy(context.renderer, frame_buffer.sdl_texture, NULL, NULL);
     SDL_RenderPresent(context.renderer);
 }
+
+int lock_frame_buffer(FrameBuffer frame_buffer)
+{
+    void * pixels = NULL;
+    int pitch = 0;
+    return SDL_LockTexture(frame_buffer.sdl_texture, NULL, pixels, &pitch);
+}
+
+void unlock_frame_buffer(FrameBuffer frame_buffer)
+{
+    return SDL_UnlockTexture(frame_buffer.sdl_texture);
+}

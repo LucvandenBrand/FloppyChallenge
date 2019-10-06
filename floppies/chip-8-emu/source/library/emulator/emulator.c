@@ -402,6 +402,9 @@ void process_window_event(SDL_WindowEvent window, System * system)
 
 void copy_system_video_memory(System system, FrameBuffer frame_buffer)
 {
+    if (!lock_frame_buffer(frame_buffer))
+        log_message(WARN, "Could not lock frame buffer.");
+
     for (int hor_index = 0; hor_index < VIDEO_WIDTH; hor_index++)
     {
         for (int ver_index = 0; ver_index < VIDEO_HEIGHT; ver_index++)
@@ -410,4 +413,5 @@ void copy_system_video_memory(System system, FrameBuffer frame_buffer)
             frame_buffer.pixels[ver_index * frame_buffer.frame_width + hor_index] = (uint32_t) pixel * 0xFFFFFF;
         }
     }
+    unlock_frame_buffer(frame_buffer);
 }
