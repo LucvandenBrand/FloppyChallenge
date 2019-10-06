@@ -41,7 +41,7 @@ START_TEST(test_jump_to_location) // 1NNN
 {
     System system = create_empty_system();
     process_op_code(&system, 0x1434);
-    ck_assert_int_eq(system.stack_pointer, 0x434);
+    ck_assert_int_eq(system.program_counter, 0x434);
 }
 END_TEST
 
@@ -66,9 +66,9 @@ START_TEST(test_skip_if_register_equal) // 3XKK
 
     process_op_code(&system, 0x3133);
     ck_assert_int_eq(system.program_counter, 0x208);
-    system.v_registers[0] = 0x33;
+    system.v_registers[1] = 0x33;
     process_op_code(&system, 0x3133);
-    ck_assert_int_eq(system.program_counter, 0x212);
+    ck_assert_int_eq(system.program_counter, 0x20C);
 }
 END_TEST
 
@@ -82,10 +82,10 @@ START_TEST(test_skip_if_register_not_equal) // 4XKK
     ck_assert_int_eq(system.program_counter, 0x206);
 
     process_op_code(&system, 0x4133);
-    ck_assert_int_eq(system.program_counter, 0x210);
+    ck_assert_int_eq(system.program_counter, 0x20A);
     system.v_registers[0] = 0x33;
     process_op_code(&system, 0x4133);
-    ck_assert_int_eq(system.program_counter, 0x212);
+    ck_assert_int_eq(system.program_counter, 0x20E);
 }
 END_TEST
 
@@ -194,7 +194,7 @@ START_TEST(test_subtract_registers) // 8XY5
     ck_assert_int_eq(system.v_registers[NUM_V_REGISTERS-1], 0x01);
 
     process_op_code(&system, 0x8015);
-    ck_assert_int_eq(system.v_registers[0], 0xE0);
+    ck_assert_int_eq(system.v_registers[0], 0x0E);
     ck_assert_int_eq(system.program_counter, 0x204);
     ck_assert_int_eq(system.v_registers[NUM_V_REGISTERS-1], 0x00);
 }
@@ -205,7 +205,7 @@ START_TEST(test_shift_register_right) // 8XY6
     System system = create_empty_system();
     system.v_registers[1] = 0x10;
     process_op_code(&system, 0x8106);
-    ck_assert_int_eq(system.v_registers[0], 0x08);
+    ck_assert_int_eq(system.v_registers[1], 0x08);
     ck_assert_int_eq(system.program_counter, 0x202);
     ck_assert_int_eq(system.v_registers[NUM_V_REGISTERS-1], 0x00);
 
@@ -240,13 +240,13 @@ START_TEST(test_shift_register_left) // 8XYE
     System system = create_empty_system();
     system.v_registers[1] = 0x04;
     process_op_code(&system, 0x810E);
-    ck_assert_int_eq(system.v_registers[0], 0x08);
+    ck_assert_int_eq(system.v_registers[1], 0x08);
     ck_assert_int_eq(system.program_counter, 0x202);
     ck_assert_int_eq(system.v_registers[NUM_V_REGISTERS-1], 0x00);
 
     system.v_registers[1] = 0xF0;
     process_op_code(&system, 0x810E);
-    ck_assert_int_eq(system.v_registers[0], 0xE0);
+    ck_assert_int_eq(system.v_registers[1], 0xE0);
     ck_assert_int_eq(system.program_counter, 0x204);
     ck_assert_int_eq(system.v_registers[NUM_V_REGISTERS-1], 0x01);
 }
@@ -279,7 +279,7 @@ START_TEST(test_jump_to_location_plus_register) // BNNN
     System system = create_empty_system();
     system.v_registers[0] = 0x29;
     process_op_code(&system, 0xB300);
-    ck_assert_int_eq(system.program_counter, 0x329);
+    ck_assert_int_eq(system.program_counter, 0x300 + 0x29);
 }
 END_TEST
 
@@ -404,7 +404,7 @@ START_TEST(test_add_to_index) // FX1E
     System system = create_empty_system();
     system.index_register = 0x05;
     system.v_registers[7] = 0xF1;
-    process_op_code(&system, 0xF31E);
+    process_op_code(&system, 0xF71E);
     ck_assert_int_eq(system.index_register, 0x05 + 0xF1);
     ck_assert_int_eq(system.program_counter, 0x202);
 }
@@ -418,7 +418,7 @@ START_TEST(test_set_index_to_digit_sprite) // FX29
         system.v_registers[0] = digit;
         process_op_code(&system, 0xF029);
         ck_assert_int_eq(system.index_register,  0x05 * digit);
-        ck_assert_int_eq(system.program_counter, 0x200 + 0x002 * digit);
+        ck_assert_int_eq(system.program_counter, 0x202 + 0x002 * digit);
     }
 }
 END_TEST
@@ -444,10 +444,8 @@ START_TEST(test_store_registers) // FX55
         system.v_registers[index] = index;
 
     process_op_code(&system, 0xF555);
-    for (int index = 0; index < 5; index++)
+    for (int index = 0; index < NUM_V_REGISTERS; index++)
         ck_assert_int_eq(system.main_memory[0x300 + index], index);
-    for (int index = 5; index < NUM_V_REGISTERS; index++)
-        ck_assert_int_eq(system.main_memory[0x300 + index], 0x00);
 
     ck_assert_int_eq(system.program_counter, 0x202);
 }
@@ -461,10 +459,8 @@ START_TEST(test_load_registers) // FX65
         system.main_memory[0x300 + index] = index;
 
     process_op_code(&system, 0xF565);
-    for (int index = 0; index < 5; index++)
+    for (int index = 0; index < NUM_V_REGISTERS; index++)
         ck_assert_int_eq(system.v_registers[index], index);
-    for (int index = 5; index < NUM_V_REGISTERS; index++)
-        ck_assert_int_eq(system.v_registers[index], 0x00);
 
     ck_assert_int_eq(system.program_counter, 0x202);
 }
@@ -497,15 +493,15 @@ START_TEST(test_copy_system_video_memory)
     BinaryBlob empty_rom = malloc_binary_blob(0);
     System system = init_system(&empty_rom);
     free_binary_blob(&empty_rom);
-    system.video_memory[0] = 10;
-    system.video_memory[VIDEO_HEIGHT * VIDEO_WIDTH - 1] = 42;
+    system.video_memory[0] = 1;
+    system.video_memory[VIDEO_HEIGHT * VIDEO_WIDTH - 1] = 1;
 
-    RenderContext context = create_render_context("Test", VIDEO_WIDTH * 2, VIDEO_HEIGHT * 2);
-    FrameBuffer frame_buffer = create_frame_buffer(context, VIDEO_WIDTH * 2, VIDEO_HEIGHT * 2);
+    RenderContext context = create_render_context("Test", VIDEO_WIDTH*2, VIDEO_HEIGHT*2);
+    FrameBuffer frame_buffer = create_frame_buffer(context, VIDEO_WIDTH, VIDEO_HEIGHT);
     copy_system_video_memory(system, frame_buffer);
-    ck_assert_int_eq(frame_buffer.pixels[0], 10);
+    ck_assert_int_eq(frame_buffer.pixels[0], 0xFFFFFF);
     unsigned int last_pixel_index = (VIDEO_HEIGHT - 1) * frame_buffer.frame_width + VIDEO_WIDTH - 1;
-    ck_assert_int_eq(frame_buffer.pixels[last_pixel_index], 42);
+    ck_assert_int_eq(frame_buffer.pixels[last_pixel_index], 0xFFFFFF);
     free_frame_buffer(&frame_buffer);
     free_render_context(&context);
 }

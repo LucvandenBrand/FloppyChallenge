@@ -147,14 +147,13 @@ void process_op_code(System * system, uint16_t op_code)
                     system->v_registers[index_x] = value & 0xFF;
                     system->program_counter += 2;
                     break;
-                case 0x0005: // 8XY5: Set V[X] to V[Y] subtracted from V[X}
+                case 0x0005: // 8XY5: Set V[X] to V[Y] subtracted from V[X]
                     index_x = (op_code & 0x0F00) >> 8;
                     index_y = (op_code & 0x00F0) >> 4;
                     value_x = system->v_registers[index_x];
                     value_y = system->v_registers[index_y];
-                    value = value_x - value_y;
                     system->v_registers[NUM_V_REGISTERS-1] = value_x > value_y;
-                    system->v_registers[index_x] = value & 0xFF;
+                    system->v_registers[index_x] = abs( value_x - value_y) & 0xFF;
                     system->program_counter += 2;
                     break;
                 case 0x0006: // 8XY6: Shift V[X} right.
@@ -162,22 +161,23 @@ void process_op_code(System * system, uint16_t op_code)
                     value_x = system->v_registers[index_x];
                     system->v_registers[NUM_V_REGISTERS-1] = value_x & 0x01;
                     system->v_registers[index_x] = value_x >> 1;
+                    system->program_counter += 2;
                     break;
                 case 0x0007: // 8XY7: Set V[X] to V[X] subtracted from V[Y}
                     index_x = (op_code & 0x0F00) >> 8;
                     index_y = (op_code & 0x00F0) >> 4;
                     value_x = system->v_registers[index_x];
                     value_y = system->v_registers[index_y];
-                    value = value_y - value_x;
                     system->v_registers[NUM_V_REGISTERS-1] = value_y > value_x;
-                    system->v_registers[index_x] = value & 0xFF;
+                    system->v_registers[index_x] = abs(value_y - value_x) & 0xFF;
                     system->program_counter += 2;
                     break;
                 case 0x000E: // 8XYE: Shift V[X} left.
                     index_x = (op_code & 0x0F00) >> 8;
                     value_x = system->v_registers[index_x];
-                    system->v_registers[NUM_V_REGISTERS-1] = value_x & 0x80;
+                    system->v_registers[NUM_V_REGISTERS-1] = (value_x & 0x80) >> 7;
                     system->v_registers[index_x] = value_x << 1;
+                    system->program_counter += 2;
                     break;
                 default:
                     log_message(ERROR, "Unknown op code: 0x%04X.", op_code);
@@ -196,7 +196,7 @@ void process_op_code(System * system, uint16_t op_code)
             system->program_counter += 2;
             break;
         case 0xB000: // BNNN: Jump to location NNN + V0.
-            system->program_counter = op_code & 0x0FFF + system->v_registers[0];
+            system->program_counter = (op_code & 0x0FFF) + system->v_registers[0];
             break;
         case 0xC000: // CXKK: Set V[X] to a random byte and'ed with KK.
             value = op_code & 0x00FF;
@@ -308,12 +308,14 @@ void process_op_code(System * system, uint16_t op_code)
                     {
                         system->main_memory[system->index_register + reg_index] = system->v_registers[reg_index];
                     }
+                    system->program_counter += 2;
                     break;
                 case 0x0065: // FX65: Load the registers from memory starting at the index register.
                     for (uint8_t reg_index = 0; reg_index < NUM_V_REGISTERS; reg_index++)
                     {
                         system->v_registers[reg_index] = system->main_memory[system->index_register + reg_index];
                     }
+                    system->program_counter += 2;
                     break;
                 default:
                     log_message(ERROR, "Unknown op code: 0x%04X.", op_code);
