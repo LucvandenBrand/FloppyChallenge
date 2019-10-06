@@ -11,6 +11,8 @@ void emulate_rom(const BinaryBlob * rom)
             VIDEO_WIDTH*VIDEO_SCALE, VIDEO_HEIGHT * VIDEO_SCALE);
     FrameBuffer frame_buffer = create_frame_buffer(render_context, VIDEO_WIDTH, VIDEO_HEIGHT);
     System system = init_system(rom);
+    uint64_t time_last = 0;
+    uint64_t time_now = SDL_GetPerformanceCounter();
     while (system.is_running)
     {
         step_system_cpu(&system);
@@ -20,7 +22,13 @@ void emulate_rom(const BinaryBlob * rom)
             present_frame_buffer(render_context, frame_buffer);
         }
         update_system_key_states(&system);
-        SDL_Delay(16);
+
+        time_last = time_now;
+        time_now = SDL_GetPerformanceCounter();
+        double delta_time = (double)((time_now - time_last)*1000 / (double)SDL_GetPerformanceFrequency());
+        double wait_time = 100.0/6.0 - delta_time;
+        if (wait_time > 0)
+            SDL_Delay(wait_time);
     }
     free_frame_buffer(&frame_buffer);
     free_render_context(&render_context);
