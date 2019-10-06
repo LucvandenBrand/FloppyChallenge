@@ -116,7 +116,7 @@ void process_op_code(System * system, uint16_t op_code)
                 case 0x0000: // 8XY0: Store V[Y] in V[X].
                     index_x = (op_code & 0x0F00) >> 8;
                     index_y = (op_code & 0x00F0) >> 4;
-                    system->v_registers[index_x] += system->v_registers[index_y];
+                    system->v_registers[index_x] = system->v_registers[index_y];
                     system->program_counter += 2;
                     break;
                 case 0x0001: // 8XY1: Set V[X] to v[X] or'ed with V[Y}
