@@ -51,8 +51,9 @@ void process_op_code(System * system, uint16_t op_code)
             switch (op_code)
             {
                 case 0x00EE: // Return from a subroutine, restore from stack.
-                    system->program_counter = system->stack[system->stack_pointer - 1] + 2;
                     system->stack_pointer--;
+                    system->program_counter = system->stack[system->stack_pointer];
+                    system->program_counter += 2;
                     break;
                 case 0x00E0: // Clear video memory.
                     memset(system->video_memory, 0, sizeof(system->video_memory));
@@ -136,8 +137,8 @@ void process_op_code(System * system, uint16_t op_code)
                     value_x = system->v_registers[index_x];
                     value_y = system->v_registers[index_y];
                     value = value_x + value_y;
-                    system->v_registers[NUM_V_REGISTERS-1] = value > 255;
-                    system->v_registers[index_x] = value & 0xFF;
+                    system->v_registers[NUM_V_REGISTERS-1] = value > 0xFF;
+                    system->v_registers[index_x] = (uint8_t) value;
                     system->program_counter += 2;
                     break;
                 case 0x0005: // 8XY5: Set V[X] to V[Y] subtracted from V[X]
@@ -145,8 +146,8 @@ void process_op_code(System * system, uint16_t op_code)
                     index_y = (op_code & 0x00F0) >> 4;
                     value_x = system->v_registers[index_x];
                     value_y = system->v_registers[index_y];
-                    system->v_registers[NUM_V_REGISTERS-1] = value_x > value_y;
-                    system->v_registers[index_x] = abs( (int)value_x - (int)value_y) & 0xFF;
+                    system->v_registers[NUM_V_REGISTERS-1] = (value_y > value_x) ? 0 : 1;
+                    system->v_registers[index_x] -= value_y;
                     system->program_counter += 2;
                     break;
                 case 0x0006: // 8XY6: Shift V[X] right.
@@ -161,7 +162,7 @@ void process_op_code(System * system, uint16_t op_code)
                     index_y = (op_code & 0x00F0) >> 4;
                     value_x = system->v_registers[index_x];
                     value_y = system->v_registers[index_y];
-                    system->v_registers[NUM_V_REGISTERS-1] = value_y > value_x;
+                    system->v_registers[NUM_V_REGISTERS-1] = (value_x > value_y) ? 0 : 1;
                     system->v_registers[index_x] = abs((int)value_y - (int)value_x) & 0xFF;
                     system->program_counter += 2;
                     break;
@@ -194,7 +195,7 @@ void process_op_code(System * system, uint16_t op_code)
         case 0xC000: // CXKK: Set V[X] to a random byte and'ed with KK.
             value = op_code & 0x00FF;
             index_x = (op_code & 0x0F00) >> 8;
-            system->v_registers[index_x] = rand() & value;
+            system->v_registers[index_x] = (rand() % 0xFF) & value;
             system->program_counter += 2;
             break;
         case 0xD000: // DXYN: Draw N-byte sprite starting at location I at (V[X], V[Y]), set VF to collision.
