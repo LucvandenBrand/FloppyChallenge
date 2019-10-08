@@ -7,6 +7,7 @@
 #define VIDEO_SCALE 16
 #define VIDEO_FPS 60
 #define VIDEO_TICKS_PER_FRAME (1000 / VIDEO_FPS)
+#define VIDEO_COLOR 0xE0A500
 
 void emulate_rom(const BinaryBlob * rom);
 void step_system_cpu(System * system);

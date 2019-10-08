@@ -439,7 +439,7 @@ void copy_system_video_memory(System system, FrameBuffer * frame_buffer)
         for (int ver_index = 0; ver_index < VIDEO_HEIGHT; ver_index++)
         {
             uint8_t pixel = system.video_memory[ver_index * VIDEO_WIDTH + hor_index];
-            pixels[ver_index * VIDEO_WIDTH + hor_index] = (uint32_t) pixel * 0xFFFFFF;
+            pixels[ver_index * VIDEO_WIDTH + hor_index] = (uint32_t) pixel * VIDEO_COLOR;
         }
     }
 
