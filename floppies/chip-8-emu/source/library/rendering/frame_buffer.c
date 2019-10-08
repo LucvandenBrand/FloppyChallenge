@@ -27,7 +27,7 @@ void present_frame_buffer(RenderContext context, FrameBuffer frame_buffer)
 
 int lock_frame_buffer(FrameBuffer * frame_buffer)
 {
-    if (frame_buffer->pixels == NULL)
+    if (frame_buffer->pixels != NULL)
         return -1;
     return SDL_LockTexture(frame_buffer->sdl_texture, NULL, &frame_buffer->pixels, &frame_buffer->pitch);
 }

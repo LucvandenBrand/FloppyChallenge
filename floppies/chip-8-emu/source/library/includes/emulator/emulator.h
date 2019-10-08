@@ -4,7 +4,9 @@
 #include <emulator/system.h>
 #include <rendering/frame_buffer.h>
 
-#define VIDEO_SCALE 12
+#define VIDEO_SCALE 16
+#define VIDEO_FPS 60
+#define VIDEO_TICKS_PER_FRAME (1000 / VIDEO_FPS)
 
 void emulate_rom(const BinaryBlob * rom);
 void step_system_cpu(System * system);

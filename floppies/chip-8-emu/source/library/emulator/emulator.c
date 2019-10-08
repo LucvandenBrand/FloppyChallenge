@@ -13,6 +13,7 @@ void emulate_rom(const BinaryBlob * rom)
     System system = init_system(rom);
     while (system.is_running)
     {
+        uint32_t start_time =  SDL_GetTicks();
         step_system_cpu(&system);
         if (system.video_changed)
         {
@@ -21,7 +22,9 @@ void emulate_rom(const BinaryBlob * rom)
         }
         update_system_key_states(&system);
 
-        SDL_Delay(16);
+        uint32_t frame_ticks = SDL_GetTicks() - start_time;
+        if (frame_ticks < VIDEO_TICKS_PER_FRAME)
+            SDL_Delay(VIDEO_TICKS_PER_FRAME - frame_ticks);
     }
     free_frame_buffer(&frame_buffer);
     free_render_context(&render_context);
