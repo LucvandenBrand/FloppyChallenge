@@ -21,7 +21,7 @@ void emulate_rom(const BinaryBlob * rom)
         }
         update_system_key_states(&system);
 
-        SDL_Delay(10);
+        SDL_Delay(16);
     }
     free_frame_buffer(&frame_buffer);
     free_render_context(&render_context);
@@ -211,13 +211,12 @@ void process_op_code(System * system, uint16_t op_code)
                 uint8_t byte = sprite[byte_num];
                 for (unsigned int bit_num = 0; bit_num < 8; bit_num++)
                 {
-                    uint8_t bit = (byte & 0x80) >> 7;
-                    byte = byte << 1;
+                    if ((byte & (0x80 >> bit_num)) == 0)
+                        continue;
                     unsigned int video_index = (value_y + byte_num) * VIDEO_WIDTH + value_x + bit_num;
-                    uint8_t video_bit = system->video_memory[video_index];
-                    if (bit && video_bit)
-                        system->v_registers[NUM_V_REGISTERS - 1] = 0x1;
-                    system->video_memory[video_index] = bit^video_bit;
+                    if (system->video_memory[video_index] == 1)
+                        system->v_registers[NUM_V_REGISTERS - 1] = 1;
+                    system->video_memory[video_index] ^= 1;
                 }
             }
             system->video_changed = true;
@@ -433,7 +432,7 @@ void copy_system_video_memory(System system, FrameBuffer frame_buffer)
         for (int ver_index = 0; ver_index < VIDEO_HEIGHT; ver_index++)
         {
             uint8_t pixel = system.video_memory[ver_index * VIDEO_WIDTH + hor_index];
-            frame_buffer.pixels[ver_index * frame_buffer.frame_width + hor_index] = (uint32_t) pixel * 0xFFFFFF;
+            frame_buffer.pixels[ver_index * VIDEO_WIDTH + hor_index] = (uint32_t) pixel * 0xFFFFFF;
         }
     }
     unlock_frame_buffer(frame_buffer);
