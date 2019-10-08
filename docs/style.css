@@ -3,11 +3,6 @@
     src: url(VT323-Regular.ttf);
 }
 
-@font-face {
-    font-family: M;
-    src: url(M.ttf);
-}
-
 @keyframes animatedBackground {
     from { background-position: 0 0; }
     to { background-position: 1280px 1280px; }
@@ -133,12 +128,18 @@ body {
 }
 
 @media only screen and (max-width: 70rem) {
+    .content {
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+    }
+
+
     .content h1 {
         font-size: 4rem;
     }
 
     .content h1.mirror {
-        margin-top: -2.3rem;
+        margin-top: -0.5em;
         margin-bottom: -2rem;
         background-image: linear-gradient(180deg,rgba(0,0,150,.0) 10%,rgba(0,0,150,.2));
     }
