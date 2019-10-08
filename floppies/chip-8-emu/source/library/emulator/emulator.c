@@ -13,14 +13,16 @@ void emulate_rom(const BinaryBlob * rom)
     System system = init_system(rom);
     while (system.is_running)
     {
-        uint32_t start_time =  SDL_GetTicks();
-        step_system_cpu(&system);
+        uint32_t start_time = SDL_GetTicks();
+        for (int step = 0; step < 10; step++)
+            step_system_cpu(&system);
+        step_timers(&system);
+        update_system_key_states(&system);
         if (system.video_changed)
         {
             copy_system_video_memory(system, &frame_buffer);
             present_frame_buffer(render_context, frame_buffer);
         }
-        update_system_key_states(&system);
 
         uint32_t frame_ticks = SDL_GetTicks() - start_time;
         if (frame_ticks < VIDEO_TICKS_PER_FRAME)
@@ -40,9 +42,7 @@ void step_system_cpu(System * system)
 
     uint16_t op_code = system->main_memory[system->program_counter] << 8 |
                        system->main_memory[system->program_counter + 1];
-
     process_op_code(system, op_code);
-    step_timers(system);
 }
 
 void process_op_code(System * system, uint16_t op_code)
