@@ -277,7 +277,9 @@ void process_op_code(System * system, uint16_t op_code)
                     break;
                 case 0x001E: // FX1E: Add the value of V[X] to the index register.
                     index_x = (op_code & 0x0F00) >> 8;
-                    system->index_register += system->v_registers[index_x];
+                    value = system->index_register + system->v_registers[index_x];
+                    system->v_registers[NUM_V_REGISTERS-1] = value > 0xFFF;
+                    system->index_register = value;
                     system->program_counter += 2;
                     break;
                 case 0x0029: // FX29: Set the index location to the sprite for digit V[X].
@@ -298,14 +300,16 @@ void process_op_code(System * system, uint16_t op_code)
                     system->program_counter += 2;
                     break;
                 case 0x0055: // FX55: Store the registers in memory starting at the index register.
-                    for (uint8_t reg_index = 0; reg_index < NUM_V_REGISTERS; reg_index++)
+                    index_x = (op_code & 0x0F00) >> 8;
+                    for (unsigned int reg_index = 0; reg_index <= index_x; reg_index++)
                     {
                         system->main_memory[system->index_register + reg_index] = system->v_registers[reg_index];
                     }
                     system->program_counter += 2;
                     break;
                 case 0x0065: // FX65: Load the registers from memory starting at the index register.
-                    for (uint8_t reg_index = 0; reg_index < NUM_V_REGISTERS; reg_index++)
+                    index_x = (op_code & 0x0F00) >> 8;
+                    for (unsigned int reg_index = 0; reg_index <= index_x; reg_index++)
                     {
                         system->v_registers[reg_index] = system->main_memory[system->index_register + reg_index];
                     }
