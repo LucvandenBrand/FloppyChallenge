@@ -4,12 +4,25 @@
 #include <stdlib.h>
 #include <rendering/render_context.h>
 #include <rendering/frame_buffer.h>
+#include <audio/mixer.h>
 
 void emulate_rom(const BinaryBlob * rom)
 {
     RenderContext render_context = create_render_context("CHIP-8-emu",
             VIDEO_WIDTH*VIDEO_SCALE, VIDEO_HEIGHT * VIDEO_SCALE);
     FrameBuffer frame_buffer = create_frame_buffer(render_context, VIDEO_WIDTH, VIDEO_HEIGHT);
+    if (init_mixer())
+    {
+        log_message(ERROR, "Could not init audio mixer.");
+        exit(EXIT_FAILURE);
+    }
+    Audio beep_audio = load_audio(BEEP_PATH);
+    if (beep_audio.mix_chunk == NULL)
+    {
+        log_message(ERROR, "Could not load beep audio!");
+        exit(EXIT_FAILURE);
+    }
+
     System system = init_system(rom);
     while (system.is_running)
     {
@@ -23,11 +36,15 @@ void emulate_rom(const BinaryBlob * rom)
             copy_system_video_memory(system, &frame_buffer);
             present_frame_buffer(render_context, frame_buffer);
         }
+        if (system.audio_triggered)
+            play_audio(beep_audio);
 
         uint32_t frame_ticks = SDL_GetTicks() - start_time;
         if (frame_ticks < VIDEO_TICKS_PER_FRAME)
             SDL_Delay(VIDEO_TICKS_PER_FRAME - frame_ticks);
     }
+    free_audio(beep_audio);
+    close_mixer();
     free_frame_buffer(&frame_buffer);
     free_render_context(&render_context);
 }
@@ -332,11 +349,9 @@ void step_timers(System * system)
 {
     if (system->delay_timer > 0)
         system->delay_timer -= 1;
+    system->audio_triggered = system->sound_timer == 1;
     if (system->sound_timer <= 0)
         return;
-
-    if (system->sound_timer == 1)
-        system->audio_triggered = true;
     system->sound_timer -= 1;
 }
 
