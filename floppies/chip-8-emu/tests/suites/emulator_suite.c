@@ -194,7 +194,7 @@ START_TEST(test_subtract_registers) // 8XY5
     ck_assert_int_eq(system.v_registers[NUM_V_REGISTERS-1], 0x01);
 
     process_op_code(&system, 0x8015);
-    ck_assert_int_eq(system.v_registers[0], 0x0E);
+    ck_assert_int_eq(system.v_registers[0], 0xF2);
     ck_assert_int_eq(system.program_counter, 0x204);
     ck_assert_int_eq(system.v_registers[NUM_V_REGISTERS-1], 0x00);
 }
@@ -440,12 +440,16 @@ START_TEST(test_store_registers) // FX55
 {
     System system = create_empty_system();
     system.index_register = 0x300;
-    for (int index = 0; index < NUM_V_REGISTERS; index++)
+    for (int index = 0; index <= 5; index++)
         system.v_registers[index] = index;
+    for (int index = 6; index < NUM_V_REGISTERS; index++)
+        system.v_registers[index] = 0;
 
     process_op_code(&system, 0xF555);
-    for (int index = 0; index < NUM_V_REGISTERS; index++)
+    for (int index = 0; index <= 5; index++)
         ck_assert_int_eq(system.main_memory[0x300 + index], index);
+    for (int index = 6; index < NUM_V_REGISTERS; index++)
+        ck_assert_int_eq(system.main_memory[0x300 + index], 0);
 
     ck_assert_int_eq(system.program_counter, 0x202);
 }
@@ -455,12 +459,16 @@ START_TEST(test_load_registers) // FX65
 {
     System system = create_empty_system();
     system.index_register = 0x300;
-    for (int index = 0; index < NUM_V_REGISTERS; index++)
+    for (int index = 0; index <= 5; index++)
         system.main_memory[0x300 + index] = index;
+    for (int index = 6; index < NUM_V_REGISTERS; index++)
+        system.main_memory[0x300 + index] = 0;
 
     process_op_code(&system, 0xF565);
-    for (int index = 0; index < NUM_V_REGISTERS; index++)
+    for (int index = 0; index <= 5; index++)
         ck_assert_int_eq(system.v_registers[index], index);
+    for (int index = 6; index < NUM_V_REGISTERS; index++)
+        ck_assert_int_eq(system.v_registers[index], 0);
 
     ck_assert_int_eq(system.program_counter, 0x202);
 }
