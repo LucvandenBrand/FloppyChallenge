@@ -17,7 +17,7 @@ RenderContext create_render_context(const char * title, unsigned int screen_widt
         exit(EXIT_FAILURE);
     }
 
-    SDL_Renderer * renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+    SDL_Renderer * renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
     if (!renderer)
     {
         log_message(ERROR, "Could not create SDL renderer.");

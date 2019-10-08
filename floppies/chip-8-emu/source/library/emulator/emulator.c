@@ -16,7 +16,7 @@ void emulate_rom(const BinaryBlob * rom)
         step_system_cpu(&system);
         if (system.video_changed)
         {
-            copy_system_video_memory(system, frame_buffer);
+            copy_system_video_memory(system, &frame_buffer);
             present_frame_buffer(render_context, frame_buffer);
         }
         update_system_key_states(&system);
@@ -422,18 +422,23 @@ void process_window_event(SDL_WindowEvent window, System * system)
     }
 }
 
-void copy_system_video_memory(System system, FrameBuffer frame_buffer)
+void copy_system_video_memory(System system, FrameBuffer * frame_buffer)
 {
-    if (!lock_frame_buffer(frame_buffer))
-        log_message(WARN, "Could not lock frame buffer.");
+    int failure = lock_frame_buffer(frame_buffer);
+    if (failure) {
+        log_message(WARN, "Could not lock frame buffer: %s.", SDL_GetError());
+        exit(EXIT_FAILURE);
+    }
 
+    uint32_t * pixels = frame_buffer->pixels;
     for (int hor_index = 0; hor_index < VIDEO_WIDTH; hor_index++)
     {
         for (int ver_index = 0; ver_index < VIDEO_HEIGHT; ver_index++)
         {
             uint8_t pixel = system.video_memory[ver_index * VIDEO_WIDTH + hor_index];
-            frame_buffer.pixels[ver_index * VIDEO_WIDTH + hor_index] = (uint32_t) pixel * 0xFFFFFF;
+            pixels[ver_index * VIDEO_WIDTH + hor_index] = (uint32_t) pixel * 0xFFFFFF;
         }
     }
+
     unlock_frame_buffer(frame_buffer);
 }

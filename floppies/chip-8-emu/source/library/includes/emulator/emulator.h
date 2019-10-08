@@ -15,6 +15,6 @@ void process_event(SDL_Event event, System * system);
 void process_key_event(SDL_KeyboardEvent key, System * system);
 int map_key_to_index(SDL_Keycode key_code);
 void process_window_event(SDL_WindowEvent window, System * system);
-void copy_system_video_memory(System system, FrameBuffer frame_buffer);
+void copy_system_video_memory(System system, FrameBuffer * frame_buffer);
 
 #endif
