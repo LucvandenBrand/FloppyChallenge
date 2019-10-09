@@ -298,39 +298,25 @@ END_TEST
 START_TEST(test_draw_sprite) // DXYN
 {
     System system = create_empty_system();
-    uint8_t sprite[16] = {0x1, 0x0, 0x1, 0x1,
-                          0x1, 0x0, 0x1, 0x1,
-                          0x1, 0x0, 0x0, 0x1,
-                          0x1, 0x1, 0x0, 0x1};
-    memcpy(&system.main_memory[300], sprite, sizeof(sprite));
-    system.v_registers[0] = 0x1A;
-    system.v_registers[1] = 0x01;
-    system.index_register = 300;
+    uint8_t sprite[5] = {0xF0, 0x90, 0x90, 0x90, 0xF0};
+    memcpy(&system.main_memory[30], sprite, sizeof(sprite));
+    system.v_registers[0] = 6;
+    system.v_registers[1] = 5;
+    system.index_register = 30;
 
-    process_op_code(&system, 0xD01F);
-    for (int pos_v=0; pos_v<5; pos_v++)
+    process_op_code(&system, 0xD015);
+    for (unsigned int byte_num = 0; byte_num < 5; byte_num++)
     {
-        for (int pos_h = 0; pos_h < 5; pos_h++)
+        uint8_t byte = sprite[byte_num];
+        for (unsigned int bit_num = 0; bit_num < 8; bit_num++)
         {
-            uint8_t video_value = system.video_memory[VIDEO_HEIGHT * (0x01 + pos_v) + 0x1A + pos_h];
-            uint8_t sprite_value = sprite[4 * pos_v + pos_h];
-            ck_assert_int_eq(video_value, sprite_value);
+            unsigned int video_index = (5 + byte_num) * VIDEO_WIDTH + 6 + bit_num;
+            if ((byte & (0x80 >> bit_num)) == 0)
+                ck_assert_int_eq(system.video_memory[video_index], 0);
+            else
+                ck_assert_int_eq(system.video_memory[video_index], 1);
         }
     }
-    ck_assert_int_eq(system.v_registers[NUM_V_REGISTERS-1], 0x00);
-    ck_assert_int_eq(system.program_counter, 0x202);
-
-    process_op_code(&system, 0xD01F);
-    for (int pos_v=0; pos_v<5; pos_v++)
-    {
-        for (int pos_h = 0; pos_h < 5; pos_h++)
-        {
-            uint8_t video_value = system.video_memory[VIDEO_HEIGHT * (0x01 + pos_v) + 0x1A + pos_h];
-            ck_assert_int_eq(video_value, 0);
-        }
-    }
-    ck_assert_int_eq(system.v_registers[NUM_V_REGISTERS-1], 0x01);
-    ck_assert_int_eq(system.program_counter, 0x204);
 }
 END_TEST
 
