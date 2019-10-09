@@ -262,29 +262,29 @@ int map_key_to_index(SDL_Keycode key_code)
             return 2;
         case SDLK_3:
             return 3;
-        case SDLK_4:
-            return 4;
-        case SDLK_5:
-            return 5;
-        case SDLK_6:
-            return 6;
-        case SDLK_7:
-            return 7;
-        case SDLK_8:
-            return 8;
-        case SDLK_9:
-            return 9;
         case SDLK_q:
-            return 10;
+            return 4;
         case SDLK_w:
-            return 11;
+            return 5;
         case SDLK_e:
-            return 12;
+            return 6;
         case SDLK_r:
+            return 7;
+        case SDLK_a:
+            return 8;
+        case SDLK_s:
+            return 9;
+        case SDLK_d:
+            return 10;
+        case SDLK_f:
+            return 11;
+        case SDLK_z:
+            return 12;
+        case SDLK_x:
             return 13;
-        case SDLK_t:
+        case SDLK_c:
             return 14;
-        case SDLK_y:
+        case SDLK_v:
             return 15;
         default:
             return -1;

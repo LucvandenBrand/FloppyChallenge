@@ -22,6 +22,7 @@ void free_frame_buffer(FrameBuffer * frame_buffer)
 
 void present_frame_buffer(RenderContext context, FrameBuffer frame_buffer)
 {
+    SDL_RenderClear(context.renderer);
     SDL_RenderCopy(context.renderer, frame_buffer.sdl_texture, NULL, NULL);
     SDL_RenderPresent(context.renderer);
 }
