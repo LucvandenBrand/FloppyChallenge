@@ -5,6 +5,7 @@
 #include <rendering/render_context.h>
 #include <rendering/frame_buffer.h>
 #include <audio/mixer.h>
+#include <emulator/opcodes.h>
 
 void emulate_rom(const BinaryBlob * rom)
 {
@@ -71,14 +72,10 @@ void process_op_code(System * system, uint16_t op_code)
             switch (op_code)
             {
                 case 0x00EE: // Return from a subroutine, restore from stack.
-                    system->stack_pointer--;
-                    system->program_counter = system->stack[system->stack_pointer];
-                    system->program_counter += 2;
+                    exit_subroutine(system, op_code);
                     break;
                 case 0x00E0: // Clear video memory.
-                    memset(system->video_memory, 0, sizeof(system->video_memory));
-                    system->video_changed = true;
-                    system->program_counter += 2;
+                    clear_video_memory(system, op_code);
                     break;
                 default:
                     log_message(ERROR, "Unknown op code: 0x%04X.", op_code);
@@ -86,112 +83,55 @@ void process_op_code(System * system, uint16_t op_code)
             }
             break;
         case 0x1000: // 1NNN Jump to location NNN.
-            system->program_counter = op_code & 0x0FFF;
+            jump(system, op_code);
             break;
         case 0x2000: // 2NNN: Call the subroutine at address NNN.
-            system->stack[system->stack_pointer] = system->program_counter;
-            system->stack_pointer++;
-            system->program_counter = op_code & 0x0FFF;
+            call_subroutine(system, op_code);
             break;
         case 0x3000: // 3XKK: Skip instruction if V[X] == KK.
-            index_x = (op_code & 0x0F00) >> 8;
-            value = op_code & 0x00FF;
-            if (system->v_registers[index_x] == value)
-                system->program_counter += 2;
-            system->program_counter += 2;
+            skip_if_equal_value(system, op_code);
             break;
         case 0x4000: // 4XKK: Skip instruction if V[X] != KK.
-            index_x = (op_code & 0x0F00) >> 8;
-            value = op_code & 0x00FF;
-            if (system->v_registers[index_x] != value)
-                system->program_counter += 2;
-            system->program_counter += 2;
+            skip_if_not_equal_value(system, op_code);
             break;
         case 0x5000: // 5XY0: Skip instruction if V[X] == V[Y].
-            index_x = (op_code & 0x0F00) >> 8;
-            index_y = (op_code & 0x00F0) >> 4;
-            if (system->v_registers[index_x] == system->v_registers[index_y])
-                system->program_counter += 2;
-            system->program_counter += 2;
+            skip_if_equal_registers(system, op_code);
             break;
         case 0x6000: // 6XKK: Put the value KK into register X.
-            index_x = (op_code & 0x0F00) >> 8;
-            system->v_registers[index_x] = op_code & 0x00FF;
-            system->program_counter += 2;
+            store_value_in_register(system, op_code);
             break;
         case 0x7000: // 7XKK: Add the value KK to register X.
-            index_x = (op_code & 0x0F00) >> 8;
-            system->v_registers[index_x] += op_code & 0x00FF;
-            system->program_counter += 2;
+            add_value_to_register(system, op_code);
             break;
         case 0x8000:
             switch (op_code & 0x000F)
             {
                 case 0x0000: // 8XY0: Store V[Y] in V[X].
-                    index_x = (op_code & 0x0F00) >> 8;
-                    index_y = (op_code & 0x00F0) >> 4;
-                    system->v_registers[index_x] = system->v_registers[index_y];
-                    system->program_counter += 2;
+                    store_register_in_register(system, op_code);
                     break;
                 case 0x0001: // 8XY1: Set V[X] to v[X] or'ed with V[Y]
-                    index_x = (op_code & 0x0F00) >> 8;
-                    index_y = (op_code & 0x00F0) >> 4;
-                    system->v_registers[index_x] |= system->v_registers[index_y];
-                    system->program_counter += 2;
+                    logical_or_registers(system, op_code);
                     break;
                 case 0x0002: // 8XY2: Set V[X] to v[X] and'ed with V[Y]
-                    index_x = (op_code & 0x0F00) >> 8;
-                    index_y = (op_code & 0x00F0) >> 4;
-                    system->v_registers[index_x] &= system->v_registers[index_y];
-                    system->program_counter += 2;
+                    logical_and_registers(system, op_code);
                     break;
                 case 0x0003: // 8XY3: Set V[X] to v[X] xor'ed with V[Y]
-                    index_x = (op_code & 0x0F00) >> 8;
-                    index_y = (op_code & 0x00F0) >> 4;
-                    system->v_registers[index_x] ^= system->v_registers[index_y];
-                    system->program_counter += 2;
+                    logical_xor_registers(system, op_code);
                     break;
                 case 0x0004: // 8XY4: Set V[X] to V[X] added to V[Y]
-                    index_x = (op_code & 0x0F00) >> 8;
-                    index_y = (op_code & 0x00F0) >> 4;
-                    value_x = system->v_registers[index_x];
-                    value_y = system->v_registers[index_y];
-                    value = value_x + value_y;
-                    system->v_registers[NUM_V_REGISTERS-1] = value > 0xFF;
-                    system->v_registers[index_x] = (uint8_t) value;
-                    system->program_counter += 2;
+                    add_register_to_register(system, op_code);
                     break;
                 case 0x0005: // 8XY5: Set V[X] to V[Y] subtracted from V[X]
-                    index_x = (op_code & 0x0F00) >> 8;
-                    index_y = (op_code & 0x00F0) >> 4;
-                    value_x = system->v_registers[index_x];
-                    value_y = system->v_registers[index_y];
-                    system->v_registers[NUM_V_REGISTERS-1] = (value_y > value_x) ? 0 : 1;
-                    system->v_registers[index_x] -= value_y;
-                    system->program_counter += 2;
+                    subtract_registers(system, op_code);
                     break;
                 case 0x0006: // 8XY6: Shift V[X] right.
-                    index_x = (op_code & 0x0F00) >> 8;
-                    value_x = system->v_registers[index_x];
-                    system->v_registers[NUM_V_REGISTERS-1] = value_x & 0x01;
-                    system->v_registers[index_x] = value_x >> 1;
-                    system->program_counter += 2;
+                    right_shift_register(system, op_code);
                     break;
-                case 0x0007: // 8XY7: Set V[X] to V[X] subtracted from V[Y}
-                    index_x = (op_code & 0x0F00) >> 8;
-                    index_y = (op_code & 0x00F0) >> 4;
-                    value_x = system->v_registers[index_x];
-                    value_y = system->v_registers[index_y];
-                    system->v_registers[NUM_V_REGISTERS-1] = (value_x > value_y) ? 0 : 1;
-                    system->v_registers[index_x] = abs((int)value_y - (int)value_x) & 0xFF;
-                    system->program_counter += 2;
+                case 0x0007: // 8XY7: Set V[X] to V[X] subtracted from V[Y]
+                    reverse_subtract_registers(system, op_code);
                     break;
-                case 0x000E: // 8XYE: Shift V[X} left.
-                    index_x = (op_code & 0x0F00) >> 8;
-                    value_x = system->v_registers[index_x];
-                    system->v_registers[NUM_V_REGISTERS-1] = (value_x & 0x80) >> 7;
-                    system->v_registers[index_x] = value_x << 1;
-                    system->program_counter += 2;
+                case 0x000E: // 8XYE: Shift V[X] left.
+                    left_shift_register(system, op_code);
                     break;
                 default:
                     log_message(ERROR, "Unknown op code: 0x%04X.", op_code);
@@ -199,65 +139,28 @@ void process_op_code(System * system, uint16_t op_code)
             }
             break;
         case 0x9000: // 9XY0: Skip instruction if V[X] != V[Y].
-            index_x = (op_code & 0x0F00) >> 8;
-            index_y = (op_code & 0x00F0) >> 4;
-            if (system->v_registers[index_x] != system->v_registers[index_y])
-                system->program_counter += 2;
-            system->program_counter += 2;
+            skip_if_not_equal_registers(system, op_code);
             break;
         case 0xA000: // ANNN: Sets index register to address NNN.
-            system->index_register = op_code & 0x0FFF;
-            system->program_counter += 2;
+            set_index(system, op_code);
             break;
         case 0xB000: // BNNN: Jump to location NNN + V0.
-            system->program_counter = (op_code & 0x0FFF) + system->v_registers[0];
+            jump_with_register_offset(system, op_code);
             break;
         case 0xC000: // CXKK: Set V[X] to a random byte and'ed with KK.
-            value = op_code & 0x00FF;
-            index_x = (op_code & 0x0F00) >> 8;
-            system->v_registers[index_x] = (rand() % 0xFF) & value;
-            system->program_counter += 2;
+            set_register_to_random_value(system, op_code);
             break;
         case 0xD000: // DXYN: Draw N-byte sprite starting at location I at (V[X], V[Y]), set VF to collision.
-            index_x = (op_code & 0x0F00) >> 8;
-            index_y = (op_code & 0x00F0) >> 4;
-            value_x = system->v_registers[index_x];
-            value_y = system->v_registers[index_y];
-            value = op_code & 0x000F;
-            uint8_t * sprite = &system->main_memory[system->index_register];
-            system->v_registers[NUM_V_REGISTERS - 1] = 0;
-            for (unsigned int byte_num = 0; byte_num < value; byte_num++)
-            {
-                uint8_t byte = sprite[byte_num];
-                for (unsigned int bit_num = 0; bit_num < 8; bit_num++)
-                {
-                    if ((byte & (0x80 >> bit_num)) == 0)
-                        continue;
-                    unsigned int video_index = (value_y + byte_num) * VIDEO_WIDTH + value_x + bit_num;
-                    if (system->video_memory[video_index] == 1)
-                        system->v_registers[NUM_V_REGISTERS - 1] = 1;
-                    system->video_memory[video_index] ^= 1;
-                }
-            }
-            system->video_changed = true;
-            system->program_counter += 2;
+            draw_sprite(system, op_code);
             break;
         case 0xE000:
             switch (op_code & 0x00FF)
             {
                 case 0x009E: // EX9E: Skip instruction if key V[X] is pressed.
-                    index_x = (op_code & 0x0F00) >> 8;
-                    value_x = system->v_registers[index_x];
-                    if (system->key_states[value_x])
-                        system->program_counter += 2;
-                    system->program_counter += 2;
+                    skip_if_key_pressed(system, op_code);
                     break;
                 case 0x00A1: // EX9E: Skip instruction if key V[X] is not pressed.
-                    index_x = (op_code & 0x0F00) >> 8;
-                    value_x = system->v_registers[index_x];
-                    if (!system->key_states[value_x])
-                        system->program_counter += 2;
-                    system->program_counter += 2;
+                    skip_if_key_not_pressed(system, op_code);
                     break;
                 default:
                     log_message(ERROR, "Unknown op code: 0x%04X.", op_code);
@@ -268,71 +171,31 @@ void process_op_code(System * system, uint16_t op_code)
             switch (op_code & 0x00FF)
             {
                 case 0x0007: // FX07: Set V[X] to delay timer value.
-                    index_x = (op_code & 0x0F00) >> 8;
-                    system->v_registers[index_x] = system->delay_timer;
-                    system->program_counter += 2;
+                    set_register_to_delay_timer(system, op_code);
                     break;
                 case 0x000A: // FX0A: Wait for a key to be pressed, then put that key in V[X].
-                    index_x = (op_code & 0x0F00) >> 8;
-                    for (uint8_t key=0; key < NUM_KEYS; key++)
-                    {
-                        if (system->key_states[key])
-                        {
-                            system->v_registers[index_x] = key;
-                            system->program_counter += 2;
-                            break;
-                        }
-                    }
+                    wait_for_key_pressed(system, op_code);
                     break;
                 case 0x0015: // FX15: Set the delay timer to V[X].
-                    index_x = (op_code & 0x0F00) >> 8;
-                    system->delay_timer = system->v_registers[index_x];
-                    system->program_counter += 2;
+                    set_delay_timer_to_register(system, op_code);
                     break;
                 case 0x0018: // FX18: Set the sound timer to V[X].
-                    index_x = (op_code & 0x0F00) >> 8;
-                    system->sound_timer = system->v_registers[index_x];
-                    system->program_counter += 2;
+                    set_sound_timer_to_register(system, op_code);
                     break;
                 case 0x001E: // FX1E: Add the value of V[X] to the index register.
-                    index_x = (op_code & 0x0F00) >> 8;
-                    value = system->index_register + system->v_registers[index_x];
-                    system->v_registers[NUM_V_REGISTERS-1] = value > 0xFFF;
-                    system->index_register = value;
-                    system->program_counter += 2;
+                    add_register_to_index(system, op_code);
                     break;
                 case 0x0029: // FX29: Set the index location to the sprite for digit V[X].
-                    index_x = (op_code & 0x0F00) >> 8;
-                    value_x = system->v_registers[index_x];
-                    system->index_register = value_x * 0x05;
-                    system->program_counter += 2;
+                    set_index_to_digit_sprite(system, op_code);
                     break;
                 case 0x0033: // FX33: Store the BCD representation of V[X] to the memory starting at the index register.
-                    index_x = (op_code & 0x0F00) >> 8;
-                    value_x = system->v_registers[index_x];
-                    uint8_t hundreds = (value_x/100) % 10;
-                    system->main_memory[system->index_register] = hundreds;
-                    uint8_t tens = (value_x/10) % 10;
-                    system->main_memory[system->index_register+1] = tens;
-                    uint8_t ones = value_x % 10;
-                    system->main_memory[system->index_register+2] = ones;
-                    system->program_counter += 2;
+                    store_register_as_bcd_at_index(system, op_code);
                     break;
                 case 0x0055: // FX55: Store the registers in memory starting at the index register.
-                    index_x = (op_code & 0x0F00) >> 8;
-                    for (unsigned int reg_index = 0; reg_index <= index_x; reg_index++)
-                    {
-                        system->main_memory[system->index_register + reg_index] = system->v_registers[reg_index];
-                    }
-                    system->program_counter += 2;
+                    store_registers(system, op_code);
                     break;
                 case 0x0065: // FX65: Load the registers from memory starting at the index register.
-                    index_x = (op_code & 0x0F00) >> 8;
-                    for (unsigned int reg_index = 0; reg_index <= index_x; reg_index++)
-                    {
-                        system->v_registers[reg_index] = system->main_memory[system->index_register + reg_index];
-                    }
-                    system->program_counter += 2;
+                    load_registers(system, op_code);
                     break;
                 default:
                     log_message(ERROR, "Unknown op code: 0x%04X.", op_code);

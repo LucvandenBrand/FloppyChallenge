@@ -8,7 +8,7 @@ START_TEST(test_create_free_frame_buffer)
     RenderContext render_context = create_render_context("CHIP-8-emu", VIDEO_WIDTH, VIDEO_HEIGHT);
     FrameBuffer frame_buffer = create_frame_buffer(render_context, VIDEO_WIDTH, VIDEO_HEIGHT);
     ck_assert_ptr_ne(frame_buffer.sdl_texture, NULL);
-    ck_assert_ptr_ne(frame_buffer.pixels, NULL);
+    ck_assert_ptr_eq(frame_buffer.pixels, NULL);
     ck_assert_int_eq(frame_buffer.frame_width, VIDEO_WIDTH);
     ck_assert_int_eq(frame_buffer.frame_height, VIDEO_HEIGHT);
     free_frame_buffer(&frame_buffer);

@@ -492,26 +492,7 @@ START_TEST(test_step_timers)
     step_timers(&system);
     ck_assert_int_eq(system.delay_timer, 0);
     ck_assert_int_eq(system.sound_timer, 0);
-    ck_assert(system.audio_triggered == true);
-}
-END_TEST
-
-START_TEST(test_copy_system_video_memory)
-{
-    BinaryBlob empty_rom = malloc_binary_blob(0);
-    System system = init_system(&empty_rom);
-    free_binary_blob(&empty_rom);
-    system.video_memory[0] = 1;
-    system.video_memory[VIDEO_HEIGHT * VIDEO_WIDTH - 1] = 1;
-
-    RenderContext context = create_render_context("Test", VIDEO_WIDTH*2, VIDEO_HEIGHT*2);
-    FrameBuffer frame_buffer = create_frame_buffer(context, VIDEO_WIDTH, VIDEO_HEIGHT);
-    copy_system_video_memory(system, frame_buffer);
-    ck_assert_int_eq(frame_buffer.pixels[0], 0xFFFFFF);
-    unsigned int last_pixel_index = (VIDEO_HEIGHT - 1) * frame_buffer.frame_width + VIDEO_WIDTH - 1;
-    ck_assert_int_eq(frame_buffer.pixels[last_pixel_index], 0xFFFFFF);
-    free_frame_buffer(&frame_buffer);
-    free_render_context(&context);
+    ck_assert(system.audio_triggered == false);
 }
 END_TEST
 
@@ -521,7 +502,6 @@ Suite * make_emulator_suite()
 
     TCase * test_case = tcase_create("Test Cases");
     tcase_add_test(test_case, test_step_timers);
-    tcase_add_test(test_case, test_copy_system_video_memory);
     suite_add_tcase(suite, test_case);
 
     TCase * op_code_test_case = tcase_create("Op Code Test Cases");

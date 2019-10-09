@@ -8,6 +8,7 @@ FrameBuffer create_frame_buffer(RenderContext context, unsigned int width, unsig
     FrameBuffer buffer = {
             texture,
             NULL,
+            0,
             width,
             height
     };
