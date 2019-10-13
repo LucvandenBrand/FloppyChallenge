@@ -80,6 +80,11 @@ body {
     border-color: #cccccc;
     border-width: 3px;
     border-style: outset;
+    min-height: 200px;
+}
+
+.item:not(:first-child) {
+    margin-top: 1em;
 }
 
 .name {
