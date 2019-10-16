@@ -26,7 +26,7 @@ void add_item_to_player(Player * player, Item item)
         player->max_items *= 2;
         player->items = realloc(player->items, player->max_items * sizeof(Item));
     }
-    player->items[player->num_items] = item;
+    player->items[player->num_items++] = item;
 }
 
 void remove_item_from_player(Player * player, const char * item_name)
