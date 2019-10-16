@@ -1,0 +1,15 @@
+{
+  "num_rooms": 2,
+  "rooms": [
+    {
+      "description": "A boring room with nothing in it except for a funny looking door to the east.",
+      "neighbour_rooms": [-1, 1, -1, -1],
+      "items": []
+    },
+    {
+      "description": "A fun room, there is a boring looking door to the west and a funny one to the north.",
+      "neighbour_rooms": [1, -1, -1, 0],
+      "items": []
+    }
+  ]
+}
