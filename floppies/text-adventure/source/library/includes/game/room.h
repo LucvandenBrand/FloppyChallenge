@@ -10,7 +10,7 @@ typedef int RoomID;
 
 typedef struct {
     const char * description;
-    Item * items;
+    ItemID * items;
     unsigned num_items;
     unsigned max_items;
     RoomID neighbour_rooms[NUM_DIRECTIONS];
@@ -18,8 +18,8 @@ typedef struct {
 
 Room init_room(const char * description);
 void free_room(Room * room);
-void add_item_to_room(Room * room, Item item);
-void remove_item_from_room(Room * room, const char * item_name);
+void add_item_to_room(Room * room, ItemID item);
+void remove_item_from_room(Room * room, ItemID item_id);
 void connect_rooms(Room * from_room, RoomID to_room, Direction direction);
 
 #endif

@@ -26,6 +26,8 @@ GameState init_game_state(const char * game_data_path)
     game.num_rooms = 0;
     game.max_rooms = 4;
     game.rooms = malloc(game.max_rooms * sizeof(Room));
+    game.max_items = 4;
+    game.items = malloc(game.max_items * sizeof(Item));
     load_game_data(&game, game_data_path);
     return game;
 }
@@ -111,6 +113,11 @@ void free_game_state(GameState * game)
     free(game->rooms);
     game->rooms = NULL;
     game->num_rooms = 0;
+    game->max_rooms = 0;
+    free(game->items);
+    game->items = NULL;
+    game->num_items = 0;
+    game->max_items = 0;
 }
 
 void apply_input_to_game_state(const char * input, GameState * game)
