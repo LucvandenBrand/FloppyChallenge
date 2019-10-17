@@ -8,7 +8,13 @@
     {
       "description": "A fun room, there is a boring looking door to the west and a funny one to the north.",
       "neighbour_rooms": [1, -1, -1, 0],
-      "items": []
+      "items": [0]
+    }
+  ],
+  "items": [
+    {
+      "name": "Game Console",
+      "description": "It looks like a PlayStation, but on closer inspection it's just a plastic toy."
     }
   ]
 }

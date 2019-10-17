@@ -84,22 +84,51 @@ void load_game_from_json_tokens(GameState * game, const char * json_string, jsmn
     }
     for (unsigned token_index = 0; token_index < num_tokens; token_index++)
     {
-        jsmntok_t token = tokens[token_index];
-        if (json_equal(json_string, &token, "rooms"))
-        { // TODO : Parse room.
-//            int num_elements = tokens[token_index + 1].size;
-//            for (unsigned sub_token_index = 0; sub_token_index < num_elements; sub_token_index++)
-//            {
-//                int num_room_tokens = tokens[token_index + 1].size;
-//                jsmntok_t *room_tokens = &tokens[token_index + 2 + sub_token_index];
-//                if (game->num_rooms+1 >= game->max_rooms)
-//                {
-//                    game->max_rooms *= 2;
-//                    game->rooms = realloc(game->rooms, game->max_rooms * sizeof(Room));
-//                }
-//                load_room_from_json_tokens(&game->rooms[game->num_rooms++], json_string, room_tokens, num_room_tokens);
-//            }
-//            token_index += num_elements + 1;
+        if (json_equal(json_string, &tokens[token_index], "rooms") == 0)
+        {
+            token_index++;
+            game->num_rooms = tokens[token_index].size;
+            token_index++;
+            for (unsigned room_num=0; room_num < game->num_rooms; room_num++)
+            {
+                if (tokens[token_index].type != JSMN_OBJECT)
+                {
+                    put_color_text(RED, "The room list should only contain room objects!");
+                    game->is_running = false;
+                    return;
+                }
+                token_index += 2;
+                int description_size = tokens[token_index].end - tokens[token_index].start;
+                char * description = malloc(description_size * sizeof(char));
+                strncpy(description, json_string + tokens[token_index].start, description_size);
+                game->rooms[room_num] = init_room(description);
+                token_index += 2;
+                int num_directions = tokens[token_index].size;
+                for (Direction direction=0; direction < num_directions; direction++)
+                {
+                    token_index++;
+                    char * room_id_string = strndup(json_string + tokens[token_index].start,
+                                                    tokens[token_index].end - tokens[token_index].start);
+                    int room_id = atoi(room_id_string);
+                    game->rooms[room_num].neighbour_rooms[direction] = room_id;
+                }
+
+                token_index += 2;
+                int num_room_items = tokens[token_index].size;
+                for (unsigned item_num = 0; item_num < num_room_items; item_num++)
+                {
+                    token_index++;
+                    char * item_id_string = strndup(json_string + tokens[token_index].start,
+                            tokens[token_index].end - tokens[token_index].start);
+                    int item_id = atoi(item_id_string);
+                    add_item_to_room(&game->rooms[room_num], item_id);
+                }
+                token_index++;
+            }
+        }
+        else if (json_equal(json_string, &tokens[token_index], "items") == 0)
+        {
+
         }
     }
 }

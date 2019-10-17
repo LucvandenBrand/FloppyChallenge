@@ -9,14 +9,14 @@
 typedef int RoomID;
 
 typedef struct {
-    const char * description;
+    char * description;
     ItemID * items;
     unsigned num_items;
     unsigned max_items;
     RoomID neighbour_rooms[NUM_DIRECTIONS];
 } Room;
 
-Room init_room(const char * description);
+Room init_room(char * description);
 void free_room(Room * room);
 void add_item_to_room(Room * room, ItemID item);
 void remove_item_from_room(Room * room, ItemID item_id);

@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-Room init_room(const char * description)
+Room init_room(char * description)
 {
     Room room;
     room.description = description;
@@ -16,6 +16,8 @@ Room init_room(const char * description)
 
 void free_room(Room * room)
 {
+    free(room->description);
+    room->description = NULL;
     free(room->items);
     room->items = NULL;
     room->num_items = 0;
