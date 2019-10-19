@@ -9,11 +9,16 @@
 void game_loop()
 {
     GameState game = init_game_state(GAME_DATA_PATH);
-    describe_room(game, game.current_room);
+    RoomID previous_room = ID_NO_ROOM;
     char input[MAX_INPUT_SIZE] = "";
     while (game.is_running)
     {
-        put_text("YOU: ");
+        if (game.current_room != previous_room)
+        {
+            describe_room(game, game.current_room);
+            previous_room = game.current_room;
+        }
+        put_text("> ");
         get_text(input);
         apply_input_to_game_state(input, &game);
     }
@@ -156,8 +161,8 @@ void load_game_from_json_tokens(GameState * game, const char * json_string, jsmn
                 char * description = malloc(description_size * sizeof(char));
                 strncpy(description, json_string + tokens[token_index].start, description_size);
                 game->items[item_num] = init_item(name, description);
+                token_index++;
             }
-            token_index++;
         }
     }
 }
@@ -200,7 +205,7 @@ void describe_room(GameState game, RoomID room_id)
         if (room.num_items > 1 && item_num == room.num_items-1)
             put_text(" and a ");
         else if (item_num > 0)
-            put_text(", ");
+            put_text(", a ");
 
         Item item = game.items[room.items[item_num]];
         put_text("%s", item.name);
