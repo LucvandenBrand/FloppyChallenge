@@ -26,6 +26,7 @@ void load_game_data(GameState * game, const char * game_data_path);
 void load_game_from_json_string(GameState * game, const char * game_data_string);
 void load_game_from_json_tokens(GameState * game, const char * json_string, jsmntok_t * tokens, int num_tokens);
 void free_game_state(GameState * game);
+void describe_room(GameState game, RoomID room_id);
 void apply_input_to_game_state(const char * input, GameState * game);
 
 #endif

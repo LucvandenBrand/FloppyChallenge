@@ -4,10 +4,12 @@
 #include <stdlib.h>
 #include <game/room.h>
 #include <io/files.h>
+#include <stdio.h>
 
 void game_loop()
 {
     GameState game = init_game_state(GAME_DATA_PATH);
+    describe_room(game, game.current_room);
     char input[MAX_INPUT_SIZE] = "";
     while (game.is_running)
     {
@@ -23,6 +25,7 @@ GameState init_game_state(const char * game_data_path)
     GameState game;
     game.is_running = true;
     game.player = init_player();
+    game.current_room = 0;
     game.num_rooms = 0;
     game.rooms = NULL;
     game.num_items = 0;
@@ -100,8 +103,9 @@ void load_game_from_json_tokens(GameState * game, const char * json_string, jsmn
                 }
                 token_index += 2;
                 int description_size = tokens[token_index].end - tokens[token_index].start;
-                char * description = malloc(description_size * sizeof(char));
+                char * description = malloc((description_size+1) * sizeof(char));
                 strncpy(description, json_string + tokens[token_index].start, description_size);
+                description[description_size] = '\0';
                 game->rooms[room_num] = init_room(description);
                 token_index += 2;
                 int num_directions = tokens[token_index].size;
@@ -178,6 +182,30 @@ void free_game_state(GameState * game)
         game->items = NULL;
         game->num_items = 0;
     }
+}
+
+void describe_room(GameState game, RoomID room_id)
+{
+    Room room = game.rooms[room_id];
+    put_text("%s\n", room.description);
+    if (room.num_items <= 0)
+    {
+        put_text("The room is completely empty.\n");
+        return;
+    }
+
+    put_text("There is a ");
+    for (unsigned item_num = 0; item_num < room.num_items; item_num++)
+    {
+        if (room.num_items > 1 && item_num == room.num_items-1)
+            put_text(" and a ");
+        else if (item_num > 0)
+            put_text(", ");
+
+        Item item = game.items[room.items[item_num]];
+        put_text("%s", item.name);
+    }
+    put_text(".\n");
 }
 
 void apply_input_to_game_state(const char * input, GameState * game)

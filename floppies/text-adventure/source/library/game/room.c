@@ -33,7 +33,7 @@ void add_item_to_room(Room * room, ItemID item_id)
         room->max_items *= 2;
         room->items = realloc(room->items, room->max_items * sizeof(ItemID));
     }
-    room->items[room->num_items] = item_id;
+    room->items[room->num_items++] = item_id;
 }
 
 void remove_item_from_room(Room * room, ItemID item_id)

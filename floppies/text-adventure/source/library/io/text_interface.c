@@ -11,7 +11,7 @@ void put_text(const char * text, ...)
 {
     va_list args;
     va_start (args, text);
-    put_color_text(BLACK, text, args);
+    vprintf(text, args);
     va_end (args);
 }
 
