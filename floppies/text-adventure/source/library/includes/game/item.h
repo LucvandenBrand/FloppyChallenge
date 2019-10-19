@@ -6,10 +6,11 @@
 typedef int ItemID;
 
 typedef struct {
-    const char * name;
-    const char * description;
+    char * name;
+    char * description;
 } Item;
 
-Item init_item(const char * name, const char * description);
+Item init_item(char * name, char * description);
+void free_item(Item * item);
 
 #endif

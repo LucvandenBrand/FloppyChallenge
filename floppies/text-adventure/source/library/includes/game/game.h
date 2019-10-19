@@ -15,11 +15,9 @@ typedef struct{
     Player player;
     Room * rooms;
     unsigned num_rooms;
-    unsigned max_rooms;
     RoomID current_room;
     Item * items;
     unsigned num_items;
-    unsigned max_items;
 } GameState;
 
 void game_loop();

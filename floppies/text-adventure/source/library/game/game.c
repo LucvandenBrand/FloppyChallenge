@@ -24,10 +24,9 @@ GameState init_game_state(const char * game_data_path)
     game.is_running = true;
     game.player = init_player();
     game.num_rooms = 0;
-    game.max_rooms = 4;
-    game.rooms = malloc(game.max_rooms * sizeof(Room));
-    game.max_items = 4;
-    game.items = malloc(game.max_items * sizeof(Item));
+    game.rooms = NULL;
+    game.num_items = 0;
+    game.items = NULL;
     load_game_data(&game, game_data_path);
     return game;
 }
@@ -84,10 +83,12 @@ void load_game_from_json_tokens(GameState * game, const char * json_string, jsmn
     }
     for (unsigned token_index = 0; token_index < num_tokens; token_index++)
     {
+        jsmntok_t token = tokens[token_index];
         if (json_equal(json_string, &tokens[token_index], "rooms") == 0)
         {
             token_index++;
             game->num_rooms = tokens[token_index].size;
+            game->rooms = malloc(game->num_rooms * sizeof(Room));
             token_index++;
             for (unsigned room_num=0; room_num < game->num_rooms; room_num++)
             {
@@ -125,10 +126,34 @@ void load_game_from_json_tokens(GameState * game, const char * json_string, jsmn
                 }
                 token_index++;
             }
+            token_index--;
         }
         else if (json_equal(json_string, &tokens[token_index], "items") == 0)
         {
+            token_index++;
+            game->num_items = tokens[token_index].size;
+            game->items = malloc(game->num_items * sizeof(Item));
+            token_index++;
+            for (unsigned item_num=0; item_num < game->num_items; item_num++)
+            {
+                if (tokens[token_index].type != JSMN_OBJECT)
+                {
+                    put_color_text(RED, "The item list should only contain item objects!");
+                    game->is_running = false;
+                    return;
+                }
+                token_index += 2;
+                int name_size = tokens[token_index].end - tokens[token_index].start;
+                char * name = malloc(name_size * sizeof(char));
+                strncpy(name, json_string + tokens[token_index].start, name_size);
 
+                token_index += 2;
+                int description_size = tokens[token_index].end - tokens[token_index].start;
+                char * description = malloc(description_size * sizeof(char));
+                strncpy(description, json_string + tokens[token_index].start, description_size);
+                game->items[item_num] = init_item(name, description);
+            }
+            token_index++;
         }
     }
 }
@@ -137,16 +162,22 @@ void free_game_state(GameState * game)
 {
     game->is_running = false;
     free_player(&game->player);
-    for (unsigned room_index = 0; room_index < game->num_rooms; room_index++)
-        free_room(&game->rooms[room_index]);
-    free(game->rooms);
-    game->rooms = NULL;
-    game->num_rooms = 0;
-    game->max_rooms = 0;
-    free(game->items);
-    game->items = NULL;
-    game->num_items = 0;
-    game->max_items = 0;
+    if (game->num_rooms > 0)
+    {
+        for (unsigned room_index = 0; room_index < game->num_rooms; room_index++)
+            free_room(&game->rooms[room_index]);
+        free(game->rooms);
+        game->rooms = NULL;
+        game->num_rooms = 0;
+    }
+    if (game->num_items > 0)
+    {
+        for (unsigned item_index = 0; item_index < game->num_rooms; item_index++)
+            free_item(&game->items[item_index]);
+        free(game->items);
+        game->items = NULL;
+        game->num_items = 0;
+    }
 }
 
 void apply_input_to_game_state(const char * input, GameState * game)
