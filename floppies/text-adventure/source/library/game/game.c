@@ -107,11 +107,7 @@ void load_game_from_json_tokens(GameState * game, const char * json_string, jsmn
                     return;
                 }
                 token_index += 2;
-                int description_size = tokens[token_index].end - tokens[token_index].start;
-                char * description = malloc((description_size+1) * sizeof(char));
-                strncpy(description, json_string + tokens[token_index].start, description_size);
-                description[description_size] = '\0';
-                game->rooms[room_num] = init_room(description);
+                game->rooms[room_num] = init_room(copy_json_string_token(json_string, tokens[token_index]));
                 token_index += 2;
                 int num_directions = tokens[token_index].size;
                 for (Direction direction=0; direction < num_directions; direction++)
@@ -152,19 +148,23 @@ void load_game_from_json_tokens(GameState * game, const char * json_string, jsmn
                     return;
                 }
                 token_index += 2;
-                int name_size = tokens[token_index].end - tokens[token_index].start;
-                char * name = malloc(name_size * sizeof(char));
-                strncpy(name, json_string + tokens[token_index].start, name_size);
-
+                char * name = copy_json_string_token(json_string, tokens[token_index]);
                 token_index += 2;
-                int description_size = tokens[token_index].end - tokens[token_index].start;
-                char * description = malloc(description_size * sizeof(char));
-                strncpy(description, json_string + tokens[token_index].start, description_size);
+                char * description = copy_json_string_token(json_string, tokens[token_index]);
                 game->items[item_num] = init_item(name, description);
                 token_index++;
             }
         }
     }
+}
+
+char * copy_json_string_token(const char * json_string, jsmntok_t token)
+{
+    int string_size = token.end - token.start;
+    char * string = malloc((string_size+1) * sizeof(char));
+    strncpy(string, json_string + token.start, string_size);
+    string[string_size] = '\0';
+    return string;
 }
 
 void free_game_state(GameState * game)
