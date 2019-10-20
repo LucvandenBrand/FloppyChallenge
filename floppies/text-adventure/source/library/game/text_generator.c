@@ -33,7 +33,7 @@ void choose_indefinite_article(const char * name)
     if (strlen(name) < 1)
         return;
     put_text("a");
-    char first_char = tolower(name[0]);
+    char first_char = (char) tolower(name[0]);
     if (is_char_in_array(first_char, "aeiouae")) // Yes, I'm missing the details here.
         put_text("n");
 }
