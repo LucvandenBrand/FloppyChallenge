@@ -10,5 +10,7 @@ Item init_item(char * name, char * description)
 void free_item(Item * item)
 {
     free(item->name);
+    item->name = NULL;
     free(item->description);
+    item->description = NULL;
 }

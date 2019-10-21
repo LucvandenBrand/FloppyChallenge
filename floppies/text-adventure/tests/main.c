@@ -3,7 +3,7 @@
 
 #define NUM_SUITES 1
 
-Suite * makeAddSuite();
+Suite * makeItemSuite();
 
 SRunner * createSuiteRunner(Suite** suites, int numSuites)
 {
@@ -23,7 +23,7 @@ SRunner * createSuiteRunner(Suite** suites, int numSuites)
 int main()
 {
     Suite * suites[NUM_SUITES] = {
-            makeAddSuite()
+            makeItemSuite()
     };
 
     SRunner * suiteRunner = createSuiteRunner(suites, NUM_SUITES);
