@@ -10,6 +10,4 @@ typedef enum {
     WEST = 3
 } Direction;
 
-Direction mirror_direction(Direction direction);
-
 #endif
