@@ -1,11 +1,12 @@
 #include <check.h>
 #include <stdlib.h>
 
-#define NUM_SUITES 3
+#define NUM_SUITES 4
 
 Suite * makeItemSuite();
 Suite * makeRoomSuite();
 Suite * makePlayerSuite();
+Suite * makeTextGeneratorSuite();
 
 SRunner * createSuiteRunner(Suite** suites, int numSuites)
 {
@@ -27,7 +28,8 @@ int main()
     Suite * suites[NUM_SUITES] = {
             makeItemSuite(),
             makeRoomSuite(),
-            makePlayerSuite()
+            makePlayerSuite(),
+            makeTextGeneratorSuite()
     };
 
     SRunner * suiteRunner = createSuiteRunner(suites, NUM_SUITES);
