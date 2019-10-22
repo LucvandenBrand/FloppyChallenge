@@ -4,7 +4,7 @@
 #include "game/item.h"
 #include <game/direction.h>
 
-#define ID_NO_ROOM -1;
+#define ID_NO_ROOM -1
 
 typedef int RoomID;
 
