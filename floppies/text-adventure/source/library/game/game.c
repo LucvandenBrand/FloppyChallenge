@@ -5,6 +5,7 @@
 #include <game/room.h>
 #include <game/game_loader.h>
 #include <game/text_generator.h>
+#include <game/parsing/parser.h>
 
 void game_loop()
 {
@@ -59,10 +60,4 @@ void free_game_state(GameState * game)
         game->items = NULL;
         game->num_items = 0;
     }
-}
-
-void apply_input_to_game_state(const char * input, GameState * game)
-{
-    if (strcmp(input, "exit") == 0)
-        game->is_running = false;
 }
