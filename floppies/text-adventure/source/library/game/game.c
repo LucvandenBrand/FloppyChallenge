@@ -61,3 +61,11 @@ void free_game_state(GameState * game)
         game->num_items = 0;
     }
 }
+
+ItemID get_item_id(const char * name, GameState game)
+{
+    for (ItemID item_id=0; item_id < game.num_items; item_id++)
+        if (strcmp(game.items[item_id].name, name) == 0)
+            return item_id;
+    return ID_NO_ITEM;
+}

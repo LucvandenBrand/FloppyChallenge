@@ -1,7 +1,7 @@
 #ifndef ITEM_H
 #define ITEM_H
 
-#define ID_NO_ITEM -1;
+#define ID_NO_ITEM -1
 
 typedef int ItemID;
 

@@ -4,12 +4,12 @@
 
 void apply_input_to_game_state(const char * input, GameState * game)
 {
-    TokenList token_list = text_to_tokens(input);
+    TokenList token_list = text_to_tokens(input, *game);
     apply_tokens_to_game_state(token_list, game);
     free_tokens(&token_list);
 }
 
-TokenList text_to_tokens(const char * input)
+TokenList text_to_tokens(const char * input, GameState game)
 {
     TokenList tokens = {NULL, 0};
     int max_num_tokens = 0;
@@ -18,7 +18,7 @@ TokenList text_to_tokens(const char * input)
     while (end < num_chars)
     {
         const char * sub_string = strndup(input + start, end - start);
-        Token token = match_token(sub_string);
+        Token token = match_token(sub_string, game);
         if (token.type != NONE)
         {
             // TODO: Append token to tokens. Use max num tokens.
@@ -27,13 +27,6 @@ TokenList text_to_tokens(const char * input)
         end++;
     }
     return tokens;
-}
-
-Token match_token(const char * string)
-{
-    Token token = {NONE, 0};
-    // TODO: Parse token.
-    return token;
 }
 
 void apply_tokens_to_game_state(TokenList token_list, GameState * game)

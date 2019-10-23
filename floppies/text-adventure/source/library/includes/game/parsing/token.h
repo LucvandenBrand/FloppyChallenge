@@ -1,6 +1,8 @@
 #ifndef TOKEN_H
 #define TOKEN_H
 
+#include <game/game.h>
+
 /**
  * Grammar: STATEMENT := ACTION | MOVEMENT
  *          ACTION := INSPECTING | TAKING | PLACING | WALKING
@@ -19,15 +21,14 @@ typedef enum {
     PLACE,
     ITEM,
     WALK,
-    DIR_NORTH,
-    DIR_EAST,
-    DIR_SOUTH,
-    DIR_WEST
+    DIRECTION
 } TokenType;
 
 typedef struct {
     TokenType type;
     int value;
 } Token;
+
+Token match_token(const char * string, GameState game);
 
 #endif
