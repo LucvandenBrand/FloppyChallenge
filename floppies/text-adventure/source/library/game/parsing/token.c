@@ -1,12 +1,11 @@
 #include <game/parsing/token.h>
 #include <string.h>
-#include <ctype.h>
 #include <game/direction.h>
 #include <game/item.h>
 
 Token match_token(const char * string, GameState game)
 {
-    Token token = {NONE, 0};
+    Token token = {NONE, -1};
     ItemID item_id = get_item_id(string, game);
     if (item_id != ID_NO_ITEM)
     {

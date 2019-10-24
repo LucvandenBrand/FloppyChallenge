@@ -12,7 +12,8 @@ void apply_input_to_game_state(const char * input, GameState * game)
 TokenList text_to_tokens(const char * input, GameState game)
 {
     TokenList tokens = {NULL, 0};
-    int max_num_tokens = 0;
+    int max_num_tokens = 2;
+    tokens.tokens = malloc(max_num_tokens * sizeof(Token));
     unsigned long num_chars = strlen(input);
     unsigned long start = 0, end = 1;
     while (end < num_chars)
@@ -21,7 +22,12 @@ TokenList text_to_tokens(const char * input, GameState game)
         Token token = match_token(sub_string, game);
         if (token.type != NONE)
         {
-            // TODO: Append token to tokens. Use max num tokens.
+            if (tokens.length >= max_num_tokens)
+            {
+                max_num_tokens *= 2;
+                tokens.tokens = realloc(tokens.tokens, max_num_tokens * sizeof(Token));
+            }
+            tokens.tokens[tokens.length++] = token;
             start = end;
         }
         end++;

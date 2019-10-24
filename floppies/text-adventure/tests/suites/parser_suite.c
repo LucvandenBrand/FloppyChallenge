@@ -3,10 +3,12 @@
 
 START_TEST(test_empty_text_to_tokens)
 {
-    TokenList token_list = text_to_tokens("");
-    ck_assert_ptr_eq(token_list.tokens, NULL);
+    GameState game = init_game_state(GAME_DATA_PATH);
+    TokenList token_list = text_to_tokens("", game);
+    ck_assert_ptr_ne(token_list.tokens, NULL);
     ck_assert_int_eq(token_list.length, 0);
     free_tokens(&token_list);
+    free_game_state(&game);
 }
 END_TEST
 
