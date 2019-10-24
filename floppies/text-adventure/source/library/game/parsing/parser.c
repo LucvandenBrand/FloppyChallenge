@@ -16,8 +16,15 @@ TokenList text_to_tokens(const char * input, GameState game)
     tokens.tokens = malloc(max_num_tokens * sizeof(Token));
     unsigned long num_chars = strlen(input);
     unsigned long start = 0, end = 1;
-    while (end < num_chars)
+    while (end <= num_chars)
     {
+        if (*(input + start) == ' ')
+        {
+            start = end;
+            end++;
+            continue;
+        }
+
         const char * sub_string = strndup(input + start, end - start);
         Token token = match_token(sub_string, game);
         if (token.type != NONE)
