@@ -4,7 +4,7 @@
 #include <game/game.h>
 
 /**
- * Grammar: STATEMENT := ACTION | MOVEMENT
+ * Grammar: STATEMENT := ACTION | MOVEMENT | EXIT
  *          ACTION := INSPECTING | TAKING | PLACING | WALKING
  *          INSPECTING := LOOK {AT} ITEM
  *          TAKING := TAKE ITEM
@@ -21,7 +21,8 @@ typedef enum {
     PLACE,
     ITEM,
     WALK,
-    DIRECTION
+    DIRECTION,
+    EXIT
 } TokenType;
 
 typedef struct {

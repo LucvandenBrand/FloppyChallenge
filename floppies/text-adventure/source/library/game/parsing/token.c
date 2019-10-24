@@ -42,6 +42,10 @@ Token match_token(const char * string, GameState game)
         token.type = DIRECTION;
         token.value = WEST;
     }
+    else if (strcmp(string, "exit") == 0)
+    {
+        token.type = EXIT;
+    }
 
     return token;
 }

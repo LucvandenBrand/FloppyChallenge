@@ -1,6 +1,8 @@
 #include <game/parsing/parser.h>
 #include <stdlib.h>
 #include <string.h>
+#include <io/text_interface.h>
+#include <game/text_generator.h>
 
 void apply_input_to_game_state(const char * input, GameState * game)
 {
@@ -44,11 +46,49 @@ TokenList text_to_tokens(const char * input, GameState game)
 
 void apply_tokens_to_game_state(TokenList token_list, GameState * game)
 {
-    for (unsigned token_index=0; token_index < token_list.length; token_index++)
+    unsigned token_index = 0;
+    if (accept_token(token_list, &token_index, EXIT))
     {
-        Token token = token_list.tokens[token_index];
+        game->is_running = false;
+        return;;
     }
-    game->is_running = false;
+
+    if (accept_action(token_list, &token_index, game) || accept_movement(token_list, &token_index, game))
+        return;
+
+    put_text("Sorry, I do not understand that command.\n");
+}
+
+bool accept_action(TokenList token_list, unsigned * token_index, GameState * game)
+{
+    return false; // TODO Implement
+}
+
+bool accept_movement(TokenList token_list, unsigned * token_index, GameState * game)
+{
+    if (accept_token(token_list, token_index, WALK) && accept_token(token_list, token_index, DIRECTION))
+    {
+        Direction direction = token_list.tokens[*token_index-1].value;
+        RoomID go_to_room = game->rooms[game->current_room].neighbour_rooms[direction];
+        if (go_to_room == ID_NO_ROOM)
+        {
+            put_text("BONK!\nYou just bumped into a wall...\n");
+            return true;
+        }
+        game->current_room = go_to_room;
+        return true;
+    }
+    return false;
+}
+
+bool accept_token(TokenList token_list, unsigned * token_index, TokenType expected)
+{
+    if (*token_index < token_list.length && token_list.tokens[*token_index].type == expected)
+    {
+        (*token_index)++;
+        return true;
+    }
+    return false;
 }
 
 void free_tokens(TokenList * token_list)

@@ -5,3 +5,7 @@
 build
 cmake-build-debug
 cmake-build-release
+
+# Test output
+test.log
+test.xml

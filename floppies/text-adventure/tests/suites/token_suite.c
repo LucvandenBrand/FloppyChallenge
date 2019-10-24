@@ -90,6 +90,16 @@ START_TEST(test_match_token_direction)
 }
 END_TEST
 
+START_TEST(test_match_token_exit)
+    {
+        GameState game = init_game_state(GAME_DATA_PATH);
+        Token token = match_token("exit", game);
+        ck_assert_int_eq(token.type, EXIT);
+        ck_assert_int_eq(token.value, -1);
+        free_game_state(&game);
+    }
+END_TEST
+
 Suite * makeTokenSuite()
 {
     Suite *suite = suite_create("Token Test Suite");
@@ -103,6 +113,7 @@ Suite * makeTokenSuite()
     tcase_add_test(test_case, test_match_token_item);
     tcase_add_test(test_case, test_match_token_walk);
     tcase_add_test(test_case, test_match_token_direction);
+    tcase_add_test(test_case, test_match_token_exit);
     suite_add_tcase(suite, test_case);
 
     return suite;
