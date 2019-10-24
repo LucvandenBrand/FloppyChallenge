@@ -61,7 +61,41 @@ void apply_tokens_to_game_state(TokenList token_list, GameState * game)
 
 bool accept_action(TokenList token_list, unsigned * token_index, GameState * game)
 {
-    return false; // TODO Implement
+    if (accept_inspecting(token_list, token_index, game) || accept_taking(token_list, token_index, game) ||
+        accept_placing(token_list, token_index, game))
+        return true;
+    return false;
+}
+
+bool accept_inspecting(TokenList token_list, unsigned * token_index, GameState * game)
+{
+    if (accept_token(token_list, token_index, LOOK))
+    {
+        accept_token(token_list, token_index, AT);
+        if (accept_token(token_list, token_index, ITEM))
+        {
+            ItemID item_id = token_list.tokens[*token_index-1].value;
+            if (is_item_in_room(*game, item_id))
+            {
+                Item item = game->items[item_id];
+                put_text("%s\n", item.description);
+                return true;
+            }
+        }
+        put_text("Sorry, that item is not in the room.\n");
+        return true;
+    }
+    return false;
+}
+
+bool accept_taking(TokenList token_list, unsigned * token_index, GameState * game)
+{
+    return false;
+}
+
+bool accept_placing(TokenList token_list, unsigned * token_index, GameState * game)
+{
+    return false;
 }
 
 bool accept_movement(TokenList token_list, unsigned * token_index, GameState * game)

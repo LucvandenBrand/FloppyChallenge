@@ -24,5 +24,6 @@ void game_loop();
 GameState init_game_state(const char * game_data_path);
 void free_game_state(GameState * game);
 ItemID get_item_id(const char * name, GameState game);
+bool is_item_in_room(GameState game, ItemID item_id);
 
 #endif
