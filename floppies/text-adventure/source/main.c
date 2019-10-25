@@ -4,10 +4,10 @@
 int main()
 {
     clear_screen();
-    put_text("o------------------Text-Adventure----------------o\n");
+    put_text("o----------------------------------------Text-Adventure--------------------------------------o\n\n");
     game_loop();
 
     put_text("\nTHE END, See https://floppychallenge.com for more!\n");
-    put_text("o------------------------------------------------o\n");
+    put_text("o--------------------------------------------------------------------------------------------o\n");
     return 0;
 }
