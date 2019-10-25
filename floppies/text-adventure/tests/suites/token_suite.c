@@ -12,13 +12,23 @@ START_TEST(test_match_token_none)
 END_TEST
 
 START_TEST(test_match_token_room)
-    {
-        GameState game = init_game_state(GAME_DATA_PATH);
-        Token token = match_token("room", game);
-        ck_assert_int_eq(token.type, ROOM);
-        ck_assert_int_eq(token.value, -1);
-        free_game_state(&game);
-    }
+{
+    GameState game = init_game_state(GAME_DATA_PATH);
+    Token token = match_token("room", game);
+    ck_assert_int_eq(token.type, ROOM);
+    ck_assert_int_eq(token.value, -1);
+    free_game_state(&game);
+}
+END_TEST
+
+START_TEST(test_match_token_inventory)
+{
+    GameState game = init_game_state(GAME_DATA_PATH);
+    Token token = match_token("inventory", game);
+    ck_assert_int_eq(token.type, INVENTORY);
+    ck_assert_int_eq(token.value, -1);
+    free_game_state(&game);
+}
 END_TEST
 
 START_TEST(test_match_token_look)
@@ -117,6 +127,7 @@ Suite * makeTokenSuite()
     TCase * test_case = tcase_create("Token");
     tcase_add_test(test_case, test_match_token_none);
     tcase_add_test(test_case, test_match_token_room);
+    tcase_add_test(test_case, test_match_token_inventory);
     tcase_add_test(test_case, test_match_token_look);
     tcase_add_test(test_case, test_match_token_at);
     tcase_add_test(test_case, test_match_token_take);

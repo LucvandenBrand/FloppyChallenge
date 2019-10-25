@@ -83,6 +83,8 @@ bool accept_inspecting(TokenList token_list, unsigned * token_index, GameState *
         }
         else if (accept_token(token_list, token_index, ROOM))
             describe_room(*game, game->current_room);
+        else if (accept_token(token_list, token_index, INVENTORY))
+            list_items(*game, game->player.items, game->player.num_items);
         else
             put_text("Sorry, that item is not in the room.\n");
         return true;

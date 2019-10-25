@@ -14,6 +14,8 @@ Token match_token(const char * string, GameState game)
     }
     else if (strcmp(string, "room") == 0)
         token.type = ROOM;
+    else if (strcmp(string, "inventory") == 0)
+        token.type = INVENTORY;
     else if (strcmp(string, "look") == 0)
         token.type = LOOK;
     else if (strcmp(string, "at") == 0)

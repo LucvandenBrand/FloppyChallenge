@@ -7,20 +7,24 @@ void describe_room(GameState game, RoomID room_id)
 {
     Room room = game.rooms[room_id];
     put_text("%s\n", room.description);
-    if (room.num_items <= 0)
+    list_items(game, room.items, room.num_items);
+}
+
+void list_items(GameState game, const ItemID * items, unsigned num_items)
+{
+    if (num_items <= 0)
     {
-        put_text("The room is completely empty.\n");
+        put_text("It is empty.\n");
         return;
     }
-
     put_text("There is ");
-    for (unsigned item_num = 0; item_num < room.num_items; item_num++)
+    for (unsigned item_num = 0; item_num < num_items; item_num++)
     {
-        if (room.num_items > 1 && item_num == room.num_items-1)
+        if (num_items > 1 && item_num == num_items-1)
             put_text(" and ");
         else if (item_num > 0)
             put_text(", ");
-        Item item = game.items[room.items[item_num]];
+        Item item = game.items[items[item_num]];
         choose_indefinite_article(item.name);
         put_text(" ");
         put_text("%s", item.name);

@@ -27,16 +27,29 @@ START_TEST(test_look_at_item_to_tokens)
 END_TEST
 
 START_TEST(test_look_at_room_to_tokens)
-    {
-        GameState game = init_game_state(GAME_DATA_PATH);
-        TokenList token_list = text_to_tokens("look at room", game);
-        ck_assert_int_eq(token_list.tokens[0].type, LOOK);
-        ck_assert_int_eq(token_list.tokens[1].type, AT);
-        ck_assert_int_eq(token_list.tokens[2].type, ROOM);
-        ck_assert_int_eq(token_list.length, 3);
-        free_tokens(&token_list);
-        free_game_state(&game);
-    }
+{
+    GameState game = init_game_state(GAME_DATA_PATH);
+    TokenList token_list = text_to_tokens("look at room", game);
+    ck_assert_int_eq(token_list.tokens[0].type, LOOK);
+    ck_assert_int_eq(token_list.tokens[1].type, AT);
+    ck_assert_int_eq(token_list.tokens[2].type, ROOM);
+    ck_assert_int_eq(token_list.length, 3);
+    free_tokens(&token_list);
+    free_game_state(&game);
+}
+END_TEST
+
+START_TEST(test_look_at_inventory_to_tokens)
+{
+    GameState game = init_game_state(GAME_DATA_PATH);
+    TokenList token_list = text_to_tokens("look at inventory", game);
+    ck_assert_int_eq(token_list.tokens[0].type, LOOK);
+    ck_assert_int_eq(token_list.tokens[1].type, AT);
+    ck_assert_int_eq(token_list.tokens[2].type, INVENTORY);
+    ck_assert_int_eq(token_list.length, 3);
+    free_tokens(&token_list);
+    free_game_state(&game);
+}
 END_TEST
 
 START_TEST(test_take_item_to_tokens)
@@ -86,6 +99,7 @@ Suite * makeParserSuite()
     tcase_add_test(test_case, test_empty_text_to_tokens);
     tcase_add_test(test_case, test_look_at_item_to_tokens);
     tcase_add_test(test_case, test_look_at_room_to_tokens);
+    tcase_add_test(test_case, test_look_at_inventory_to_tokens);
     tcase_add_test(test_case, test_take_item_to_tokens);
     tcase_add_test(test_case, test_place_item_to_tokens);
     tcase_add_test(test_case, test_walk_direction_to_tokens);
