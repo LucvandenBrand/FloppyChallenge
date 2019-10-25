@@ -79,10 +79,12 @@ bool accept_inspecting(TokenList token_list, unsigned * token_index, GameState *
             {
                 Item item = game->items[item_id];
                 put_text("%s\n", item.description);
-                return true;
             }
         }
-        put_text("Sorry, that item is not in the room.\n");
+        else if (accept_token(token_list, token_index, ROOM))
+            describe_room(*game, game->current_room);
+        else
+            put_text("Sorry, that item is not in the room.\n");
         return true;
     }
     return false;

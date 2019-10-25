@@ -6,10 +6,11 @@
 /**
  * Grammar: STATEMENT := ACTION | MOVEMENT | EXIT
  *          ACTION := INSPECTING | TAKING | PLACING
- *          INSPECTING := LOOK {AT} ITEM
+ *          INSPECTING := LOOK {AT} ITEM | ROOM
  *          TAKING := TAKE ITEM
  *          PLACING := PLACE ITEM
  *          ITEM := [a-Z]+
+ *          ROOM := [a-Z]+
  *          MOVEMENT := WALK DIRECTION
  *          DIRECTION := north | east | south | west
  */
@@ -20,6 +21,7 @@ typedef enum {
     TAKE,
     PLACE,
     ITEM,
+    ROOM,
     WALK,
     DIRECTION,
     EXIT
