@@ -69,14 +69,3 @@ ItemID get_item_id(const char * name, GameState game)
             return item_id;
     return ID_NO_ITEM;
 }
-
-bool is_item_in_room(GameState game, ItemID item_id)
-{
-    Room room = game.rooms[game.current_room];
-    for (unsigned item_num = 0; item_num < room.num_items; item_num++)
-    {
-        if (room.items[item_num] == item_id)
-            return true;
-    }
-    return false;
-}

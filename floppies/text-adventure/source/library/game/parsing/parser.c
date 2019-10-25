@@ -50,7 +50,7 @@ void apply_tokens_to_game_state(TokenList token_list, GameState * game)
     if (accept_token(token_list, &token_index, EXIT))
     {
         game->is_running = false;
-        return;;
+        return;
     }
 
     if (accept_action(token_list, &token_index, game) || accept_movement(token_list, &token_index, game))
@@ -75,7 +75,7 @@ bool accept_inspecting(TokenList token_list, unsigned * token_index, GameState *
         if (accept_token(token_list, token_index, ITEM))
         {
             ItemID item_id = token_list.tokens[*token_index-1].value;
-            if (is_item_in_room(*game, item_id))
+            if (is_item_in_room(game->rooms[game->current_room], item_id))
             {
                 Item item = game->items[item_id];
                 put_text("%s\n", item.description);
@@ -90,11 +90,46 @@ bool accept_inspecting(TokenList token_list, unsigned * token_index, GameState *
 
 bool accept_taking(TokenList token_list, unsigned * token_index, GameState * game)
 {
+    if (accept_token(token_list, token_index, TAKE))
+    {
+        if (accept_token(token_list, token_index, ITEM))
+        {
+            ItemID item_id = token_list.tokens[*token_index-1].value;
+            if (is_item_in_room(game->rooms[game->current_room], item_id))
+            {
+                Item item = game->items[item_id];
+                put_text("You pick up the %s and put it in your pocket.\n", item.name);
+                add_item_to_player(&game->player, item_id);
+                remove_item_from_room(&game->rooms[game->current_room], item_id);
+                return true;
+            }
+        }
+
+        put_text("You grasp in thin air... that item is not in the room.\n");
+        return true;
+    }
     return false;
 }
 
 bool accept_placing(TokenList token_list, unsigned * token_index, GameState * game)
 {
+    if (accept_token(token_list, token_index, PLACE))
+    {
+        if (accept_token(token_list, token_index, ITEM))
+        {
+            ItemID item_id = token_list.tokens[*token_index-1].value;
+            if (player_has_item(game->player, item_id))
+            {
+                Item item = game->items[item_id];
+                put_text("You take the %s and place it in the room.\n", item.name);
+                remove_item_from_player(&game->player, item_id);
+                add_item_to_room(&game->rooms[game->current_room], item_id);
+                return true;
+            }
+        }
+        put_text("You fumble in your pockets... that item is not in your possession.\n");
+        return true;
+    }
     return false;
 }
 

@@ -44,3 +44,13 @@ void remove_item_from_player(Player * player, ItemID item_id)
         }
     }
 }
+
+bool player_has_item(Player player, ItemID item_id)
+{
+    for (unsigned item_num = 0; item_num < player.num_items; item_num++)
+    {
+        if (player.items[item_num] == item_id)
+            return true;
+    }
+    return false;
+}

@@ -56,3 +56,13 @@ void connect_rooms(Room * from_room, RoomID to_room, Direction direction)
 {
     from_room->neighbour_rooms[direction] = to_room;
 }
+
+bool is_item_in_room(Room room, ItemID item_id)
+{
+    for (unsigned item_num = 0; item_num < room.num_items; item_num++)
+    {
+        if (room.items[item_num] == item_id)
+            return true;
+    }
+    return false;
+}

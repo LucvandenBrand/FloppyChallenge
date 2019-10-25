@@ -1,7 +1,7 @@
 {
   "rooms": [
     {
-      "description": "A boring room with nothing in it except for a funny looking door to the east.",
+      "description": "A boring room with a funny looking door to the east.",
       "neighbour_rooms": [-1, 1, -1, -1],
       "items": [0, 1, 2]
     },
