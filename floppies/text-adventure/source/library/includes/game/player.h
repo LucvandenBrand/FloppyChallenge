@@ -3,11 +3,10 @@
 
 #include "item.h"
 #include <stdbool.h>
+#include <list/id_list.h>
 
 typedef struct {
-    ItemID * items;
-    unsigned num_items;
-    unsigned max_items;
+    IDList item_id_list;
 } Player;
 
 Player init_player();

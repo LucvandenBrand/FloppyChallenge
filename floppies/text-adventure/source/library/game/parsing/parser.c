@@ -41,6 +41,8 @@ TokenList text_to_tokens(const char * input, GameState game)
         }
         end++;
     }
+
+    tokens.tokens = realloc(tokens.tokens, tokens.length * sizeof(Token));
     return tokens;
 }
 
@@ -84,7 +86,7 @@ bool accept_inspecting(TokenList token_list, unsigned * token_index, GameState *
         else if (accept_token(token_list, token_index, ROOM))
             describe_room(*game, game->current_room);
         else if (accept_token(token_list, token_index, INVENTORY))
-            list_items(*game, game->player.items, game->player.num_items);
+            list_items(*game, game->player.item_id_list);
         else
             put_text("Sorry, that item is not in the room.\n");
         return true;

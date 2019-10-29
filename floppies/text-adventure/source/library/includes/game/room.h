@@ -4,16 +4,15 @@
 #include "game/item.h"
 #include <game/direction.h>
 #include <stdbool.h>
+#include <list/id_list.h>
 
 #define ID_NO_ROOM -1
 
-typedef int RoomID;
+typedef ID RoomID;
 
 typedef struct {
     char * description;
-    ItemID * items;
-    unsigned num_items;
-    unsigned max_items;
+    IDList item_id_list;
     RoomID neighbour_rooms[NUM_DIRECTIONS];
 } Room;
 

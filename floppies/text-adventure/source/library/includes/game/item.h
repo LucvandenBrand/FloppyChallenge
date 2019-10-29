@@ -1,9 +1,11 @@
 #ifndef ITEM_H
 #define ITEM_H
 
+#include <list/id_list.h>
+
 #define ID_NO_ITEM -1
 
-typedef int ItemID;
+typedef ID ItemID;
 
 typedef struct {
     char * name;
