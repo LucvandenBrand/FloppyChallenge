@@ -81,6 +81,7 @@ void load_game_from_json_tokens(GameState * game, const char * json_string, jsmn
                     char * room_id_string = strndup(json_string + tokens[token_index].start,
                                                     tokens[token_index].end - tokens[token_index].start);
                     int room_id = atoi(room_id_string);
+                    free(room_id_string);
                     game->rooms[room_num].neighbour_rooms[direction] = room_id;
                 }
 
@@ -92,6 +93,7 @@ void load_game_from_json_tokens(GameState * game, const char * json_string, jsmn
                     char * item_id_string = strndup(json_string + tokens[token_index].start,
                                                     tokens[token_index].end - tokens[token_index].start);
                     int item_id = atoi(item_id_string);
+                    free(item_id_string);
                     add_item_to_room(&game->rooms[room_num], item_id);
                 }
                 token_index++;

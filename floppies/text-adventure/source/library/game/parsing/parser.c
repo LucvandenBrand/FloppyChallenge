@@ -27,8 +27,9 @@ TokenList text_to_tokens(const char * input, GameState game)
             continue;
         }
 
-        const char * sub_string = strndup(input + start, end - start);
+        char * sub_string = strndup(input + start, end - start);
         Token token = match_token(sub_string, game);
+        free(sub_string);
         if (token.type != NONE)
         {
             if (tokens.length >= max_num_tokens)
