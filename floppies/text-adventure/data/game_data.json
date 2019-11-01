@@ -1,14 +1,35 @@
 {
+  "introduction":"Your car suddenly stops working.\nThere is an old cottage up the hill, you walk to it in search of some shelter from the storm. As you knock, the door creaks open... With hesitance you enter.\nWHAM! The door slams shut!\nYou adjust to the darkness and look at your surroundings...",
   "rooms": [
     {
       "description": "A boring room with a funny looking door to the east.",
-      "neighbour_rooms": [-1, 1, -1, -1],
-      "items": [0, 1, 2]
+      "doors": [
+        {
+          "name":"yellow door",
+          "direction":"E",
+          "key":1,
+          "room":1
+        }
+      ],
+      "items": [0, 1]
     },
     {
       "description": "A fun room, there is a boring looking door to the west and a funny one to the north.",
-      "neighbour_rooms": [1, -1, -1, 0],
-      "items": [0]
+      "neighbour_rooms": [
+        {
+          "name":"yellow door",
+          "direction":"W",
+          "key":-1,
+          "room":0
+        },
+        {
+          "name":"exit door",
+          "direction":"W",
+          "key":2,
+          "room":-1
+        }
+      ],
+      "items": [2]
     }
   ],
   "items": [
@@ -24,5 +45,6 @@
       "name": "Tiger toy",
       "description": "A toy for a tiger."
     }
-  ]
+  ],
+  "win":"The fresh air fills your lungs. You got out!"
 }
