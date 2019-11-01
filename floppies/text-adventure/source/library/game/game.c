@@ -70,8 +70,8 @@ ItemID get_item_id(const char * search_name, GameState game)
     {
         const char * item_name = game.items[item_id].name;
         unsigned long item_name_length = strlen(item_name);
-        char * lower_item_name = safe_malloc(item_name_length * sizeof(char));
-        strncpy(lower_item_name, item_name, item_name_length);
+        char * lower_item_name = safe_malloc((item_name_length+1) * sizeof(char));
+        strncpy(lower_item_name, item_name, item_name_length+1);
         string_to_lowercase(lower_item_name, item_name_length);
         int equality = strncmp(lower_item_name, search_name, sizeof(item_name));
         free(lower_item_name);
