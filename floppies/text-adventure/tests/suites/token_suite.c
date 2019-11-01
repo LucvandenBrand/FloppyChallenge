@@ -1,9 +1,11 @@
 #include <check.h>
 #include <game/parsing/token.h>
 
+#define TEST_GAME_DATA_PATH "./test_data/game_data.json"
+
 START_TEST(test_match_token_none)
 {
-    GameState game = init_game_state(GAME_DATA_PATH);
+    GameState game = init_game_state(TEST_GAME_DATA_PATH);
     Token token = match_token("foo", game);
     ck_assert_int_eq(token.type, NONE);
     ck_assert_int_eq(token.value, -1);
@@ -13,7 +15,7 @@ END_TEST
 
 START_TEST(test_match_token_room)
 {
-    GameState game = init_game_state(GAME_DATA_PATH);
+    GameState game = init_game_state(TEST_GAME_DATA_PATH);
     Token token = match_token("room", game);
     ck_assert_int_eq(token.type, ROOM);
     ck_assert_int_eq(token.value, -1);
@@ -23,7 +25,7 @@ END_TEST
 
 START_TEST(test_match_token_inventory)
 {
-    GameState game = init_game_state(GAME_DATA_PATH);
+    GameState game = init_game_state(TEST_GAME_DATA_PATH);
     Token token = match_token("inventory", game);
     ck_assert_int_eq(token.type, INVENTORY);
     ck_assert_int_eq(token.value, -1);
@@ -33,7 +35,7 @@ END_TEST
 
 START_TEST(test_match_token_look)
 {
-    GameState game = init_game_state(GAME_DATA_PATH);
+    GameState game = init_game_state(TEST_GAME_DATA_PATH);
     Token token = match_token("look", game);
     ck_assert_int_eq(token.type, LOOK);
     ck_assert_int_eq(token.value, -1);
@@ -43,7 +45,7 @@ END_TEST
 
 START_TEST(test_match_token_at)
 {
-    GameState game = init_game_state(GAME_DATA_PATH);
+    GameState game = init_game_state(TEST_GAME_DATA_PATH);
     Token token = match_token("at", game);
     ck_assert_int_eq(token.type, AT);
     ck_assert_int_eq(token.value, -1);
@@ -53,7 +55,7 @@ END_TEST
 
 START_TEST(test_match_token_take)
 {
-    GameState game = init_game_state(GAME_DATA_PATH);
+    GameState game = init_game_state(TEST_GAME_DATA_PATH);
     Token token = match_token("take", game);
     ck_assert_int_eq(token.type, TAKE);
     ck_assert_int_eq(token.value, -1);
@@ -63,7 +65,7 @@ END_TEST
 
 START_TEST(test_match_token_place)
 {
-    GameState game = init_game_state(GAME_DATA_PATH);
+    GameState game = init_game_state(TEST_GAME_DATA_PATH);
     Token token = match_token("place", game);
     ck_assert_int_eq(token.type, PLACE);
     ck_assert_int_eq(token.value, -1);
@@ -73,7 +75,7 @@ END_TEST
 
 START_TEST(test_match_token_item)
 {
-    GameState game = init_game_state(GAME_DATA_PATH);
+    GameState game = init_game_state(TEST_GAME_DATA_PATH);
     Token token = match_token("missing_item", game);
     ck_assert_int_eq(token.type, NONE);
     ck_assert_int_eq(token.value, ID_NO_ITEM);
@@ -83,7 +85,7 @@ END_TEST
 
 START_TEST(test_match_token_walk)
 {
-    GameState game = init_game_state(GAME_DATA_PATH);
+    GameState game = init_game_state(TEST_GAME_DATA_PATH);
     Token token = match_token("walk", game);
     ck_assert_int_eq(token.type, WALK);
     ck_assert_int_eq(token.value, -1);
@@ -93,7 +95,7 @@ END_TEST
 
 START_TEST(test_match_token_direction)
 {
-    GameState game = init_game_state(GAME_DATA_PATH);
+    GameState game = init_game_state(TEST_GAME_DATA_PATH);
     Token token = match_token("north", game);
     ck_assert_int_eq(token.type, DIRECTION);
     ck_assert_int_eq(token.value, NORTH);
@@ -112,7 +114,7 @@ END_TEST
 
 START_TEST(test_match_token_exit)
     {
-        GameState game = init_game_state(GAME_DATA_PATH);
+        GameState game = init_game_state(TEST_GAME_DATA_PATH);
         Token token = match_token("exit", game);
         ck_assert_int_eq(token.type, EXIT);
         ck_assert_int_eq(token.value, -1);
