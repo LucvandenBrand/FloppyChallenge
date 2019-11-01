@@ -1,9 +1,11 @@
 #include <check.h>
 #include <game/parsing/parser.h>
 
+#define TEST_GAME_DATA_PATH "./test_data/game_data.json"
+
 START_TEST(test_empty_text_to_tokens)
 {
-    GameState game = init_game_state(GAME_DATA_PATH);
+    GameState game = init_game_state(TEST_GAME_DATA_PATH);
     TokenList token_list = text_to_tokens("", game);
     ck_assert_ptr_eq(token_list.tokens, NULL);
     ck_assert_int_eq(token_list.length, 0);
@@ -14,7 +16,7 @@ END_TEST
 
 START_TEST(test_look_at_item_to_tokens)
 {
-    GameState game = init_game_state(GAME_DATA_PATH);
+    GameState game = init_game_state(TEST_GAME_DATA_PATH);
     TokenList token_list = text_to_tokens("look at Game Console", game);
     ck_assert_int_eq(token_list.tokens[0].type, LOOK);
     ck_assert_int_eq(token_list.tokens[1].type, AT);
@@ -28,7 +30,7 @@ END_TEST
 
 START_TEST(test_look_at_room_to_tokens)
 {
-    GameState game = init_game_state(GAME_DATA_PATH);
+    GameState game = init_game_state(TEST_GAME_DATA_PATH);
     TokenList token_list = text_to_tokens("look at room", game);
     ck_assert_int_eq(token_list.tokens[0].type, LOOK);
     ck_assert_int_eq(token_list.tokens[1].type, AT);
@@ -41,7 +43,7 @@ END_TEST
 
 START_TEST(test_look_at_inventory_to_tokens)
 {
-    GameState game = init_game_state(GAME_DATA_PATH);
+    GameState game = init_game_state(TEST_GAME_DATA_PATH);
     TokenList token_list = text_to_tokens("look at inventory", game);
     ck_assert_int_eq(token_list.tokens[0].type, LOOK);
     ck_assert_int_eq(token_list.tokens[1].type, AT);
@@ -54,7 +56,7 @@ END_TEST
 
 START_TEST(test_take_item_to_tokens)
 {
-    GameState game = init_game_state(GAME_DATA_PATH);
+    GameState game = init_game_state(TEST_GAME_DATA_PATH);
     TokenList token_list = text_to_tokens("take Game Console", game);
     ck_assert_int_eq(token_list.tokens[0].type, TAKE);
     ck_assert_int_eq(token_list.tokens[1].type, ITEM);
@@ -67,7 +69,7 @@ END_TEST
 
 START_TEST(test_place_item_to_tokens)
 {
-    GameState game = init_game_state(GAME_DATA_PATH);
+    GameState game = init_game_state(TEST_GAME_DATA_PATH);
     TokenList token_list = text_to_tokens("place Game Console", game);
     ck_assert_int_eq(token_list.tokens[0].type, PLACE);
     ck_assert_int_eq(token_list.tokens[1].type, ITEM);
@@ -80,7 +82,7 @@ END_TEST
 
 START_TEST(test_walk_direction_to_tokens)
 {
-    GameState game = init_game_state(GAME_DATA_PATH);
+    GameState game = init_game_state(TEST_GAME_DATA_PATH);
     TokenList token_list = text_to_tokens("walk north", game);
     ck_assert_int_eq(token_list.tokens[0].type, WALK);
     ck_assert_int_eq(token_list.tokens[1].type, DIRECTION);

@@ -54,7 +54,7 @@ void free_game_state(GameState * game)
     }
     if (game->num_items > 0)
     {
-        for (unsigned item_index = 0; item_index < game->num_rooms; item_index++)
+        for (unsigned item_index = 0; item_index < game->num_items; item_index++)
             free_item(&game->items[item_index]);
         free(game->items);
         game->items = NULL;

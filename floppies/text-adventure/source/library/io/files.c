@@ -21,6 +21,6 @@ void load_file(const char * file_path, char * buffer, long buffer_size)
     if (!file_handle)
         return;
     long actually_read = fread(buffer, sizeof(char), buffer_size, file_handle);
-    buffer[actually_read] = '\0';
+    buffer[actually_read-1] = '\0';
     fclose (file_handle);
 }

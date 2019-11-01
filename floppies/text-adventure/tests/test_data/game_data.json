@@ -1,0 +1,28 @@
+{
+  "rooms": [
+    {
+      "description": "A boring room with a funny looking door to the east.",
+      "neighbour_rooms": [-1, 1, -1, -1],
+      "items": [0, 1, 2]
+    },
+    {
+      "description": "A fun room, there is a boring looking door to the west and a funny one to the north.",
+      "neighbour_rooms": [1, -1, -1, 0],
+      "items": [0]
+    }
+  ],
+  "items": [
+    {
+      "name": "Game Console",
+      "description": "It looks like a PlayStation, but on closer inspection it's just a plastic toy."
+    },
+    {
+      "name": "Orb",
+      "description": "A strangely glowing orb."
+    },
+    {
+      "name": "Tiger toy",
+      "description": "A toy for a tiger."
+    }
+  ]
+}

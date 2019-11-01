@@ -43,7 +43,21 @@ TokenList text_to_tokens(const char * input, GameState game)
         end++;
     }
 
-    tokens.tokens = realloc(tokens.tokens, tokens.length * sizeof(Token));
+    // TODO Replace with safe malloc / realloc
+    if (tokens.length < 1)
+    {
+        free(tokens.tokens);
+        tokens.tokens = NULL;
+    }
+    else
+    {
+        Token * old_ptr = tokens.tokens;
+        tokens.tokens = realloc(old_ptr, tokens.length * sizeof(Token));
+        if (tokens.tokens == NULL)
+            tokens.tokens = old_ptr;
+    }
+
+
     return tokens;
 }
 

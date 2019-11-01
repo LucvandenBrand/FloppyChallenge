@@ -31,3 +31,6 @@ add_custom_target(valgrind_test_text-adventure
     COMMAND ${VALGRIND_PROGRAM} --leak-check=full $<TARGET_FILE:test_text-adventure>
     DEPENDS test_text-adventure
 )
+
+file(GLOB_RECURSE TEST_DATA test_data/game_data.json)
+configure_file(${TEST_DATA} test_data/game_data.json COPYONLY)
