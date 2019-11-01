@@ -1,12 +1,13 @@
 #include <list/id_list.h>
 #include <stdlib.h>
+#include <memory/safe_memory.h>
 
 IDList init_list()
 {
     IDList list;
     list.num_ids = 0;
     list.list_size = 4;
-    list.ids = malloc(list.list_size * sizeof(ID));
+    list.ids = safe_malloc(list.list_size * sizeof(ID));
     return list;
 }
 
@@ -25,7 +26,7 @@ void add_id(IDList * list, ID id)
     if (list->num_ids+1 >= list->list_size)
     {
         list->list_size *= 2;
-        list->ids = realloc(list->ids, list->list_size * sizeof(ID));
+        list->ids = safe_realloc(list->ids, list->list_size * sizeof(ID));
     }
     list->ids[list->num_ids++] = id;
 }

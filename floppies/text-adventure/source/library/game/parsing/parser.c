@@ -3,6 +3,7 @@
 #include <string.h>
 #include <io/text_interface.h>
 #include <game/text_generator.h>
+#include <memory/safe_memory.h>
 
 void apply_input_to_game_state(const char * input, GameState * game)
 {
@@ -15,7 +16,7 @@ TokenList text_to_tokens(const char * input, GameState game)
 {
     TokenList tokens = {NULL, 0};
     int max_num_tokens = 2;
-    tokens.tokens = malloc(max_num_tokens * sizeof(Token));
+    tokens.tokens = safe_malloc(max_num_tokens * sizeof(Token));
     unsigned long num_chars = strlen(input);
     unsigned long start = 0, end = 1;
     while (end <= num_chars)
@@ -35,7 +36,7 @@ TokenList text_to_tokens(const char * input, GameState game)
             if (tokens.length >= max_num_tokens)
             {
                 max_num_tokens *= 2;
-                tokens.tokens = realloc(tokens.tokens, max_num_tokens * sizeof(Token));
+                tokens.tokens = safe_realloc(tokens.tokens, max_num_tokens * sizeof(Token));
             }
             tokens.tokens[tokens.length++] = token;
             start = end;
@@ -43,20 +44,7 @@ TokenList text_to_tokens(const char * input, GameState game)
         end++;
     }
 
-    // TODO Replace with safe malloc / realloc
-    if (tokens.length < 1)
-    {
-        free(tokens.tokens);
-        tokens.tokens = NULL;
-    }
-    else
-    {
-        Token * old_ptr = tokens.tokens;
-        tokens.tokens = realloc(old_ptr, tokens.length * sizeof(Token));
-        if (tokens.tokens == NULL)
-            tokens.tokens = old_ptr;
-    }
-
+    tokens.tokens = safe_realloc(tokens.tokens, tokens.length * sizeof(Token));
 
     return tokens;
 }

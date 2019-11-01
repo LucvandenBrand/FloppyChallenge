@@ -3,6 +3,7 @@
 #include <io/files.h>
 #include <stdlib.h>
 #include <string.h>
+#include <memory/safe_memory.h>
 
 void load_game_data(GameState * game, const char * game_data_path)
 {
@@ -13,7 +14,7 @@ void load_game_data(GameState * game, const char * game_data_path)
         game->is_running = false;
         return;
     }
-    char * game_data_string = malloc(buffer_size * sizeof(char));
+    char * game_data_string = safe_malloc(buffer_size * sizeof(char));
     load_file(game_data_path, game_data_string, buffer_size);
     load_game_from_json_string(game, game_data_string);
     free(game_data_string);
@@ -30,7 +31,7 @@ void load_game_from_json_string(GameState * game, const char * game_data_string)
         game->is_running = false;
         return;
     }
-    jsmntok_t * tokens = malloc(num_tokens * sizeof(jsmntok_t));
+    jsmntok_t * tokens = safe_malloc(num_tokens * sizeof(jsmntok_t));
     jsmn_init(&json_parser);
     jsmn_parse(&json_parser, game_data_string, strlen(game_data_string), tokens, num_tokens);
     load_game_from_json_tokens(game, game_data_string, tokens, num_tokens);
@@ -61,7 +62,7 @@ void load_game_from_json_tokens(GameState * game, const char * json_string, jsmn
         {
             token_index++;
             game->num_rooms = tokens[token_index].size;
-            game->rooms = malloc(game->num_rooms * sizeof(Room));
+            game->rooms = safe_malloc(game->num_rooms * sizeof(Room));
             token_index++;
             for (unsigned room_num=0; room_num < game->num_rooms; room_num++)
             {
@@ -104,7 +105,7 @@ void load_game_from_json_tokens(GameState * game, const char * json_string, jsmn
         {
             token_index++;
             game->num_items = tokens[token_index].size;
-            game->items = malloc(game->num_items * sizeof(Item));
+            game->items = safe_malloc(game->num_items * sizeof(Item));
             token_index++;
             for (unsigned item_num=0; item_num < game->num_items; item_num++)
             {
@@ -128,7 +129,7 @@ void load_game_from_json_tokens(GameState * game, const char * json_string, jsmn
 char * copy_json_string_token(const char * json_string, jsmntok_t token)
 {
     int string_size = token.end - token.start;
-    char * string = malloc((string_size+1) * sizeof(char));
+    char * string = safe_malloc((string_size+1) * sizeof(char));
     strncpy(string, json_string + token.start, string_size);
     string[string_size] = '\0';
     return string;
