@@ -6,6 +6,8 @@
 #include <game/game_loader.h>
 #include <game/text_generator.h>
 #include <game/parsing/parser.h>
+#include <memory/safe_memory.h>
+#include <string/string_ops.h>
 
 void game_loop()
 {
@@ -62,10 +64,21 @@ void free_game_state(GameState * game)
     }
 }
 
-ItemID get_item_id(const char * name, GameState game)
+ItemID get_item_id(const char * search_name, GameState game)
 {
     for (ItemID item_id=0; item_id < game.num_items; item_id++)
-        if (strcmp(game.items[item_id].name, name) == 0)
+    {
+        const char * item_name = game.items[item_id].name;
+        unsigned long item_name_length = strlen(item_name);
+        char * lower_item_name = safe_malloc(item_name_length * sizeof(char));
+        strncpy(lower_item_name, item_name, item_name_length);
+        string_to_lowercase(lower_item_name, item_name_length);
+        int equality = strncmp(lower_item_name, search_name, sizeof(item_name));
+        free(lower_item_name);
+
+        if (equality == 0)
             return item_id;
+    }
+
     return ID_NO_ITEM;
 }

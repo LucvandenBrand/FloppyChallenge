@@ -4,6 +4,7 @@
 #include <io/text_interface.h>
 #include <game/text_generator.h>
 #include <memory/safe_memory.h>
+#include <string/string_ops.h>
 
 void apply_input_to_game_state(const char * input, GameState * game)
 {
@@ -17,18 +18,23 @@ TokenList text_to_tokens(const char * input, GameState game)
     TokenList tokens = {NULL, 0};
     int max_num_tokens = 2;
     tokens.tokens = safe_malloc(max_num_tokens * sizeof(Token));
+
     unsigned long num_chars = strlen(input);
+    char * lower_input = safe_malloc(num_chars * sizeof(char));
+    strncpy(lower_input, input, num_chars);
+    string_to_lowercase(lower_input, num_chars);
+
     unsigned long start = 0, end = 1;
     while (end <= num_chars)
     {
-        if (*(input + start) == ' ')
+        if (*(lower_input + start) == ' ')
         {
             start = end;
             end++;
             continue;
         }
 
-        char * sub_string = strndup(input + start, end - start);
+        char * sub_string = strndup(lower_input + start, end - start);
         Token token = match_token(sub_string, game);
         free(sub_string);
         if (token.type != NONE)
@@ -46,6 +52,7 @@ TokenList text_to_tokens(const char * input, GameState game)
 
     tokens.tokens = safe_realloc(tokens.tokens, tokens.length * sizeof(Token));
 
+    free(lower_input);
     return tokens;
 }
 
