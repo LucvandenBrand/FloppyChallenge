@@ -58,7 +58,21 @@ void load_game_from_json_tokens(GameState * game, const char * json_string, jsmn
     for (unsigned token_index = 0; token_index < num_tokens; token_index++)
     {
         jsmntok_t token = tokens[token_index];
-        if (json_equal(json_string, &tokens[token_index], "rooms") == 0)
+        if (json_equal(json_string, &tokens[token_index], "introduction") == 0)
+        {
+            token_index++;
+            char * introduction_string = strndup(json_string + tokens[token_index].start,
+                    tokens[token_index].end - tokens[token_index].start);
+            game->intro_text = introduction_string;
+        }
+        else if (json_equal(json_string, &tokens[token_index], "win") == 0)
+        {
+            token_index++;
+            char * win_string = strndup(json_string + tokens[token_index].start,
+                                                 tokens[token_index].end - tokens[token_index].start);
+            game->win_text = win_string;
+        }
+        else if (json_equal(json_string, &tokens[token_index], "rooms") == 0)
         {
             token_index++;
             game->num_rooms = tokens[token_index].size;
