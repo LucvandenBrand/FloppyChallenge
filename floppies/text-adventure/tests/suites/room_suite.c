@@ -2,6 +2,13 @@
 #include <game/room.h>
 #include <stdlib.h>
 
+Door create_test_door()
+{
+    char * item_name = malloc(7 * sizeof(char));
+    strcpy(item_name, "A door\0");
+    return init_door(item_name, 1, 2);
+}
+
 Room create_test_room()
 {
     char * room_description = malloc(8 * sizeof(char));
@@ -73,6 +80,33 @@ START_TEST(test_remove_item_from_room)
 }
 END_TEST
 
+START_TEST(test_add_door_to_room)
+{
+    Room room = create_test_room();
+    Door door = create_test_door();
+    add_door_to_room(&room, NORTH, door);
+    ck_assert(room_has_door(room, NORTH));
+    ck_assert_str_eq(get_room_door(room, NORTH).name, door.name);
+    ck_assert_int_eq(get_room_door(room, NORTH).roomId, door.roomId);
+    ck_assert_int_eq(get_room_door(room, NORTH).keyId, door.keyId);
+    free_room(&room);
+}
+END_TEST
+
+START_TEST(test_room_has_door)
+{
+    Room room = create_test_room();
+    for (Direction dir=0; dir < NUM_DIRECTIONS; dir++)
+    {
+        ck_assert(!room_has_door(room, dir));
+        Door door = create_test_door();
+        add_door_to_room(&room, dir, door);
+        ck_assert(room_has_door(room, dir));
+    }
+    free_room(&room);
+}
+END_TEST
+
 Suite * makeRoomSuite()
 {
     Suite *suite = suite_create("Room Test Suite");
@@ -82,6 +116,8 @@ Suite * makeRoomSuite()
     tcase_add_test(test_case, test_free_room);
     tcase_add_test(test_case, test_add_item_to_room);
     tcase_add_test(test_case, test_remove_item_from_room);
+    tcase_add_test(test_case, test_add_door_to_room);
+    tcase_add_test(test_case, test_room_has_door);
     suite_add_tcase(suite, test_case);
 
     return suite;
