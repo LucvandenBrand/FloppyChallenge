@@ -5,13 +5,15 @@
 #include <game/player.h>
 #define JSMN_HEADER
 #include <io/jsmn.h>
-#include "room.h"
+#include <game/room.h>
 
 #define GAME_DATA_PATH "./data/game_data.json"
 #define MAX_INPUT_SIZE 100
 
 typedef struct{
     bool is_running;
+    char * intro_text;
+    char * win_text;
     Player player;
     Room * rooms;
     unsigned num_rooms;

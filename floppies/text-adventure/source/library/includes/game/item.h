@@ -3,7 +3,7 @@
 
 #include <list/id_list.h>
 
-#define ID_NO_ITEM -1
+#define ID_NO_ITEM ID_EMPTY
 
 typedef ID ItemID;
 

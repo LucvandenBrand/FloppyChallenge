@@ -8,7 +8,7 @@ Room init_room(char * description)
     room.description = description;
     room.item_id_list = init_list();
     for (unsigned index=0; index < NUM_DIRECTIONS; index++)
-        room.neighbour_rooms[index] = ID_NO_ROOM;
+        room.doors[index] = NULL;
     return room;
 }
 
@@ -18,7 +18,7 @@ void free_room(Room * room)
     room->description = NULL;
     free_list(&room->item_id_list);
     for (unsigned index=0; index < NUM_DIRECTIONS; index++)
-        room->neighbour_rooms[index] = ID_NO_ROOM;
+        room->doors[index] = NULL;
 }
 
 void add_item_to_room(Room * room, ItemID item_id)
@@ -31,9 +31,9 @@ void remove_item_from_room(Room * room, ItemID item_id)
     remove_id(&room->item_id_list, item_id);
 }
 
-void connect_rooms(Room * from_room, RoomID to_room, Direction direction)
+void add_door_to_room(Room * room, Direction direction, Door door)
 {
-    from_room->neighbour_rooms[direction] = to_room;
+    room->doors[direction] = door;
 }
 
 bool is_item_in_room(Room room, ItemID item_id)
