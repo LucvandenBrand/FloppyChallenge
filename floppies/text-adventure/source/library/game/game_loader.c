@@ -82,7 +82,7 @@ void load_game_from_json_tokens(GameState * game, const char * json_string, jsmn
             {
                 if (tokens[token_index].type != JSMN_OBJECT)
                 {
-                    put_color_text(RED, "The room list should only contain room objects!");
+                    put_color_text(RED, "The room id should only contain room objects!");
                     game->is_running = false;
                     return;
                 }
@@ -97,7 +97,7 @@ void load_game_from_json_tokens(GameState * game, const char * json_string, jsmn
                                                     tokens[token_index].end - tokens[token_index].start);
                     int room_id = atoi(room_id_string);
                     free(room_id_string);
-                    game->rooms[room_num].neighbour_rooms[direction] = room_id;
+                    //game->rooms[room_num].door[direction] = room_id;
                 }
 
                 token_index += 2;
@@ -125,7 +125,7 @@ void load_game_from_json_tokens(GameState * game, const char * json_string, jsmn
             {
                 if (tokens[token_index].type != JSMN_OBJECT)
                 {
-                    put_color_text(RED, "The item list should only contain item objects!");
+                    put_color_text(RED, "The item id should only contain item objects!");
                     game->is_running = false;
                     return;
                 }

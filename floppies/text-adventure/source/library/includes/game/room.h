@@ -5,7 +5,7 @@
 #include <game/door.h>
 #include <game/direction.h>
 #include <stdbool.h>
-#include <list/id_list.h>
+#include <id/id_list.h>
 
 #define ID_NO_ROOM ID_EMPTY
 
@@ -22,6 +22,8 @@ void free_room(Room * room);
 void add_item_to_room(Room * room, ItemID item);
 void remove_item_from_room(Room * room, ItemID item_id);
 void add_door_to_room(Room * room, Direction direction, Door door);
+bool room_has_door(Room room, Direction direction);
+Door get_room_door(Room room, Direction direction);
 bool is_item_in_room(Room room, ItemID item_id);
 
 #endif

@@ -2,7 +2,7 @@
 #define ID_LIST_H
 
 #include <stdbool.h>
-#include <game/id.h>
+#include <id/id.h>
 
 typedef struct {
     ID * ids;

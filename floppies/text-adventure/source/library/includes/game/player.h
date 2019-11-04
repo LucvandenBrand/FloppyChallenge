@@ -1,9 +1,9 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include "item.h"
+#include <game/item.h>
 #include <stdbool.h>
-#include <list/id_list.h>
+#include <id/id_list.h>
 
 typedef struct {
     IDList item_id_list;

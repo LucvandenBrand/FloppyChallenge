@@ -1,7 +1,7 @@
 #ifndef DOOR_H
 #define DOOR_H
 
-#include <game/id.h>
+#include <id/id.h>
 
 typedef struct
 {

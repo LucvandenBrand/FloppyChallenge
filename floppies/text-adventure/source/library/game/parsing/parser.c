@@ -154,13 +154,13 @@ bool accept_movement(TokenList token_list, unsigned * token_index, GameState * g
     if (accept_token(token_list, token_index, WALK) && accept_token(token_list, token_index, DIRECTION))
     {
         Direction direction = token_list.tokens[*token_index-1].value;
-        RoomID go_to_room = game->rooms[game->current_room].neighbour_rooms[direction];
-        if (go_to_room == ID_NO_ROOM)
+        if (!room_has_door(game->rooms[game->current_room], direction))
         {
             put_text("BONK!\nYou just bumped into a wall...\n");
             return true;
         }
-        game->current_room = go_to_room;
+        Door door = get_room_door(game->rooms[game->current_room], direction);
+        game->current_room = door.roomId; // TODO : implement keys.
         return true;
     }
     return false;

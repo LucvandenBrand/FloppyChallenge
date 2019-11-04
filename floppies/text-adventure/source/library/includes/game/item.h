@@ -1,7 +1,7 @@
 #ifndef ITEM_H
 #define ITEM_H
 
-#include <list/id_list.h>
+#include <id/id.h>
 
 #define ID_NO_ITEM ID_EMPTY
 
