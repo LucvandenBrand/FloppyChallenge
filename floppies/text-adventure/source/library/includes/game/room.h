@@ -15,6 +15,7 @@ typedef struct {
     char * description;
     IDList item_id_list;
     Door doors [NUM_DIRECTIONS];
+    unsigned num_doors;
 } Room;
 
 Room init_room(char * description);

@@ -22,6 +22,7 @@ START_TEST(test_init_room)
     for (Direction dir=0; dir < NUM_DIRECTIONS; dir++)
         ck_assert(!room_has_door(room, dir));
     ck_assert_str_eq(room.description, "A room.");
+    ck_assert_int_eq(room.num_doors,  0);
     ck_assert_ptr_ne(room.item_id_list.ids, NULL);
     ck_assert_int_eq(room.item_id_list.num_ids, 0);
     free_room(&room);
@@ -38,6 +39,7 @@ START_TEST(test_free_room)
     ck_assert_ptr_eq(room.item_id_list.ids, NULL);
     ck_assert_int_eq(room.item_id_list.num_ids, 0);
     ck_assert_int_eq(room.item_id_list.list_size, 0);
+    ck_assert_int_eq(room.num_doors,  0);
 }
 END_TEST
 
@@ -84,7 +86,9 @@ START_TEST(test_add_door_to_room)
 {
     Room room = create_test_room();
     Door door = create_test_door();
+    ck_assert_int_eq(room.num_doors,  0);
     add_door_to_room(&room, door);
+    ck_assert_int_eq(room.num_doors,  1);
     ck_assert(room_has_door(room, NORTH));
     ck_assert_str_eq(get_room_door(room, NORTH).name, door.name);
     ck_assert_int_eq(get_room_door(room, NORTH).roomId, door.roomId);

@@ -7,7 +7,56 @@ void describe_room(GameState game, RoomID room_id)
 {
     Room room = game.rooms[room_id];
     put_text("%s\n", room.description);
+    list_doors(room);
     list_items(game, room.item_id_list);
+}
+
+void list_doors(Room room)
+{
+    if (room.num_doors <= 0)
+    {
+        put_text("There are no doors.\n");
+        return;
+    }
+    unsigned door_num = 0;
+    put_text("To the ");
+    for (Direction dir=0; dir < NUM_DIRECTIONS; dir++)
+    {
+        if (!room_has_door(room, dir))
+            continue;
+        if (room.num_doors > 1 && door_num == room.num_doors -1)
+            put_text(" and to the ");
+        else if (door_num > 0)
+            put_text(", to the ");
+        Door door = get_room_door(room, dir);
+        print_direction(door.direction);
+        put_text(" there is ");
+        choose_indefinite_article(door.name);
+        put_text(" %s", door.name);
+        door_num++;
+    }
+    put_text(".\n");
+}
+
+void print_direction(Direction direction)
+{
+    switch (direction)
+    {
+        case NORTH:
+            put_text("north");
+            break;
+        case EAST:
+            put_text("east");
+            break;
+        case SOUTH:
+            put_text("south");
+            break;
+        case WEST:
+            put_text("west");
+            break;
+        default:
+            break;
+    }
 }
 
 void list_items(GameState game, IDList item_list)

@@ -2,7 +2,7 @@
   "introduction":"Your car suddenly stops working.\nThere is an old cottage up the hill, you walk to it in search of some shelter from the storm. As you knock, the door creaks open... With hesitance you enter.\nWHAM! The door slams shut!\nYou adjust to the darkness and look at your surroundings...",
   "rooms": [
     {
-      "description": "A boring room with a funny looking door to the east.",
+      "description": "A boring room.",
       "doors": [
         {
           "name":"yellow door",
@@ -14,7 +14,7 @@
       "items": [0, 1]
     },
     {
-      "description": "A fun room, there is a boring looking door to the west and a funny one to the north.",
+      "description": "A fun room.",
       "doors": [
         {
           "name":"yellow door",
