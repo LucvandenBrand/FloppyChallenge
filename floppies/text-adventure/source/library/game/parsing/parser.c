@@ -61,6 +61,7 @@ void apply_tokens_to_game_state(TokenList token_list, GameState * game)
     unsigned token_index = 0;
     if (accept_token(token_list, &token_index, EXIT))
     {
+        put_text("You smash your head against a wall, the sweet mercy of death embraces you.\n");
         game->is_running = false;
         return;
     }
