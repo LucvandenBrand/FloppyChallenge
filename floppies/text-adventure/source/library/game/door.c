@@ -1,9 +1,9 @@
 #include <stdlib.h>
 #include <game/door.h>
 
-Door init_door(char * name, ID roomId, ID keyId)
+Door init_door(char * name, Direction direction, ID roomId, ID keyId)
 {
-    Door door = {name, roomId, keyId};
+    Door door = {name, direction, roomId, keyId};
     return door;
 }
 

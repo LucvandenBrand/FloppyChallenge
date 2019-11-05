@@ -50,20 +50,21 @@ static int json_equal(const char *json, jsmntok_t *tok, const char *s)
 
 void load_game_from_json_tokens(GameState * game, const char * json_string, jsmntok_t * tokens, int num_tokens)
 {
-    if (num_tokens < 1 || tokens[0].type != JSMN_OBJECT) {
+    if (num_tokens < 2 || tokens[0].type != JSMN_OBJECT) {
         put_color_text(RED, "Game data should contain only a single top-level object. Exiting game.");
         game->is_running = false;
         return;
     }
-    for (unsigned token_index = 0; token_index < num_tokens; token_index++)
+    unsigned token_index = 1;
+    while (token_index < num_tokens)
     {
-        jsmntok_t token = tokens[token_index];
         if (json_equal(json_string, &tokens[token_index], "introduction") == 0)
         {
             token_index++;
             char * introduction_string = strndup(json_string + tokens[token_index].start,
                     tokens[token_index].end - tokens[token_index].start);
             game->intro_text = introduction_string;
+            token_index++;
         }
         else if (json_equal(json_string, &tokens[token_index], "win") == 0)
         {
@@ -71,6 +72,7 @@ void load_game_from_json_tokens(GameState * game, const char * json_string, jsmn
             char * win_string = strndup(json_string + tokens[token_index].start,
                                                  tokens[token_index].end - tokens[token_index].start);
             game->win_text = win_string;
+            token_index++;
         }
         else if (json_equal(json_string, &tokens[token_index], "rooms") == 0)
         {
@@ -82,38 +84,15 @@ void load_game_from_json_tokens(GameState * game, const char * json_string, jsmn
             {
                 if (tokens[token_index].type != JSMN_OBJECT)
                 {
-                    put_color_text(RED, "The room id should only contain room objects!");
+                    put_color_text(RED, "The rooms list should only contain room objects!");
                     game->is_running = false;
                     return;
                 }
-                token_index += 2;
-                game->rooms[room_num] = init_room(copy_json_string_token(json_string, tokens[token_index]));
-                token_index += 2;
-                int num_directions = tokens[token_index].size;
-                for (Direction direction=0; direction < num_directions; direction++)
-                {
-                    token_index++;
-                    char * room_id_string = strndup(json_string + tokens[token_index].start,
-                                                    tokens[token_index].end - tokens[token_index].start);
-                    int room_id = atoi(room_id_string);
-                    free(room_id_string);
-                    //game->rooms[room_num].door[direction] = room_id;
-                }
-
-                token_index += 2;
-                int num_room_items = tokens[token_index].size;
-                for (unsigned item_num = 0; item_num < num_room_items; item_num++)
-                {
-                    token_index++;
-                    char * item_id_string = strndup(json_string + tokens[token_index].start,
-                                                    tokens[token_index].end - tokens[token_index].start);
-                    int item_id = atoi(item_id_string);
-                    free(item_id_string);
-                    add_item_to_room(&game->rooms[room_num], item_id);
-                }
+                int num_room_children = tokens[token_index].size;
                 token_index++;
+                Room room = load_room_from_json_tokens(json_string, tokens, num_room_children, &token_index);
+                game->rooms[room_num] = room;
             }
-            token_index--;
         }
         else if (json_equal(json_string, &tokens[token_index], "items") == 0)
         {
@@ -123,21 +102,137 @@ void load_game_from_json_tokens(GameState * game, const char * json_string, jsmn
             token_index++;
             for (unsigned item_num=0; item_num < game->num_items; item_num++)
             {
-                if (tokens[token_index].type != JSMN_OBJECT)
-                {
-                    put_color_text(RED, "The item id should only contain item objects!");
-                    game->is_running = false;
-                    return;
-                }
-                token_index += 2;
-                char * name = copy_json_string_token(json_string, tokens[token_index]);
-                token_index += 2;
-                char * description = copy_json_string_token(json_string, tokens[token_index]);
-                game->items[item_num] = init_item(name, description);
+                int num_item_children = tokens[token_index].size;
                 token_index++;
+                Item item = load_item_from_json_tokens(json_string, tokens, num_item_children, &token_index);
+                game->items[item_num] = item;
+            }
+        }
+        else
+        {
+            put_color_text(RED, "Unknown data.");
+            game->is_running = false;
+            return;
+        }
+    }
+}
+
+Room load_room_from_json_tokens(const char * json_string, jsmntok_t * tokens, int num_children, unsigned int * token_index)
+{
+    Room room = init_room(NULL);
+    for (unsigned child_index = 0; child_index < num_children; child_index++)
+    {
+        if (json_equal(json_string, &tokens[*token_index], "description") == 0)
+        {
+            (*token_index)++;
+            char * description = strndup(json_string + tokens[*token_index].start,
+                    tokens[*token_index].end - tokens[*token_index].start);
+            room.description = description;
+            (*token_index)++;
+        }
+        else if (json_equal(json_string, &tokens[*token_index], "doors") == 0)
+        {
+            (*token_index)++;
+            unsigned num_doors = tokens[*token_index].size;
+            (*token_index)++;
+            for (unsigned door_num=0; door_num < num_doors; door_num++)
+            {
+                int num_door_children = tokens[*token_index].size;
+                (*token_index)++;
+                Door door = load_door_from_json_tokens(json_string, tokens, num_door_children, token_index);
+                add_door_to_room(&room, door);
+            }
+        }
+        else if (json_equal(json_string, &tokens[*token_index], "items") == 0)
+        {
+            (*token_index)++;
+            unsigned num_items = tokens[*token_index].size;
+            (*token_index)++;
+            for (unsigned item_num=0; item_num < num_items; item_num++)
+            {
+                char * item_string = strndup(json_string + tokens[*token_index].start,
+                        tokens[*token_index].end - tokens[*token_index].start);
+                ItemID item_id = atoi(item_string);
+                free(item_string);
+                add_item_to_room(&room, item_id);
+                (*token_index)++;
             }
         }
     }
+    return room;
+}
+
+Door load_door_from_json_tokens(const char * json_string, jsmntok_t * tokens, int num_children, unsigned int * token_index)
+{
+    char * name = NULL;
+    Direction direction = NORTH;
+    ID room_id = ID_NO_ROOM;
+    ID key_id = ID_NO_ITEM;
+    for (unsigned child_index = 0; child_index < num_children; child_index++)
+    {
+        if (json_equal(json_string, &tokens[*token_index], "name") == 0)
+        {
+            (*token_index)++;
+            name = strndup(json_string + tokens[*token_index].start,
+                    tokens[*token_index].end - tokens[*token_index].start);
+            (*token_index)++;
+        }
+        else if (json_equal(json_string, &tokens[*token_index], "direction") == 0)
+        {
+            (*token_index)++;
+            if (json_equal(json_string, &tokens[*token_index], "N") == 0)
+                direction = NORTH;
+            else if (json_equal(json_string, &tokens[*token_index], "E") == 0)
+                direction = EAST;
+            else if (json_equal(json_string, &tokens[*token_index], "S") == 0)
+                direction = SOUTH;
+            else
+                direction = WEST;
+            (*token_index)++;
+        }
+        else if (json_equal(json_string, &tokens[*token_index], "key") == 0)
+        {
+            (*token_index)++;
+            char * key_string = strndup(json_string + tokens[*token_index].start,
+                    tokens[*token_index].end - tokens[*token_index].start);
+            key_id = atoi(key_string);
+            free(key_string);
+            (*token_index)++;
+        }
+        else if (json_equal(json_string, &tokens[*token_index], "room") == 0)
+        {
+            (*token_index)++;
+            char * room_string = strndup(json_string + tokens[*token_index].start,
+                    tokens[*token_index].end - tokens[*token_index].start);
+            room_id = atoi(room_string);
+            free(room_string);
+            (*token_index)++;
+        }
+    }
+    return init_door(name, direction, room_id, key_id);
+}
+
+Item load_item_from_json_tokens(const char * json_string, jsmntok_t * tokens, int num_children, unsigned int * token_index)
+{
+    char * name = NULL;
+    char * description = NULL;
+    for (unsigned child_index = 0; child_index < num_children; child_index++)
+    {
+        if (json_equal(json_string, &tokens[*token_index], "name") == 0)
+        {
+            (*token_index)++;
+            name = strndup(json_string + tokens[*token_index].start,
+                           tokens[*token_index].end - tokens[*token_index].start);
+        }
+        else if (json_equal(json_string, &tokens[*token_index], "description") == 0)
+        {
+            (*token_index)++;
+            description = strndup(json_string + tokens[*token_index].start,
+                    tokens[*token_index].end - tokens[*token_index].start);
+        }
+        (*token_index)++;
+    }
+    return init_item(name, description);
 }
 
 char * copy_json_string_token(const char * json_string, jsmntok_t token)

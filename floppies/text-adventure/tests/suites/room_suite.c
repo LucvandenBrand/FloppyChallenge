@@ -6,7 +6,7 @@ Door create_test_door()
 {
     char * item_name = malloc(7 * sizeof(char));
     strcpy(item_name, "A door\0");
-    return init_door(item_name, 1, 2);
+    return init_door(item_name, NORTH, 1, 2);
 }
 
 Room create_test_room()
@@ -84,7 +84,7 @@ START_TEST(test_add_door_to_room)
 {
     Room room = create_test_room();
     Door door = create_test_door();
-    add_door_to_room(&room, NORTH, door);
+    add_door_to_room(&room, door);
     ck_assert(room_has_door(room, NORTH));
     ck_assert_str_eq(get_room_door(room, NORTH).name, door.name);
     ck_assert_int_eq(get_room_door(room, NORTH).roomId, door.roomId);
@@ -100,7 +100,8 @@ START_TEST(test_room_has_door)
     {
         ck_assert(!room_has_door(room, dir));
         Door door = create_test_door();
-        add_door_to_room(&room, dir, door);
+        door.direction = dir;
+        add_door_to_room(&room, door);
         ck_assert(room_has_door(room, dir));
     }
     free_room(&room);

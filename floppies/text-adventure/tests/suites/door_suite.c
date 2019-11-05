@@ -6,8 +6,9 @@ START_TEST(test_init_door)
 {
     char * item_name = malloc(7 * sizeof(char));
     strcpy(item_name, "A door\0");
-    Door door = init_door(item_name, 1, 2);
+    Door door = init_door(item_name, EAST, 1, 2);
     ck_assert_str_eq(door.name, "A door");
+    ck_assert_int_eq(door.direction, EAST);
     ck_assert_int_eq(door.roomId, 1);
     ck_assert_int_eq(door.keyId, 2);
     free_door(&door);
@@ -18,7 +19,7 @@ START_TEST(test_free_door)
 {
     char * item_name = malloc(7 * sizeof(char));
     strcpy(item_name, "A door\0");
-    Door door = init_door(item_name, 1, 2);
+    Door door = init_door(item_name, NORTH, 1, 2);
     free_door(&door);
     ck_assert_ptr_eq(door.name, NULL);
     ck_assert_int_eq(door.roomId, ID_EMPTY);

@@ -15,7 +15,7 @@
     },
     {
       "description": "A fun room, there is a boring looking door to the west and a funny one to the north.",
-      "neighbour_rooms": [
+      "doors": [
         {
           "name":"yellow door",
           "direction":"W",
@@ -24,7 +24,7 @@
         },
         {
           "name":"exit door",
-          "direction":"W",
+          "direction":"N",
           "key":2,
           "room":-1
         }

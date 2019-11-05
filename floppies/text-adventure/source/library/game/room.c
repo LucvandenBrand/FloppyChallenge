@@ -8,7 +8,7 @@ Room init_room(char * description)
     room.description = description;
     room.item_id_list = init_list();
     for (unsigned index=0; index < NUM_DIRECTIONS; index++)
-        room.doors[index] = init_door(NULL, ID_NO_ROOM, ID_NO_ITEM);
+        room.doors[index] = init_door(NULL, NORTH, ID_NO_ROOM, ID_NO_ITEM);
     return room;
 }
 
@@ -31,10 +31,10 @@ void remove_item_from_room(Room * room, ItemID item_id)
     remove_id(&room->item_id_list, item_id);
 }
 
-void add_door_to_room(Room * room, Direction direction, Door door)
+void add_door_to_room(Room * room, Door door)
 {
-    free_door(&room->doors[direction]);
-    room->doors[direction] = door;
+    free_door(&room->doors[door.direction]);
+    room->doors[door.direction] = door;
 }
 
 bool room_has_door(Room room, Direction direction)

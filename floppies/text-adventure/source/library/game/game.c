@@ -45,6 +45,10 @@ GameState init_game_state(const char * game_data_path)
 void free_game_state(GameState * game)
 {
     game->is_running = false;
+    free(game->intro_text);
+    game->intro_text = NULL;
+    free(game->win_text);
+    game->win_text = NULL;
     free_player(&game->player);
     if (game->num_rooms > 0)
     {
