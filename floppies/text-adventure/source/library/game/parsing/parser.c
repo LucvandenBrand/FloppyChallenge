@@ -160,6 +160,12 @@ bool accept_movement(TokenList token_list, unsigned * token_index, GameState * g
             return true;
         }
         Door door = get_room_door(game->rooms[game->current_room], direction);
+        if (is_exit_door(door))
+        {
+            put_text("%s\n", game->win_text);
+            game->is_running = false;
+            return true;
+        }
         game->current_room = door.roomId; // TODO : implement keys.
         return true;
     }

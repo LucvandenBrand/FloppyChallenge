@@ -26,7 +26,7 @@
           "name":"exit door",
           "direction":"N",
           "key":2,
-          "room":-1
+          "room":-2
         }
       ],
       "items": [2]

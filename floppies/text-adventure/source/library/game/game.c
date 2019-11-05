@@ -14,6 +14,7 @@ void game_loop()
     GameState game = init_game_state(GAME_DATA_PATH);
     RoomID previous_room = ID_NO_ROOM;
     char input[MAX_INPUT_SIZE] = "";
+    put_text("%s\n", game.intro_text);
     while (game.is_running)
     {
         if (game.current_room != previous_room)

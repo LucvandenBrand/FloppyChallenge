@@ -14,3 +14,8 @@ void free_door(Door * door)
     door->roomId = ID_EMPTY;
     door->keyId = ID_EMPTY;
 }
+
+bool is_exit_door(Door door)
+{
+    return door.roomId == ROOM_ID_EXIT;
+}

@@ -27,6 +27,18 @@ START_TEST(test_free_door)
 }
 END_TEST
 
+START_TEST(test_exit_door)
+{
+    char * item_name = malloc(7 * sizeof(char));
+    strcpy(item_name, "A door\0");
+    Door door = init_door(item_name, NORTH, ROOM_ID_EXIT, 2);
+    ck_assert(is_exit_door(door));
+    door.roomId = ID_EMPTY;
+    ck_assert(!is_exit_door(door));
+    free_door(&door);
+}
+END_TEST
+
 Suite * makeDoorSuite()
 {
     Suite *suite = suite_create("Door Test Suite");
@@ -34,6 +46,7 @@ Suite * makeDoorSuite()
     TCase * test_case = tcase_create("Door");
     tcase_add_test(test_case, test_init_door);
     tcase_add_test(test_case, test_free_door);
+    tcase_add_test(test_case, test_exit_door);
     suite_add_tcase(suite, test_case);
 
     return suite;

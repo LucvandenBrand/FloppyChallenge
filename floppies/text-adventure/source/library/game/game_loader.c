@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <memory/safe_memory.h>
+#include <string/string_ops.h>
 
 void load_game_data(GameState * game, const char * game_data_path)
 {
@@ -63,7 +64,9 @@ void load_game_from_json_tokens(GameState * game, const char * json_string, jsmn
             token_index++;
             char * introduction_string = strndup(json_string + tokens[token_index].start,
                     tokens[token_index].end - tokens[token_index].start);
-            game->intro_text = introduction_string;
+            char * escaped_introduction_string = replace_string(introduction_string, "\\n", "\n");
+            free(introduction_string);
+            game->intro_text = escaped_introduction_string;
             token_index++;
         }
         else if (json_equal(json_string, &tokens[token_index], "win") == 0)
@@ -71,7 +74,9 @@ void load_game_from_json_tokens(GameState * game, const char * json_string, jsmn
             token_index++;
             char * win_string = strndup(json_string + tokens[token_index].start,
                                                  tokens[token_index].end - tokens[token_index].start);
-            game->win_text = win_string;
+            char * escaped_win_string = replace_string(win_string, "\\n", "\n");
+            free(win_string);
+            game->win_text = escaped_win_string;
             token_index++;
         }
         else if (json_equal(json_string, &tokens[token_index], "rooms") == 0)
