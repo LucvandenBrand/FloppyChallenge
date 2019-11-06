@@ -5,10 +5,13 @@
 
 /**
  * Grammar: STATEMENT := ACTION | MOVEMENT | EXIT
- *          ACTION := INSPECTING | TAKING | PLACING
+ *          ACTION := INSPECTING | TAKING | PLACING | LOCKING | UNLOCKING
  *          INSPECTING := LOOK {AT} ITEM | ROOM | INVENTORY
  *          TAKING := TAKE ITEM
  *          PLACING := PLACE ITEM
+ *          LOCKING := LOCK DOOR WITH ITEM
+ *          UNLOCKING := UNLOCK | OPEN DOOR WITH ITEM
+ *          DOOR := [a-Z]+
  *          ITEM := [a-Z]+
  *          MOVEMENT := WALK DIRECTION
  *          DIRECTION := north | east | south | west
@@ -24,7 +27,11 @@ typedef enum {
     INVENTORY,
     WALK,
     DIRECTION,
-    EXIT
+    EXIT,
+    LOCK,
+    UNLOCK,
+    OPEN,
+    WITH
 } TokenType;
 
 typedef struct {
