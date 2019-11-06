@@ -8,7 +8,7 @@ Room init_room(char * description)
     room.description = description;
     room.item_id_list = init_list();
     for (unsigned index=0; index < NUM_DIRECTIONS; index++)
-        room.doors[index] = init_door(NULL, NORTH, ID_NO_ROOM, ID_NO_ITEM);
+        room.doors[index] = init_door(NULL, NORTH, ID_NO_ROOM, ID_NO_ITEM, false);
     room.num_doors = 0;
     return room;
 }

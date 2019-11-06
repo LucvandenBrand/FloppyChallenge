@@ -49,6 +49,15 @@ static int json_equal(const char *json, jsmntok_t *tok, const char *s)
     return -1;
 }
 
+static bool json_to_bool(const char *json, jsmntok_t *tok)
+{
+    if (tok->type == JSMN_PRIMITIVE && strncmp(json + tok->start, "true", tok->end - tok->start) == 0)
+    {
+        return true;
+    }
+    return false;
+}
+
 void load_game_from_json_tokens(GameState * game, const char * json_string, jsmntok_t * tokens, int num_tokens)
 {
     if (num_tokens < 2 || tokens[0].type != JSMN_OBJECT) {
@@ -173,6 +182,7 @@ Door load_door_from_json_tokens(const char * json_string, jsmntok_t * tokens, in
     Direction direction = NORTH;
     ID room_id = ID_NO_ROOM;
     ID key_id = ID_NO_ITEM;
+    bool is_locked = false;
     for (unsigned child_index = 0; child_index < num_children; child_index++)
     {
         if (json_equal(json_string, &tokens[*token_index], "name") == 0)
@@ -213,8 +223,14 @@ Door load_door_from_json_tokens(const char * json_string, jsmntok_t * tokens, in
             free(room_string);
             (*token_index)++;
         }
+        else if (json_equal(json_string, &tokens[*token_index], "locked") == 0)
+        {
+            (*token_index)++;
+            is_locked = json_to_bool(json_string, &tokens[*token_index]);
+            (*token_index)++;
+        }
     }
-    return init_door(name, direction, room_id, key_id);
+    return init_door(name, direction, room_id, key_id, is_locked);
 }
 
 Item load_item_from_json_tokens(const char * json_string, jsmntok_t * tokens, int num_children, unsigned int * token_index)

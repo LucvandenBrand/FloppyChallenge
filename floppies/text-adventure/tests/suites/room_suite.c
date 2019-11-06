@@ -6,7 +6,7 @@ Door create_test_door()
 {
     char * item_name = malloc(7 * sizeof(char));
     strcpy(item_name, "A door\0");
-    return init_door(item_name, NORTH, 1, 2);
+    return init_door(item_name, NORTH, 1, 2, false);
 }
 
 Room create_test_room()

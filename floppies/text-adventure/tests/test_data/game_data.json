@@ -8,7 +8,8 @@
           "name":"yellow door",
           "direction":"E",
           "key":1,
-          "room":1
+          "room":1,
+          "locked":true
         }
       ],
       "items": [0, 1]
@@ -20,13 +21,15 @@
           "name":"yellow door",
           "direction":"W",
           "key":-1,
-          "room":0
+          "room":0,
+          "locked":false
         },
         {
           "name":"exit door",
           "direction":"N",
           "key":2,
-          "room":-2
+          "room":-2,
+          "locked":true
         }
       ],
       "items": [2]
