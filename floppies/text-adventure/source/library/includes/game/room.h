@@ -25,6 +25,7 @@ void remove_item_from_room(Room * room, ItemID item_id);
 void add_door_to_room(Room * room, Door door);
 bool room_has_door(Room room, Direction direction);
 Door get_room_door(Room room, Direction direction);
+Direction get_room_door_direction(Room room, const char * name);
 bool is_item_in_room(Room room, ItemID item_id);
 
 #endif

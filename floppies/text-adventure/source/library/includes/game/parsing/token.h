@@ -10,7 +10,7 @@
  *          TAKING := TAKE ITEM
  *          PLACING := PLACE ITEM
  *          LOCKING := LOCK DOOR WITH ITEM
- *          UNLOCKING := UNLOCK | OPEN DOOR WITH ITEM
+ *          UNLOCKING := UNLOCK DOOR WITH ITEM
  *          DOOR := [a-Z]+
  *          ITEM := [a-Z]+
  *          MOVEMENT := WALK DIRECTION
@@ -30,8 +30,8 @@ typedef enum {
     EXIT,
     LOCK,
     UNLOCK,
-    OPEN,
-    WITH
+    WITH,
+    DOOR
 } TokenType;
 
 typedef struct {

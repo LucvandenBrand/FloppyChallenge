@@ -51,6 +51,17 @@ Door get_room_door(Room room, Direction direction)
     return room.doors[direction];
 }
 
+Direction get_room_door_direction(Room room, const char * name)
+{
+    for (Direction dir = 0; dir < NUM_DIRECTIONS; dir++)
+    {
+        Door door = get_room_door(room, dir);
+        if (door.name != NULL && strcmp(door.name, name) == 0)
+            return dir;
+    }
+    return ID_EMPTY;
+}
+
 bool is_item_in_room(Room room, ItemID item_id)
 {
     return has_id(room.item_id_list, item_id);

@@ -112,6 +112,17 @@ START_TEST(test_room_has_door)
 }
 END_TEST
 
+START_TEST(test_get_room_door_direction)
+{
+    Room room = create_test_room();
+    Door door = create_test_door();
+    door.direction = EAST;
+    add_door_to_room(&room, door);
+    ck_assert_int_eq(get_room_door_direction(room, door.name), EAST);
+    free_room(&room);
+}
+END_TEST
+
 Suite * makeRoomSuite()
 {
     Suite *suite = suite_create("Room Test Suite");
@@ -123,6 +134,7 @@ Suite * makeRoomSuite()
     tcase_add_test(test_case, test_remove_item_from_room);
     tcase_add_test(test_case, test_add_door_to_room);
     tcase_add_test(test_case, test_room_has_door);
+    tcase_add_test(test_case, test_get_room_door_direction);
     suite_add_tcase(suite, test_case);
 
     return suite;

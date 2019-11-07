@@ -16,6 +16,8 @@ bool accept_action(TokenList token_list, unsigned * token_index, GameState * gam
 bool accept_inspecting(TokenList token_list, unsigned * token_index, GameState * game);
 bool accept_taking(TokenList token_list, unsigned * token_index, GameState * game);
 bool accept_placing(TokenList token_list, unsigned * token_index, GameState * game);
+bool accept_locking(TokenList token_list, unsigned * token_index, GameState * game);
+bool accept_unlocking(TokenList token_list, unsigned * token_index, GameState * game);
 bool accept_movement(TokenList token_list, unsigned * token_index, GameState * game);
 bool accept_token(TokenList token_list, unsigned * token_index, TokenType expected);
 void free_tokens(TokenList * token_list);

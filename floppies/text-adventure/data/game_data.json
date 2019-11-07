@@ -20,7 +20,7 @@
         {
           "name":"yellow door",
           "direction":"W",
-          "key":-1,
+          "key":1,
           "room":0,
           "locked":false
         },

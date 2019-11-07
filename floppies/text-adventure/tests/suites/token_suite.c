@@ -113,13 +113,53 @@ START_TEST(test_match_token_direction)
 END_TEST
 
 START_TEST(test_match_token_exit)
-    {
-        GameState game = init_game_state(TEST_GAME_DATA_PATH);
-        Token token = match_token("exit", game);
-        ck_assert_int_eq(token.type, EXIT);
-        ck_assert_int_eq(token.value, -1);
-        free_game_state(&game);
-    }
+{
+    GameState game = init_game_state(TEST_GAME_DATA_PATH);
+    Token token = match_token("exit", game);
+    ck_assert_int_eq(token.type, EXIT);
+    ck_assert_int_eq(token.value, -1);
+    free_game_state(&game);
+}
+END_TEST
+
+START_TEST(test_match_token_lock)
+{
+    GameState game = init_game_state(TEST_GAME_DATA_PATH);
+    Token token = match_token("lock", game);
+    ck_assert_int_eq(token.type, LOCK);
+    ck_assert_int_eq(token.value, -1);
+    free_game_state(&game);
+}
+END_TEST
+
+START_TEST(test_match_token_unlock)
+{
+    GameState game = init_game_state(TEST_GAME_DATA_PATH);
+    Token token = match_token("unlock", game);
+    ck_assert_int_eq(token.type, UNLOCK);
+    ck_assert_int_eq(token.value, -1);
+    free_game_state(&game);
+}
+END_TEST
+
+START_TEST(test_match_token_door)
+{
+    GameState game = init_game_state(TEST_GAME_DATA_PATH);
+    Token token = match_token("yellow door", game);
+    ck_assert_int_eq(token.type, DOOR);
+    ck_assert_int_eq(token.value, EAST);
+    free_game_state(&game);
+}
+END_TEST
+
+START_TEST(test_match_token_with)
+{
+    GameState game = init_game_state(TEST_GAME_DATA_PATH);
+    Token token = match_token("with", game);
+    ck_assert_int_eq(token.type, WITH);
+    ck_assert_int_eq(token.value, -1);
+    free_game_state(&game);
+}
 END_TEST
 
 Suite * makeTokenSuite()
@@ -138,6 +178,10 @@ Suite * makeTokenSuite()
     tcase_add_test(test_case, test_match_token_walk);
     tcase_add_test(test_case, test_match_token_direction);
     tcase_add_test(test_case, test_match_token_exit);
+    tcase_add_test(test_case, test_match_token_lock);
+    tcase_add_test(test_case, test_match_token_unlock);
+    tcase_add_test(test_case, test_match_token_door);
+    tcase_add_test(test_case, test_match_token_with);
     suite_add_tcase(suite, test_case);
 
     return suite;
