@@ -7,13 +7,13 @@ void describe_room(GameState game, RoomID room_id)
 {
     Room room = game.rooms[room_id];
     put_text("%s\n", room.description);
-    list_doors(room);
+    list_doors(room.doors);
     list_items(game, room.item_id_list);
 }
 
-void list_doors(Room room)
+void list_doors(DoorList list)
 {
-    if (room.num_doors <= 0)
+    if (list.num_doors <= 0)
     {
         put_text("There are no doors.\n");
         return;
@@ -22,13 +22,14 @@ void list_doors(Room room)
     put_text("To the ");
     for (Direction dir=0; dir < NUM_DIRECTIONS; dir++)
     {
-        if (!room_has_door(room, dir))
+        if (!has_door_with_direction(list, dir))
             continue;
-        if (room.num_doors > 1 && door_num == room.num_doors -1)
+        if (list.num_doors > 1 && door_num == list.num_doors -1)
             put_text(" and to the ");
         else if (door_num > 0)
             put_text(", to the ");
-        Door door = get_room_door(room, dir);
+        ID door_id = get_door_id_with_direction(list, dir);
+        Door door = list.doors[door_id];
         print_direction(door.direction);
         put_text(" there is ");
         choose_indefinite_article(door.name);

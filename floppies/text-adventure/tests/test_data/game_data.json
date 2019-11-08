@@ -25,7 +25,7 @@
           "locked":false
         },
         {
-          "name":"exit door",
+          "name":"winning door",
           "direction":"N",
           "key":2,
           "room":-2,

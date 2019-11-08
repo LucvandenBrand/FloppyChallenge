@@ -99,7 +99,7 @@ START_TEST(test_lock_door_to_tokens)
     TokenList token_list = text_to_tokens("lock yellow door with orb", game);
     ck_assert_int_eq(token_list.tokens[0].type, LOCK);
     ck_assert_int_eq(token_list.tokens[1].type, DOOR);
-    ck_assert_int_eq(token_list.tokens[1].value, EAST);
+    ck_assert_int_eq(token_list.tokens[1].value, 0);
     ck_assert_int_eq(token_list.tokens[2].type, WITH);
     ck_assert_int_eq(token_list.tokens[3].type, ITEM);
     ck_assert_int_eq(token_list.tokens[3].value, 1);
@@ -115,7 +115,7 @@ START_TEST(test_unlock_door_to_tokens)
     TokenList token_list = text_to_tokens("unlock yellow door with orb", game);
     ck_assert_int_eq(token_list.tokens[0].type, UNLOCK);
     ck_assert_int_eq(token_list.tokens[1].type, DOOR);
-    ck_assert_int_eq(token_list.tokens[1].value, EAST);
+    ck_assert_int_eq(token_list.tokens[1].value, 0);
     ck_assert_int_eq(token_list.tokens[2].type, WITH);
     ck_assert_int_eq(token_list.tokens[3].type, ITEM);
     ck_assert_int_eq(token_list.tokens[3].value, 1);

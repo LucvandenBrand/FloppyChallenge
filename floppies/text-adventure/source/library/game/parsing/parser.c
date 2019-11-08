@@ -159,10 +159,10 @@ bool accept_locking(TokenList token_list, unsigned * token_index, GameState * ga
         return true;
     }
 
-    Direction door_direction = token_list.tokens[*token_index - 1].value;
-    Door door = get_room_door(game->rooms[game->current_room], door_direction);
+    ID doorID = token_list.tokens[*token_index - 1].value;
+    Door * door = &game->rooms[game->current_room].doors.doors[doorID];
     if (!accept_token(token_list, token_index, WITH)) {
-        put_text("Lock %s with what?\n", door.name);
+        put_text("Lock %s with what?\n", door->name);
         return true;
     }
     if (!accept_token(token_list, token_index, ITEM))
@@ -176,11 +176,11 @@ bool accept_locking(TokenList token_list, unsigned * token_index, GameState * ga
     {
         put_text("You do not have that in your inventory.\n");
     }
-    else if (is_door_locked(door))
+    else if (is_door_locked(*door))
     {
         put_text("The door is already locked, but it's good to make sure.\n");
     }
-    else if(try_lock_door(&game->rooms[game->current_room].doors[door_direction], item_id)) // TODO : this breaks protection.
+    else if(try_lock_door(door, item_id))
     {
         put_text("You locked the door.\n");
     }
@@ -201,10 +201,10 @@ bool accept_unlocking(TokenList token_list, unsigned * token_index, GameState * 
         return true;
     }
 
-    Direction door_direction = token_list.tokens[*token_index - 1].value;
-    Door door = get_room_door(game->rooms[game->current_room], door_direction);
+    ID doorID = token_list.tokens[*token_index - 1].value;
+    Door * door = &game->rooms[game->current_room].doors.doors[doorID];
     if (!accept_token(token_list, token_index, WITH)) {
-        put_text("Unlock %s with what?\n", door.name);
+        put_text("Unlock %s with what?\n", door->name);
         return true;
     }
     if (!accept_token(token_list, token_index, ITEM))
@@ -218,11 +218,11 @@ bool accept_unlocking(TokenList token_list, unsigned * token_index, GameState * 
     {
         put_text("You do not have that in your inventory.\n");
     }
-    else if (!is_door_locked(door))
+    else if (!is_door_locked(*door))
     {
         put_text("The door moves as you try to unlock it, it's already open!\n");
     }
-    else if(try_unlock_door(&game->rooms[game->current_room].doors[door_direction], item_id)) // TODO : this breaks protection.
+    else if(try_unlock_door(door, item_id))
     {
         put_text("You unlocked the door.\n");
     }
@@ -238,13 +238,14 @@ bool accept_movement(TokenList token_list, unsigned * token_index, GameState * g
 {
     if (accept_token(token_list, token_index, WALK) && accept_token(token_list, token_index, DIRECTION))
     {
-        Direction direction = token_list.tokens[*token_index-1].value;
-        if (!room_has_door(game->rooms[game->current_room], direction))
+        Direction door_direction = token_list.tokens[*token_index-1].value;
+        if (!room_has_door_in_direction(game->rooms[game->current_room], door_direction))
         {
             put_text("BONK!\nYou just bumped into a wall...\n");
             return true;
         }
-        Door door = get_room_door(game->rooms[game->current_room], direction);
+        ID doorID = get_room_door_id_with_direction(game->rooms[game->current_room], door_direction);
+        Door door = game->rooms[game->current_room].doors.doors[doorID];
         if (is_door_locked(door))
         {
             put_text("The %s is locked.\n", door.name);

@@ -7,9 +7,7 @@ Room init_room(char * description)
     Room room;
     room.description = description;
     room.item_id_list = init_list();
-    for (unsigned index=0; index < NUM_DIRECTIONS; index++)
-        room.doors[index] = init_door(NULL, NORTH, ID_NO_ROOM, ID_NO_ITEM, false);
-    room.num_doors = 0;
+    room.doors = init_door_list();
     return room;
 }
 
@@ -18,9 +16,7 @@ void free_room(Room * room)
     free(room->description);
     room->description = NULL;
     free_list(&room->item_id_list);
-    for (unsigned index=0; index < NUM_DIRECTIONS; index++)
-        free_door(&room->doors[index]);
-    room->num_doors = 0;
+    free_door_list(&room->doors);
 }
 
 void add_item_to_room(Room * room, ItemID item_id)
@@ -33,36 +29,34 @@ void remove_item_from_room(Room * room, ItemID item_id)
     remove_id(&room->item_id_list, item_id);
 }
 
-void add_door_to_room(Room * room, Door door)
-{
-    if (!room_has_door(*room, door.direction))
-        room->num_doors++;
-    free_door(&room->doors[door.direction]);
-    room->doors[door.direction] = door;
-}
-
-bool room_has_door(Room room, Direction direction)
-{
-    return room.doors[direction].roomId != ID_NO_ROOM;
-}
-
-Door get_room_door(Room room, Direction direction)
-{
-    return room.doors[direction];
-}
-
-Direction get_room_door_direction(Room room, const char * name)
-{
-    for (Direction dir = 0; dir < NUM_DIRECTIONS; dir++)
-    {
-        Door door = get_room_door(room, dir);
-        if (door.name != NULL && strcmp(door.name, name) == 0)
-            return dir;
-    }
-    return ID_EMPTY;
-}
-
 bool is_item_in_room(Room room, ItemID item_id)
 {
     return has_id(room.item_id_list, item_id);
 }
+
+void add_door_to_room(Room * room, Door door)
+{
+    add_door(&room->doors, door);
+}
+
+bool room_has_door_in_direction(Room room, Direction direction)
+{
+    return has_door_with_direction(room.doors, direction);
+}
+
+bool room_has_door_with_name(Room room, const char * name)
+{
+    return has_door_with_name(room.doors, name);
+}
+
+ID get_room_door_id_with_name(Room room, const char * name)
+{
+    return get_door_id_with_name(room.doors, name);
+}
+
+ID get_room_door_id_with_direction(Room room, Direction direction)
+{
+    return get_door_id_with_direction(room.doors, direction);
+}
+
+

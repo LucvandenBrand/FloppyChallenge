@@ -147,7 +147,7 @@ START_TEST(test_match_token_door)
     GameState game = init_game_state(TEST_GAME_DATA_PATH);
     Token token = match_token("yellow door", game);
     ck_assert_int_eq(token.type, DOOR);
-    ck_assert_int_eq(token.value, EAST);
+    ck_assert_int_eq(token.value, 0);
     free_game_state(&game);
 }
 END_TEST

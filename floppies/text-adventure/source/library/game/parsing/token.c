@@ -7,7 +7,7 @@ Token match_token(const char * string, GameState game)
 {
     Token token = {NONE, -1};
     ItemID item_id = get_item_id(string, game);
-    ID door_id = get_room_door_direction(game.rooms[game.current_room], string);
+    ID door_id = get_room_door_id_with_name(game.rooms[game.current_room], string);
     if (item_id != ID_NO_ITEM)
     {
         token.type = ITEM;
