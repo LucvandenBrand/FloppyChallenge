@@ -12,7 +12,8 @@
           "locked":true
         }
       ],
-      "items": [0, 1]
+      "items": [0, 1],
+      "entities": []
     },
     {
       "description": "A fun room.",
@@ -32,7 +33,8 @@
           "locked":true
         }
       ],
-      "items": [2]
+      "items": [2],
+      "entities": [0, 1]
     }
   ],
   "items": [
@@ -47,7 +49,32 @@
     {
       "name": "Tiger toy",
       "description": "A toy for a tiger."
+    },
+    {
+      "name": "Gun",
+      "description": "A plain old gun."
     }
   ],
+  "entities":[
+    {
+      "name": "ghost",
+      "description": "A spooky ghost!",
+      "holds": -1,
+      "vulnerability": 1,
+      "attack": "The ghost consumes your soul.",
+      "die": "The ghost thanks you, and passes beyond.",
+      "solid": false
+    },
+    {
+      "name": "zombie",
+      "description": "A walking corpse.",
+      "holds": -1,
+      "vulnerability": 1,
+      "attack": "The zombie lunges at your throat and slashes your jugular. Slowly the world fades to black.",
+      "die": "The zombie falls to the ground, finally truly dead.",
+      "solid": true
+    }
+  ],
+  "reset":"Darkness...\n Total darkness...\n Then suddenly a shocking flash of light.\n As you slowly adjust your eyes, you see where you are.",
   "win":"The fresh air fills your lungs. You got out!"
 }

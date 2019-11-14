@@ -39,6 +39,11 @@ GameState init_game_state(const char * game_data_path)
     game.rooms = NULL;
     game.num_items = 0;
     game.items = NULL;
+    game.num_entities = 0;
+    game.entities = NULL;
+    game.win_text = NULL;
+    game.intro_text = NULL;
+    game.reset_text = NULL;
     load_game_data(&game, game_data_path);
     return game;
 }
@@ -46,11 +51,21 @@ GameState init_game_state(const char * game_data_path)
 void free_game_state(GameState * game)
 {
     game->is_running = false;
-    free(game->intro_text);
+
+    if (game->intro_text != NULL)
+        free(game->intro_text);
     game->intro_text = NULL;
-    free(game->win_text);
+
+    if (game->win_text != NULL)
+        free(game->win_text);
     game->win_text = NULL;
+
+    if (game->reset_text != NULL)
+        free(game->reset_text);
+    game->reset_text = NULL;
+
     free_player(&game->player);
+
     if (game->num_rooms > 0)
     {
         for (unsigned room_index = 0; room_index < game->num_rooms; room_index++)
@@ -59,6 +74,7 @@ void free_game_state(GameState * game)
         game->rooms = NULL;
         game->num_rooms = 0;
     }
+
     if (game->num_items > 0)
     {
         for (unsigned item_index = 0; item_index < game->num_items; item_index++)
@@ -66,6 +82,15 @@ void free_game_state(GameState * game)
         free(game->items);
         game->items = NULL;
         game->num_items = 0;
+    }
+
+    if (game->num_entities > 0)
+    {
+        for (unsigned entity_index = 0; entity_index < game->num_entities; entity_index++)
+            free_entity(&game->entities[entity_index]);
+        free(game->entities);
+        game->entities = NULL;
+        game->num_entities = 0;
     }
 }
 

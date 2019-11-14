@@ -7,6 +7,7 @@ Room init_room(char * description)
     Room room;
     room.description = description;
     room.item_id_list = init_list();
+    room.entity_id_list = init_list();
     room.doors = init_door_list();
     return room;
 }
@@ -16,6 +17,7 @@ void free_room(Room * room)
     free(room->description);
     room->description = NULL;
     free_list(&room->item_id_list);
+    free_list(&room->entity_id_list);
     free_door_list(&room->doors);
 }
 
@@ -59,4 +61,8 @@ ID get_room_door_id_with_direction(Room room, Direction direction)
     return get_door_id_with_direction(room.doors, direction);
 }
 
+void add_entity_to_room(Room * room, EntityID entity_id)
+{
+    add_id(&room->entity_id_list, entity_id);
+}
 

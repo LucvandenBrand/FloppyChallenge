@@ -7,6 +7,7 @@
 #include <stdbool.h>
 #include <id/id_list.h>
 #include "door_list.h"
+#include "entity.h"
 
 #define ID_NO_ROOM ID_EMPTY
 
@@ -15,6 +16,7 @@ typedef ID RoomID;
 typedef struct {
     char * description;
     IDList item_id_list;
+    IDList entity_id_list;
     DoorList doors;
 } Room;
 
@@ -28,5 +30,6 @@ bool room_has_door_in_direction(Room room, Direction direction);
 bool room_has_door_with_name(Room room, const char * name);
 ID get_room_door_id_with_name(Room room, const char * name);
 ID get_room_door_id_with_direction(Room room, Direction direction);
+void add_entity_to_room(Room * room, EntityID entity_id);
 
 #endif

@@ -88,6 +88,16 @@ void load_game_from_json_tokens(GameState * game, const char * json_string, jsmn
             game->win_text = escaped_win_string;
             token_index++;
         }
+        else if (json_equal(json_string, &tokens[token_index], "reset") == 0)
+        {
+            token_index++;
+            char * reset_string = strndup(json_string + tokens[token_index].start,
+                                        tokens[token_index].end - tokens[token_index].start);
+            char * escaped_reset_string = replace_string(reset_string, "\\n", "\n");
+            free(reset_string);
+            game->reset_text = escaped_reset_string;
+            token_index++;
+        }
         else if (json_equal(json_string, &tokens[token_index], "rooms") == 0)
         {
             token_index++;
@@ -120,6 +130,20 @@ void load_game_from_json_tokens(GameState * game, const char * json_string, jsmn
                 token_index++;
                 Item item = load_item_from_json_tokens(json_string, tokens, num_item_children, &token_index);
                 game->items[item_num] = item;
+            }
+        }
+        else if (json_equal(json_string, &tokens[token_index], "entities") == 0)
+        {
+            token_index++;
+            game->num_entities = tokens[token_index].size;
+            game->entities = safe_malloc(game->num_entities * sizeof(Entity));
+            token_index++;
+            for (unsigned entity_num=0; entity_num < game->num_entities; entity_num++)
+            {
+                int num_entity_children = tokens[token_index].size;
+                token_index++;
+                Entity entity = load_entity_from_json_tokens(json_string, tokens, num_entity_children, &token_index);
+                game->entities[entity_num] = entity;
             }
         }
         else
@@ -172,6 +196,21 @@ Room load_room_from_json_tokens(const char * json_string, jsmntok_t * tokens, in
                 (*token_index)++;
             }
         }
+        else if (json_equal(json_string, &tokens[*token_index], "entities") == 0)
+        {
+            (*token_index)++;
+            unsigned num_entities = tokens[*token_index].size;
+            (*token_index)++;
+            for (unsigned entity_num=0; entity_num < num_entities; entity_num++)
+            {
+                char * entity_string = strndup(json_string + tokens[*token_index].start,
+                                             tokens[*token_index].end - tokens[*token_index].start);
+                EntityID entity_id = atoi(entity_string);
+                free(entity_string);
+                add_entity_to_room(&room, entity_id);
+                (*token_index)++;
+            }
+        }
     }
     return room;
 }
@@ -190,7 +229,6 @@ Door load_door_from_json_tokens(const char * json_string, jsmntok_t * tokens, in
             (*token_index)++;
             name = strndup(json_string + tokens[*token_index].start,
                     tokens[*token_index].end - tokens[*token_index].start);
-            (*token_index)++;
         }
         else if (json_equal(json_string, &tokens[*token_index], "direction") == 0)
         {
@@ -203,7 +241,6 @@ Door load_door_from_json_tokens(const char * json_string, jsmntok_t * tokens, in
                 direction = SOUTH;
             else
                 direction = WEST;
-            (*token_index)++;
         }
         else if (json_equal(json_string, &tokens[*token_index], "key") == 0)
         {
@@ -212,7 +249,6 @@ Door load_door_from_json_tokens(const char * json_string, jsmntok_t * tokens, in
                     tokens[*token_index].end - tokens[*token_index].start);
             key_id = atoi(key_string);
             free(key_string);
-            (*token_index)++;
         }
         else if (json_equal(json_string, &tokens[*token_index], "room") == 0)
         {
@@ -221,14 +257,13 @@ Door load_door_from_json_tokens(const char * json_string, jsmntok_t * tokens, in
                     tokens[*token_index].end - tokens[*token_index].start);
             room_id = atoi(room_string);
             free(room_string);
-            (*token_index)++;
         }
         else if (json_equal(json_string, &tokens[*token_index], "locked") == 0)
         {
             (*token_index)++;
             is_locked = json_to_bool(json_string, &tokens[*token_index]);
-            (*token_index)++;
         }
+        (*token_index)++;
     }
     return init_door(name, direction, room_id, key_id, is_locked);
 }
@@ -254,6 +289,67 @@ Item load_item_from_json_tokens(const char * json_string, jsmntok_t * tokens, in
         (*token_index)++;
     }
     return init_item(name, description);
+}
+
+Entity load_entity_from_json_tokens(const char * json_string, jsmntok_t * tokens, int num_children, unsigned int * token_index)
+{
+    char * name = NULL;
+    char * description = NULL;
+    char * attack = NULL;
+    char * die = NULL;
+    ItemID holding_item = ID_NO_ITEM;
+    ItemID vulnerability = ID_NO_ITEM;
+    bool is_solid = false;
+    for (unsigned child_index = 0; child_index < num_children; child_index++)
+    {
+        if (json_equal(json_string, &tokens[*token_index], "name") == 0)
+        {
+            (*token_index)++;
+            name = strndup(json_string + tokens[*token_index].start,
+                           tokens[*token_index].end - tokens[*token_index].start);
+        }
+        else if (json_equal(json_string, &tokens[*token_index], "description") == 0)
+        {
+            (*token_index)++;
+            description = strndup(json_string + tokens[*token_index].start,
+                    tokens[*token_index].end - tokens[*token_index].start);
+        }
+        else if (json_equal(json_string, &tokens[*token_index], "attack") == 0)
+        {
+            (*token_index)++;
+            attack = strndup(json_string + tokens[*token_index].start,
+                                  tokens[*token_index].end - tokens[*token_index].start);
+        }
+        else if (json_equal(json_string, &tokens[*token_index], "die") == 0)
+        {
+            (*token_index)++;
+            die = strndup(json_string + tokens[*token_index].start,
+                                  tokens[*token_index].end - tokens[*token_index].start);
+        }
+        else if (json_equal(json_string, &tokens[*token_index], "holds") == 0)
+        {
+            (*token_index)++;
+            char * holding_item_string = strndup(json_string + tokens[*token_index].start,
+                                        tokens[*token_index].end - tokens[*token_index].start);
+            holding_item = atoi(holding_item_string);
+            free(holding_item_string);
+        }
+        else if (json_equal(json_string, &tokens[*token_index], "vulnerability") == 0)
+        {
+            (*token_index)++;
+            char * vulnerability_string = strndup(json_string + tokens[*token_index].start,
+                                                 tokens[*token_index].end - tokens[*token_index].start);
+            vulnerability = atoi(vulnerability_string);
+            free(vulnerability_string);
+        }
+        else if (json_equal(json_string, &tokens[*token_index], "solid") == 0)
+        {
+            (*token_index)++;
+            is_solid = json_to_bool(json_string, &tokens[*token_index]);
+        }
+        (*token_index)++;
+    }
+    return init_entity(name, description, attack, die, holding_item, vulnerability, is_solid);
 }
 
 char * copy_json_string_token(const char * json_string, jsmntok_t token)
