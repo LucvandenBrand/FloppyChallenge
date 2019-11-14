@@ -25,6 +25,7 @@ void game_loop()
         put_text("> ");
         get_text(input);
         apply_input_to_game_state(input, &game);
+        update_entities(&game);
     }
     free_game_state(&game);
 }
@@ -111,4 +112,10 @@ ItemID get_item_id(const char * search_name, GameState game)
     }
 
     return ID_NO_ITEM;
+}
+
+void update_entities(GameState * game)
+{
+    // TODO check current room, kill player if stayed in room for two turns.
+    // TODO move entity to neighbouring rooms (random chance to stay?).
 }
