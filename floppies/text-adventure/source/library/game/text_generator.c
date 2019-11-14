@@ -9,6 +9,7 @@ void describe_room(GameState game, RoomID room_id)
     put_text("%s\n", room.description);
     list_doors(room.doors);
     list_items(game, room.item_id_list);
+    list_entities(game, room.entity_id_list);
 }
 
 void list_doors(DoorList list)
@@ -78,6 +79,27 @@ void list_items(GameState game, IDList item_list)
         choose_indefinite_article(item.name);
         put_text(" ");
         put_text("%s", item.name);
+    }
+    put_text(".\n");
+}
+
+void list_entities(GameState game, IDList entity_list)
+{
+    if (entity_list.num_ids <= 0)
+    {
+        return;
+    }
+    put_text("In this room stands ");
+    for (unsigned entity_num = 0; entity_num < entity_list.num_ids; entity_num++)
+    {
+        if (entity_list.num_ids > 1 && entity_num == entity_list.num_ids-1)
+            put_text(" and ");
+        else if (entity_num > 0)
+            put_text(", ");
+        Entity entity = game.entities[entity_list.ids[entity_num]];
+        choose_indefinite_article(entity.name);
+        put_text(" ");
+        put_text("%s", entity.name);
     }
     put_text(".\n");
 }
