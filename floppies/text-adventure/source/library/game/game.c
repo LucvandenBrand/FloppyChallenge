@@ -25,7 +25,16 @@ void game_loop()
         put_text("> ");
         get_text(input);
         apply_input_to_game_state(input, &game);
-        update_entities(&game);
+        if (check_kill_player(game))
+        {
+            put_text("%s\n", game.reset_text);
+            free_game_state(&game);
+            game = init_game_state(GAME_DATA_PATH);
+        }
+        else
+        {
+            update_entities(&game); // Kill count counts twice.
+        }
     }
     free_game_state(&game);
 }
@@ -116,6 +125,63 @@ ItemID get_item_id(const char * search_name, GameState game)
 
 void update_entities(GameState * game)
 {
-    // TODO check current room, kill player if stayed in room for two turns.
-    // TODO move entity to neighbouring rooms (random chance to stay?).
+    move_entities(game);
+    tick_entity_kill_count(game);
+}
+
+void move_entities(GameState * game)
+{
+    for (unsigned room_index = 0; room_index < game->num_rooms; room_index++)
+    {
+        Room room = game->rooms[room_index];
+        for (unsigned entity_index = 0; entity_index < room.entity_id_list.num_ids; entity_index++)
+        {
+            // TODO give random chance to stay or incorporate speed.
+            EntityID entity_id = room.entity_id_list.ids[entity_index];
+            Entity * entity = &game->entities[entity_id];
+            IDList potential_doors = init_list();
+            for (ID door_index = 0; door_index < room.doors.num_doors; door_index++)
+            {
+                Door door = room.doors.doors[door_index];
+                if ((!is_door_locked(door) || !entity->is_solid) && !is_exit_door(door))
+                {
+                    add_id(&potential_doors, door_index);
+                }
+            }
+            if (potential_doors.num_ids > 0)
+            {
+                entity->kill_count = 2;
+                ID random_id = rand() % potential_doors.num_ids;
+                Door door = room.doors.doors[random_id];
+                Room goto_room = game->rooms[door.roomId];
+                add_id(&goto_room.entity_id_list, entity_id);
+                remove_id(&room.entity_id_list, entity_id);  // TODO Might give problem with this loop.
+            }
+            free_list(&potential_doors);
+        }
+    }
+}
+
+void tick_entity_kill_count(GameState * game)
+{
+    Room room = game->rooms[game->current_room];
+    for (unsigned entity_index = 0; entity_index < room.entity_id_list.num_ids; entity_index++)
+    {
+        EntityID entity_id = room.entity_id_list.ids[entity_index];
+        Entity * entity = &game->entities[entity_id];
+        if (entity->kill_count > 0)
+            entity->kill_count--;
+    }
+}
+
+bool check_kill_player(GameState game) {
+    for (unsigned entity_index = 0; entity_index < game.num_entities; entity_index++)
+    {
+        if (game.entities[entity_index].kill_count == 0)
+        {
+            put_text("%s\n",game.entities[entity_index].attack);
+            return true;
+        }
+    }
+    return false;
 }

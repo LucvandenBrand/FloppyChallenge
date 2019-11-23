@@ -1,7 +1,7 @@
 #include <game/entity.h>
 #include <stdlib.h>
 
-Entity init_entity(char * name, char * description, char * attack, char * die, ItemID holding_item,
+Entity init_entity(char * name, char * description, char * attack, char * die, int kill_count, ItemID holding_item,
                    ItemID vulnerability, bool is_solid)
 {
     Entity entity;
@@ -9,6 +9,7 @@ Entity init_entity(char * name, char * description, char * attack, char * die, I
     entity.description = description;
     entity.attack = attack;
     entity.die = die;
+    entity.kill_count = kill_count;
     entity.holding_item = holding_item;
     entity.vulnerability = vulnerability;
     entity.is_solid = is_solid;
@@ -25,6 +26,7 @@ void free_entity(Entity * entity)
     entity->attack = NULL;
     free(entity->die);
     entity->die = NULL;
+    entity->kill_count = 0;
     entity->holding_item = ID_NO_ITEM;
     entity->vulnerability = ID_NO_ITEM;
     entity->is_solid = false;
