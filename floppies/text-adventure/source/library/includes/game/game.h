@@ -19,6 +19,7 @@ typedef struct{
     Player player;
     Room * rooms;
     unsigned num_rooms;
+    RoomID previous_room;
     RoomID current_room;
     Item * items;
     unsigned num_items;
@@ -32,7 +33,6 @@ void free_game_state(GameState * game);
 ItemID get_item_id(const char * search_name, GameState game);
 void update_entities(GameState * game);
 void tick_entity_kill_count(GameState * game);
-void move_entities(GameState * game);
 bool check_kill_player(GameState game);
 
 #endif

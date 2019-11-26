@@ -12,29 +12,19 @@
 void game_loop()
 {
     GameState game = init_game_state(GAME_DATA_PATH);
-    RoomID previous_room = ID_NO_ROOM;
     char input[MAX_INPUT_SIZE] = "";
     put_text("%s\n", game.intro_text);
     while (game.is_running)
     {
-        if (game.current_room != previous_room)
+        if (game.current_room != game.previous_room)
         {
             describe_room(game, game.current_room);
-            previous_room = game.current_room;
+            game.previous_room = game.current_room;
         }
         put_text("> ");
         get_text(input);
         apply_input_to_game_state(input, &game);
-        if (check_kill_player(game))
-        {
-            put_text("%s\n", game.reset_text);
-            free_game_state(&game);
-            game = init_game_state(GAME_DATA_PATH);
-        }
-        else
-        {
-            update_entities(&game); // Kill count counts twice.
-        }
+        update_entities(&game);
     }
     free_game_state(&game);
 }
@@ -44,6 +34,7 @@ GameState init_game_state(const char * game_data_path)
     GameState game;
     game.is_running = true;
     game.player = init_player();
+    game.previous_room = ID_NO_ROOM;
     game.current_room = 0;
     game.num_rooms = 0;
     game.rooms = NULL;
@@ -84,6 +75,8 @@ void free_game_state(GameState * game)
         game->rooms = NULL;
         game->num_rooms = 0;
     }
+    game->current_room = 0;
+    game->previous_room = ID_NO_ROOM;
 
     if (game->num_items > 0)
     {
@@ -125,40 +118,14 @@ ItemID get_item_id(const char * search_name, GameState game)
 
 void update_entities(GameState * game)
 {
-    move_entities(game);
+    if (game->current_room != game->previous_room || !game->is_running)
+        return;
     tick_entity_kill_count(game);
-}
-
-void move_entities(GameState * game)
-{
-    for (unsigned room_index = 0; room_index < game->num_rooms; room_index++)
+    if (check_kill_player(*game))
     {
-        Room room = game->rooms[room_index];
-        for (unsigned entity_index = 0; entity_index < room.entity_id_list.num_ids; entity_index++)
-        {
-            // TODO give random chance to stay or incorporate speed.
-            EntityID entity_id = room.entity_id_list.ids[entity_index];
-            Entity * entity = &game->entities[entity_id];
-            IDList potential_doors = init_list();
-            for (ID door_index = 0; door_index < room.doors.num_doors; door_index++)
-            {
-                Door door = room.doors.doors[door_index];
-                if ((!is_door_locked(door) || !entity->is_solid) && !is_exit_door(door))
-                {
-                    add_id(&potential_doors, door_index);
-                }
-            }
-            if (potential_doors.num_ids > 0)
-            {
-                entity->kill_count = 2;
-                ID random_id = rand() % potential_doors.num_ids;
-                Door door = room.doors.doors[random_id];
-                Room goto_room = game->rooms[door.roomId];
-                add_id(&goto_room.entity_id_list, entity_id);
-                remove_id(&room.entity_id_list, entity_id);  // TODO Might give problem with this loop.
-            }
-            free_list(&potential_doors);
-        }
+        put_text("%s\n", game->reset_text);
+        free_game_state(game);
+        *game = init_game_state(GAME_DATA_PATH);
     }
 }
 
@@ -177,7 +144,7 @@ void tick_entity_kill_count(GameState * game)
 bool check_kill_player(GameState game) {
     for (unsigned entity_index = 0; entity_index < game.num_entities; entity_index++)
     {
-        if (game.entities[entity_index].kill_count == 0)
+        if (game.entities[entity_index].kill_count <= 0)
         {
             put_text("%s\n",game.entities[entity_index].attack);
             return true;

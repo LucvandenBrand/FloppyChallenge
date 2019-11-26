@@ -349,7 +349,7 @@ Entity load_entity_from_json_tokens(const char * json_string, jsmntok_t * tokens
         }
         (*token_index)++;
     }
-    return init_entity(name, description, attack, die, holding_item, 1, vulnerability, is_solid);
+    return init_entity(name, description, attack, die, 2, holding_item, vulnerability, is_solid);
 }
 
 char * copy_json_string_token(const char * json_string, jsmntok_t token)
