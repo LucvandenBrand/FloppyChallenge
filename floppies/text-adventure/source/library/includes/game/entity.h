@@ -10,6 +10,7 @@ typedef struct {
     char * attack;
     char * die;
     int kill_count;
+    int start_kill_count;
     ItemID holding_item;
     ItemID vulnerability;
     bool is_solid;

@@ -118,14 +118,32 @@ ItemID get_item_id(const char * search_name, GameState game)
 
 void update_entities(GameState * game)
 {
-    if (game->current_room != game->previous_room || !game->is_running)
+    if (!game->is_running)
         return;
+
+    if (game->current_room != game->previous_room)
+    {
+        reset_kill_count(game);
+        return;
+    }
+
     tick_entity_kill_count(game);
     if (check_kill_player(*game))
     {
         put_text("%s\n", game->reset_text);
         free_game_state(game);
         *game = init_game_state(GAME_DATA_PATH);
+    }
+}
+
+void reset_kill_count(GameState * game)
+{
+    Room room = game->rooms[game->previous_room];
+    for (unsigned entity_index = 0; entity_index < room.entity_id_list.num_ids; entity_index++)
+    {
+        EntityID entity_id = room.entity_id_list.ids[entity_index];
+        Entity * entity = &game->entities[entity_id];
+        entity->kill_count = entity->start_kill_count;
     }
 }
 

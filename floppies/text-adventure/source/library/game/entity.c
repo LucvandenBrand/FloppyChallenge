@@ -10,6 +10,7 @@ Entity init_entity(char * name, char * description, char * attack, char * die, i
     entity.attack = attack;
     entity.die = die;
     entity.kill_count = kill_count;
+    entity.start_kill_count = kill_count;
     entity.holding_item = holding_item;
     entity.vulnerability = vulnerability;
     entity.is_solid = is_solid;
@@ -26,7 +27,8 @@ void free_entity(Entity * entity)
     entity->attack = NULL;
     free(entity->die);
     entity->die = NULL;
-    entity->kill_count = 0;
+    entity->kill_count = -1;
+    entity->start_kill_count = -1;
     entity->holding_item = ID_NO_ITEM;
     entity->vulnerability = ID_NO_ITEM;
     entity->is_solid = false;
