@@ -299,6 +299,7 @@ Entity load_entity_from_json_tokens(const char * json_string, jsmntok_t * tokens
     char * die = NULL;
     ItemID holding_item = ID_NO_ITEM;
     ItemID vulnerability = ID_NO_ITEM;
+    int kill_count = -1;
     bool is_solid = false;
     for (unsigned child_index = 0; child_index < num_children; child_index++)
     {
@@ -342,6 +343,14 @@ Entity load_entity_from_json_tokens(const char * json_string, jsmntok_t * tokens
             vulnerability = atoi(vulnerability_string);
             free(vulnerability_string);
         }
+        else if (json_equal(json_string, &tokens[*token_index], "kill_count") == 0)
+        {
+            (*token_index)++;
+            char * kill_count_string = strndup(json_string + tokens[*token_index].start,
+                                                  tokens[*token_index].end - tokens[*token_index].start);
+            kill_count = atoi(kill_count_string);
+            free(kill_count_string);
+        }
         else if (json_equal(json_string, &tokens[*token_index], "solid") == 0)
         {
             (*token_index)++;
@@ -349,7 +358,7 @@ Entity load_entity_from_json_tokens(const char * json_string, jsmntok_t * tokens
         }
         (*token_index)++;
     }
-    return init_entity(name, description, attack, die, 2, holding_item, vulnerability, is_solid);
+    return init_entity(name, description, attack, die, kill_count, holding_item, vulnerability, is_solid);
 }
 
 char * copy_json_string_token(const char * json_string, jsmntok_t token)

@@ -144,7 +144,7 @@ void tick_entity_kill_count(GameState * game)
 bool check_kill_player(GameState game) {
     for (unsigned entity_index = 0; entity_index < game.num_entities; entity_index++)
     {
-        if (game.entities[entity_index].kill_count <= 0)
+        if (game.entities[entity_index].kill_count == 0)
         {
             put_text("%s\n",game.entities[entity_index].attack);
             return true;
