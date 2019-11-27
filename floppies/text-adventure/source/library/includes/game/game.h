@@ -31,6 +31,7 @@ void game_loop();
 GameState init_game_state(const char * game_data_path);
 void free_game_state(GameState * game);
 ItemID get_item_id(const char * search_name, GameState game);
+EntityID get_entity_id(const char * search_name, GameState game);
 void update_entities(GameState * game);
 void reset_kill_count(GameState * game);
 void tick_entity_kill_count(GameState * game);

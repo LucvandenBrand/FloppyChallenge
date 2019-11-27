@@ -8,6 +8,7 @@ Token match_token(const char * string, GameState game)
     Token token = {NONE, -1};
     ItemID item_id = get_item_id(string, game);
     ID door_id = get_room_door_id_with_name(game.rooms[game.current_room], string);
+    ID entity_id = get_entity_id(string, game);
     if (item_id != ID_NO_ITEM)
     {
         token.type = ITEM;
@@ -17,6 +18,11 @@ Token match_token(const char * string, GameState game)
     {
         token.type = DOOR;
         token.value = door_id;
+    }
+    else if (entity_id != ID_EMPTY)
+    {
+        token.type = ENTITY;
+        token.value = entity_id;
     }
     else if (strcmp(string, "room") == 0)
         token.type = ROOM;
@@ -63,6 +69,10 @@ Token match_token(const char * string, GameState game)
     else if (strcmp(string, "unlock") == 0)
     {
         token.type = UNLOCK;
+    }
+    else if (strcmp(string, "kill") == 0)
+    {
+        token.type = KILL;
     }
     else if (strcmp(string, "with") == 0)
     {

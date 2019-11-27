@@ -142,6 +142,16 @@ START_TEST(test_match_token_unlock)
 }
 END_TEST
 
+START_TEST(test_match_token_kill)
+    {
+        GameState game = init_game_state(TEST_GAME_DATA_PATH);
+        Token token = match_token("kill", game);
+        ck_assert_int_eq(token.type, KILL);
+        ck_assert_int_eq(token.value, -1);
+        free_game_state(&game);
+    }
+END_TEST
+
 START_TEST(test_match_token_door)
 {
     GameState game = init_game_state(TEST_GAME_DATA_PATH);
@@ -180,6 +190,7 @@ Suite * makeTokenSuite()
     tcase_add_test(test_case, test_match_token_exit);
     tcase_add_test(test_case, test_match_token_lock);
     tcase_add_test(test_case, test_match_token_unlock);
+    tcase_add_test(test_case, test_match_token_kill);
     tcase_add_test(test_case, test_match_token_door);
     tcase_add_test(test_case, test_match_token_with);
     suite_add_tcase(suite, test_case);

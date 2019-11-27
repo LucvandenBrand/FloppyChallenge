@@ -31,5 +31,7 @@ bool room_has_door_with_name(Room room, const char * name);
 ID get_room_door_id_with_name(Room room, const char * name);
 ID get_room_door_id_with_direction(Room room, Direction direction);
 void add_entity_to_room(Room * room, EntityID entity_id);
+void remove_entity_from_room(Room * room, EntityID entity_id);
+bool is_entity_in_room(Room room, EntityID entityId);
 
 #endif

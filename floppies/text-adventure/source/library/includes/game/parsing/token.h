@@ -5,13 +5,15 @@
 
 /**
  * Grammar: STATEMENT := ACTION | MOVEMENT | EXIT
- *          ACTION := INSPECTING | TAKING | PLACING | LOCKING | UNLOCKING
+ *          ACTION := INSPECTING | TAKING | PLACING | LOCKING | UNLOCKING | KILLING
  *          INSPECTING := LOOK {AT} ITEM | ROOM | INVENTORY
  *          TAKING := TAKE ITEM
  *          PLACING := PLACE ITEM
  *          LOCKING := LOCK DOOR WITH ITEM
  *          UNLOCKING := UNLOCK DOOR WITH ITEM
  *          DOOR := [a-Z]+
+ *          KILLING := KILL ENTITY WITH ITEM
+ *          ENTITY := [a-Z]+
  *          ITEM := [a-Z]+
  *          MOVEMENT := WALK DIRECTION
  *          DIRECTION := north | east | south | west
@@ -30,6 +32,8 @@ typedef enum {
     EXIT,
     LOCK,
     UNLOCK,
+    KILL,
+    ENTITY,
     WITH,
     DOOR
 } TokenType;

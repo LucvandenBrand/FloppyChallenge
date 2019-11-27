@@ -141,6 +141,37 @@ START_TEST(test_add_entity_to_room)
 }
 END_TEST
 
+START_TEST(test_remove_entity_from_room)
+{
+    Room room = create_test_room();
+    for (int i=0; i<10; i++)
+        add_entity_to_room(&room, i);
+
+    ck_assert_int_eq(room.entity_id_list.num_ids, 10);
+    remove_entity_from_room(&room, 42);
+    ck_assert_int_eq(room.entity_id_list.num_ids, 10);
+
+    for (int i=0; i<10; i++)
+    {
+        remove_entity_from_room(&room, i);
+        ck_assert_int_eq(room.entity_id_list.num_ids, 9-i);
+    }
+    ck_assert_int_eq(room.entity_id_list.list_size, 16);
+    remove_entity_from_room(&room, 42);
+    ck_assert_int_eq(room.entity_id_list.num_ids, 0);
+    free_room(&room);
+}
+END_TEST
+
+START_TEST(test_is_entity_in_room)
+{
+    Room room = create_test_room();
+    ck_assert(!is_entity_in_room(room, 42));
+    add_entity_to_room(&room, 42);
+    ck_assert(is_entity_in_room(room, 42));
+    free_room(&room);
+}
+END_TEST
 
 Suite * makeRoomSuite()
 {
@@ -154,6 +185,9 @@ Suite * makeRoomSuite()
     tcase_add_test(test_case, test_add_door_to_room);
     tcase_add_test(test_case, test_room_has_door_in_direction);
     tcase_add_test(test_case, test_room_has_door_with_name);
+    tcase_add_test(test_case, test_add_entity_to_room);
+    tcase_add_test(test_case, test_remove_entity_from_room);
+    tcase_add_test(test_case, test_is_entity_in_room);
     suite_add_tcase(suite, test_case);
 
     return suite;

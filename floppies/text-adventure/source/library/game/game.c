@@ -116,6 +116,25 @@ ItemID get_item_id(const char * search_name, GameState game)
     return ID_NO_ITEM;
 }
 
+EntityID get_entity_id(const char * search_name, GameState game)
+{
+    for (EntityID entity_id=0; entity_id < game.num_entities; entity_id++)
+    {
+        const char * entity_name = game.entities[entity_id].name;
+        unsigned long entity_name_length = strlen(entity_name);
+        char * lower_entity_name = safe_malloc((entity_name_length + 1) * sizeof(char));
+        strncpy(lower_entity_name, entity_name, entity_name_length + 1);
+        string_to_lowercase(lower_entity_name, entity_name_length);
+        int equality = strncmp(lower_entity_name, search_name, sizeof(entity_name));
+        free(lower_entity_name);
+
+        if (equality == 0)
+            return entity_id;
+    }
+
+    return ID_NO_ITEM;
+}
+
 void update_entities(GameState * game)
 {
     if (!game->is_running)

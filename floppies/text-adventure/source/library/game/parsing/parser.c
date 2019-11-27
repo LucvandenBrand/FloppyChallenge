@@ -76,7 +76,7 @@ bool accept_action(TokenList token_list, unsigned * token_index, GameState * gam
 {
     if (accept_inspecting(token_list, token_index, game) || accept_taking(token_list, token_index, game) ||
         accept_placing(token_list, token_index, game) || accept_locking(token_list, token_index, game) ||
-        accept_unlocking(token_list, token_index, game))
+        accept_unlocking(token_list, token_index, game) || accept_killing(token_list, token_index, game))
         return true;
     return false;
 }
@@ -154,7 +154,8 @@ bool accept_placing(TokenList token_list, unsigned * token_index, GameState * ga
 bool accept_locking(TokenList token_list, unsigned * token_index, GameState * game) {
     if (!accept_token(token_list, token_index, LOCK))
         return false;
-    if (!accept_token(token_list, token_index, DOOR)) {
+    if (!accept_token(token_list, token_index, DOOR))
+    {
         put_text("Please name a door in this room.\n");
         return true;
     }
@@ -162,7 +163,7 @@ bool accept_locking(TokenList token_list, unsigned * token_index, GameState * ga
     ID doorID = token_list.tokens[*token_index - 1].value;
     Door * door = &game->rooms[game->current_room].doors.doors[doorID];
     if (!accept_token(token_list, token_index, WITH)) {
-        put_text("Lock %s with what?\n", door->name);
+        put_text("Lock the %s with what item?\n", door->name);
         return true;
     }
     if (!accept_token(token_list, token_index, ITEM))
@@ -196,7 +197,8 @@ bool accept_unlocking(TokenList token_list, unsigned * token_index, GameState * 
 {
     if (!accept_token(token_list, token_index, UNLOCK))
         return false;
-    if (!accept_token(token_list, token_index, DOOR)) {
+    if (!accept_token(token_list, token_index, DOOR))
+    {
         put_text("Please name a door in this room.\n");
         return true;
     }
@@ -204,7 +206,7 @@ bool accept_unlocking(TokenList token_list, unsigned * token_index, GameState * 
     ID doorID = token_list.tokens[*token_index - 1].value;
     Door * door = &game->rooms[game->current_room].doors.doors[doorID];
     if (!accept_token(token_list, token_index, WITH)) {
-        put_text("Unlock %s with what?\n", door->name);
+        put_text("Unlock the %s with what item?\n", door->name);
         return true;
     }
     if (!accept_token(token_list, token_index, ITEM))
@@ -229,6 +231,54 @@ bool accept_unlocking(TokenList token_list, unsigned * token_index, GameState * 
     else
     {
         put_text("You cannot unlock this door with that item.\n");
+    }
+
+    return true;
+}
+
+bool accept_killing(TokenList token_list, unsigned * token_index, GameState * game)
+{
+    if (!accept_token(token_list, token_index, KILL))
+        return false;
+    if (!accept_token(token_list, token_index, ENTITY))
+    {
+        put_text("You could not kill what is not there, but you imagined it.\n");
+        return true;
+    }
+
+    EntityID entity_id = token_list.tokens[*token_index - 1].value;
+    Entity entity = game->entities[entity_id];
+    if (!is_entity_in_room(game->rooms[game->current_room], entity_id))
+    {
+        put_text("The %s is not in this room.\n", entity.name);
+        return true;
+    }
+
+    if (!accept_token(token_list, token_index, WITH))
+    {
+        put_text("Kill the %s with what item?\n", entity.name);
+        return true;
+    }
+    if (!accept_token(token_list, token_index, ITEM))
+    {
+        put_text("Please name an item in your inventory.\n");
+        return true;
+    }
+
+    ItemID item_id = token_list.tokens[*token_index-1].value;
+    if (!player_has_item(game->player, item_id))
+    {
+        put_text("You do not have that in your inventory.\n");
+    }
+    else if (entity.vulnerability != item_id)
+    {
+        Item item = game->items[item_id];
+        put_text("You try to kill the %s with the %s, but nothing happens...\n", entity.name, item.name);
+    }
+    else
+    {
+        put_text("%s\n", entity.die);
+        remove_entity_from_room(&game->rooms[game->current_room], entity_id);
     }
 
     return true;

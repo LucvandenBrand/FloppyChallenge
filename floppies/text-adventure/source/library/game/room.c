@@ -66,3 +66,12 @@ void add_entity_to_room(Room * room, EntityID entity_id)
     add_id(&room->entity_id_list, entity_id);
 }
 
+void remove_entity_from_room(Room * room, EntityID entity_id)
+{
+    remove_id(&room->entity_id_list, entity_id);
+}
+
+bool is_entity_in_room(Room room, EntityID entityId)
+{
+    return has_id(room.entity_id_list, entityId);
+}
