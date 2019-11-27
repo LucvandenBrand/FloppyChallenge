@@ -288,6 +288,7 @@ bool accept_killing(TokenList token_list, unsigned * token_index, GameState * ga
     {
         put_text("%s\n", entity.die);
         remove_entity_from_room(&game->rooms[game->current_room], entity_id);
+        // TODO Drop item.
     }
 
     return true;
