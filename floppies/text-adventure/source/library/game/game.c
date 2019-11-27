@@ -147,6 +147,10 @@ void update_entities(GameState * game)
     }
 
     tick_entity_kill_count(game);
+    if (game->rooms[game->current_room].entity_id_list.num_ids > 0)
+    {
+        put_text("The monsters draw nearer...\n");
+    }
     if (check_kill_player(*game))
     {
         put_text("%s\n", game->reset_text);
