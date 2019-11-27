@@ -83,27 +83,36 @@ bool accept_action(TokenList token_list, unsigned * token_index, GameState * gam
 
 bool accept_inspecting(TokenList token_list, unsigned * token_index, GameState * game)
 {
-    if (accept_token(token_list, token_index, LOOK))
+    if (!accept_token(token_list, token_index, LOOK))
+        return false;
+
+    if (!accept_token(token_list, token_index, AT))
     {
-        accept_token(token_list, token_index, AT);
-        if (accept_token(token_list, token_index, ITEM))
-        {
-            ItemID item_id = token_list.tokens[*token_index-1].value;
-            if (is_item_in_room(game->rooms[game->current_room], item_id))
-            {
-                Item item = game->items[item_id];
-                put_text("%s\n", item.description);
-            }
-        }
-        else if (accept_token(token_list, token_index, ROOM))
-            describe_room(*game, game->current_room);
-        else if (accept_token(token_list, token_index, INVENTORY))
-            list_items(*game, game->player.item_id_list);
-        else
-            put_text("Sorry, that item is not in the room.\n");
+        put_text("You stared into nothing for a few seconds.\n");
         return true;
     }
-    return false;
+
+    if (accept_token(token_list, token_index, ROOM))
+        describe_room(*game, game->current_room);
+    else if (accept_token(token_list, token_index, INVENTORY))
+        list_items(*game, game->player.item_id_list);
+    else if (accept_token(token_list, token_index, ITEM))
+    {
+        ItemID item_id = token_list.tokens[*token_index-1].value;
+        if (is_item_in_room(game->rooms[game->current_room], item_id) || player_has_item(game->player, item_id))
+        {
+            Item item = game->items[item_id];
+            put_text("%s\n", item.description);
+        }
+        else
+        {
+            put_text("That item is not in your inventory nor in the room.\n");
+        }
+    }
+    else
+        put_text("You try to look for it, but you cannot find it.\n");
+    return true;
+
 }
 
 bool accept_taking(TokenList token_list, unsigned * token_index, GameState * game)
