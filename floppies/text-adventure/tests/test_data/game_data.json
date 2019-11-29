@@ -59,7 +59,7 @@
     {
       "name": "ghost",
       "description": "A spooky ghost!",
-      "holds": -1,
+      "holds": 3,
       "vulnerability": 1,
       "attack": "The ghost consumes your soul.",
       "die": "The ghost thanks you, and passes beyond.",

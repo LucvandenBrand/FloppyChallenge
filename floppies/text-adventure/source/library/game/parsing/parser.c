@@ -288,7 +288,15 @@ bool accept_killing(TokenList token_list, unsigned * token_index, GameState * ga
     {
         put_text("%s\n", entity.die);
         remove_entity_from_room(&game->rooms[game->current_room], entity_id);
-        // TODO Drop item.
+        ItemID dropped_item_id = entity.holding_item;
+        if (dropped_item_id != ID_NO_ITEM)
+        {
+            add_item_to_room(&game->rooms[game->current_room], dropped_item_id);
+            Item dropped_item = game->items[dropped_item_id];
+            put_text("The %s dropped ", entity.name);
+            choose_indefinite_article(dropped_item.name);
+            put_text(" %s.\n", dropped_item.name);
+        }
     }
 
     return true;
