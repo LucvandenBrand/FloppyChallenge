@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 Entity init_entity(char * name, char * description, char * attack, char * die, int kill_count, ItemID holding_item,
-                   ItemID vulnerability, bool is_solid)
+                   ItemID vulnerability)
 {
     Entity entity;
     entity.name = name;
@@ -13,7 +13,6 @@ Entity init_entity(char * name, char * description, char * attack, char * die, i
     entity.start_kill_count = kill_count;
     entity.holding_item = holding_item;
     entity.vulnerability = vulnerability;
-    entity.is_solid = is_solid;
     return entity;
 }
 
@@ -31,5 +30,4 @@ void free_entity(Entity * entity)
     entity->start_kill_count = -1;
     entity->holding_item = ID_NO_ITEM;
     entity->vulnerability = ID_NO_ITEM;
-    entity->is_solid = false;
 }

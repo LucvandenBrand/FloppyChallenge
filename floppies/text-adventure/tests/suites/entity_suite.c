@@ -12,7 +12,7 @@ Entity create_test_entity()
     strcpy(attack, "An attack\0");
     char * die = malloc(8 * sizeof(char));
     strcpy(die, "It dies!\0");
-    return init_entity(name, description, attack, die, 2, 0, 1, false);
+    return init_entity(name, description, attack, die, 2, 0, 1);
 }
 
 START_TEST(test_init_entity)
@@ -26,7 +26,6 @@ START_TEST(test_init_entity)
     ck_assert_int_eq(entity.start_kill_count, 2);
     ck_assert_int_eq(entity.holding_item, 0);
     ck_assert_int_eq(entity.vulnerability,1);
-    ck_assert(!entity.is_solid);
     free_entity(&entity);
 }
 END_TEST
@@ -43,7 +42,6 @@ START_TEST(test_free_entity)
     ck_assert_int_eq(entity.start_kill_count, -1);
     ck_assert_int_eq(entity.holding_item, ID_NO_ITEM);
     ck_assert_int_eq(entity.vulnerability,ID_NO_ITEM);
-    ck_assert(!entity.is_solid);
 }
 END_TEST
 

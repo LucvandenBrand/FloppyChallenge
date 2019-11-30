@@ -63,8 +63,7 @@
       "vulnerability": 1,
       "attack": "The ghost consumes your soul.",
       "die": "The ghost thanks you, and passes beyond.",
-      "kill_count": 2,
-      "solid": false
+      "kill_count": 2
     },
     {
       "name": "zombie",
@@ -73,8 +72,7 @@
       "vulnerability": 1,
       "attack": "The zombie lunges at your throat and slashes your jugular. Slowly the world fades to black.",
       "die": "The zombie falls to the ground, finally truly dead.",
-      "kill_count": 3,
-      "solid": true
+      "kill_count": 3
     }
   ],
   "reset":"Darkness...\nTotal darkness...\nThen suddenly a shocking flash of light.\nAs you slowly adjust your eyes, you see where you are.",
