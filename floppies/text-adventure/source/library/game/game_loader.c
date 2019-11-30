@@ -148,7 +148,7 @@ void load_game_from_json_tokens(GameState * game, const char * json_string, jsmn
         }
         else
         {
-            put_color_text(RED, "Unknown data.");
+            put_color_text(RED, "Unknown data.\n");
             game->is_running = false;
             return;
         }

@@ -149,11 +149,11 @@ void update_entities(GameState * game)
     tick_entity_kill_count(game);
     if (game->rooms[game->current_room].entity_id_list.num_ids > 0)
     {
-        put_text("Danger approaches...\n");
+        put_color_text(RED, "Danger approaches...\n");
     }
     if (check_kill_player(*game))
     {
-        put_text("%s\n", game->reset_text);
+        put_color_text(BLUE, "%s\n", game->reset_text);
         free_game_state(game);
         *game = init_game_state(GAME_DATA_PATH);
     }
@@ -187,7 +187,7 @@ bool check_kill_player(GameState game) {
     {
         if (game.entities[entity_index].kill_count == 0)
         {
-            put_text("%s\n",game.entities[entity_index].attack);
+            put_color_text(RED, "%s\n",game.entities[entity_index].attack);
             return true;
         }
     }

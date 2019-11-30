@@ -61,7 +61,7 @@ void apply_tokens_to_game_state(TokenList token_list, GameState * game)
     unsigned token_index = 0;
     if (accept_token(token_list, &token_index, EXIT))
     {
-        put_text("You smash your head against a wall, the sweet mercy of death embraces you.\n");
+        put_color_text(RED, "You smash your head against a wall, the sweet mercy of death embraces you.\n");
         game->is_running = false;
         return;
     }
@@ -69,7 +69,7 @@ void apply_tokens_to_game_state(TokenList token_list, GameState * game)
     if (accept_action(token_list, &token_index, game) || accept_movement(token_list, &token_index, game))
         return;
 
-    put_text("Sorry, I do not understand that command.\n");
+    put_text( "Sorry, I do not understand that command.\n");
 }
 
 bool accept_action(TokenList token_list, unsigned * token_index, GameState * game)
@@ -102,7 +102,7 @@ bool accept_inspecting(TokenList token_list, unsigned * token_index, GameState *
         if (is_item_in_room(game->rooms[game->current_room], item_id) || player_has_item(game->player, item_id))
         {
             Item item = game->items[item_id];
-            put_text("%s\n", item.description);
+            put_text( "%s\n", item.description);
         }
         else
         {
@@ -125,7 +125,7 @@ bool accept_taking(TokenList token_list, unsigned * token_index, GameState * gam
             if (is_item_in_room(game->rooms[game->current_room], item_id))
             {
                 Item item = game->items[item_id];
-                put_text("You pick up the %s and put it in your pocket.\n", item.name);
+                put_color_text(GREEN, "You pick up the %s and put it in your pocket.\n", item.name);
                 add_item_to_player(&game->player, item_id);
                 remove_item_from_room(&game->rooms[game->current_room], item_id);
                 return true;
@@ -148,7 +148,7 @@ bool accept_placing(TokenList token_list, unsigned * token_index, GameState * ga
             if (player_has_item(game->player, item_id))
             {
                 Item item = game->items[item_id];
-                put_text("You take the %s and place it in the room.\n", item.name);
+                put_color_text(GREEN, "You take the %s and place it in the room.\n", item.name);
                 remove_item_from_player(&game->player, item_id);
                 add_item_to_room(&game->rooms[game->current_room], item_id);
                 return true;
@@ -192,7 +192,7 @@ bool accept_locking(TokenList token_list, unsigned * token_index, GameState * ga
     }
     else if(try_lock_door(door, item_id))
     {
-        put_text("You locked the door.\n");
+        put_color_text(GREEN, "You locked the door.\n");
     }
     else
     {
@@ -235,7 +235,7 @@ bool accept_unlocking(TokenList token_list, unsigned * token_index, GameState * 
     }
     else if(try_unlock_door(door, item_id))
     {
-        put_text("You unlocked the door.\n");
+        put_color_text(GREEN, "You unlocked the door.\n");
     }
     else
     {
@@ -286,14 +286,14 @@ bool accept_killing(TokenList token_list, unsigned * token_index, GameState * ga
     }
     else
     {
-        put_text("%s\n", entity.die);
+        put_color_text(GREEN, "%s\n", entity.die);
         remove_entity_from_room(&game->rooms[game->current_room], entity_id);
         ItemID dropped_item_id = entity.holding_item;
         if (dropped_item_id != ID_NO_ITEM)
         {
             add_item_to_room(&game->rooms[game->current_room], dropped_item_id);
             Item dropped_item = game->items[dropped_item_id];
-            put_text("The %s dropped ", entity.name);
+            put_color_text(GREEN, "The %s dropped ", entity.name);
             choose_indefinite_article(dropped_item.name);
             put_text(" %s.\n", dropped_item.name);
         }
@@ -321,11 +321,11 @@ bool accept_movement(TokenList token_list, unsigned * token_index, GameState * g
         }
         if (is_exit_door(door))
         {
-            put_text("%s\n", game->win_text);
+            put_color_text(GREEN, "%s\n", game->win_text);
             game->is_running = false;
             return true;
         }
-        game->current_room = door.roomId; // TODO : implement keys.
+        game->current_room = door.roomId;
         return true;
     }
     return false;
