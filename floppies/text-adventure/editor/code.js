@@ -154,7 +154,7 @@ const main = () => {
   window.addEventListener("resize", resize);
 
   setup_buttons();
-  set_select_mode();
+  set_add_room_mode();
 };
 
 // Start the app once the document has been loaded.

@@ -1,7 +1,14 @@
+@font-face {
+  font-family: 'VT323-Regular';
+  src: url('VT323-Regular.ttf');
+}
+
 /* Overall document style. */
 html, body {
   margin: 0;
   padding: 0;
+  font-family: 'VT323-Regular';
+  font-size: 2.5vh;
 }
 
 #editor {
@@ -93,4 +100,47 @@ html, body {
 #inspector {
   flex: 1;
   background: #666;
+}
+
+#inspector .title {
+  text-align: center;
+  font-weight: bold;
+  padding-top: 1vh;
+  padding-bottom: 1vh;
+  margin: 1vh;
+  margin-bottom: 0;
+  font-size: 3vh;
+  border: 1px solid black;
+  border-bottom: 1px dashed black;
+}
+
+#inspector .list {
+  height: 80vh;
+  margin: 1vh;
+  margin-top: 0;
+  border: 1px solid #222;
+  border-top: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+#add_new_room {
+  background: url(room.svg);
+  background-size: contain;
+  margin-left: auto;
+  margin-right: 1vh;
+}
+
+#add_new_item {
+  background: url(item.svg);
+  background-size: contain;
+  margin-left: auto;
+  margin-right: 1vh;
+}
+
+#add_new_npc {
+  background: url(npc.svg);
+  background-size: contain;
+  margin-left: auto;
+  margin-right: 1vh;
 }
