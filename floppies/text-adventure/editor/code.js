@@ -17,7 +17,7 @@ const parse_file_data = (contents) => {
 const load_file = () => {
   console.log("Opening load dialogue.");
 
-  file_input = document.createElement("input");
+  const file_input = document.createElement("input");
   file_input.accept = '.json';
 	file_input.type = 'file';
   file_input.style.display = 'none';
@@ -28,9 +28,9 @@ const load_file = () => {
 			return;
     }
     
-		var reader = new FileReader();
+		const reader = new FileReader();
 		reader.onload = function(e) {
-			var contents = e.target.result;
+			const contents = e.target.result;
       parse_file_data(contents);
 		}
 		reader.readAsText(file);
@@ -41,6 +41,13 @@ const load_file = () => {
 
 const save_file = () => {
   console.log("Opening save dialogue.");
+
+  const download_element = document.createElement('a');
+  const text = JSON.stringify(current_game_data, null, 2);
+  download_element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text))
+  download_element.setAttribute('download', 'game_data.json');
+  download_element.style.display = 'none';
+  download_element.click();
 };
 
 const clear_class = (class_name) => {
