@@ -8,6 +8,7 @@ const parse_file_data = (contents) => {
   try {
     const data_object = JSON.parse(contents);
     set_current_game_data(data_object);
+    set_select_mode();
     console.log("Succesfully loaded game data.")
   } catch (parse_exception) {
     alert("The given data file is invalid!");
@@ -85,12 +86,23 @@ const set_element_visibility = (element_id, is_visible) => {
   }
 };
 
+const update_room_list = () => {
+  const list_element = document.getElementById("room_list");
+  const template = document.getElementById("room_item_template");
+  for (let index = 0; index < current_game_data.rooms.length; index++) {
+    const room_element = document.createElement("div");
+    room_element.innerHTML = template.innerHTML;
+    list_element.innerHTML += room_element.innerHTML;
+  }
+};
+
 const set_add_room_mode = () => {
   console.log("Switching to add-room mode.");
   clear_class("selected");
   const add_room_button = document.getElementById("add_room");
   add_room_button.classList.add("selected");
   insert_template("inspector", "room_list_template");
+  update_room_list();
   set_element_visibility('inspector', true);
 };
 
