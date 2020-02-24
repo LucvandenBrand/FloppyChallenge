@@ -2,7 +2,7 @@ let current_game_data = {};
 
 const set_current_game_data = (game_data) => {
   current_game_data = game_data;
-}
+};
 
 const parse_file_data = (contents) => {
   try {
@@ -55,13 +55,43 @@ const clear_class = (class_name) => {
   for (let index=0; index < items.length; index++) {
     items[index].classList.remove(class_name);
   }
-}
+};
+
+const insert_template = (target_id, template_id) => {
+  const target = document.getElementById(target_id);
+  if (target == null) {
+    console.error("Target id " + target_id + " not found!");
+    return;
+  }
+  const template = document.getElementById(template_id);
+  if (template == null) {
+    console.error("Template id " + template_id + " not found!");
+    return;
+  }
+  target.innerHTML = template.innerHTML;
+};
+
+const set_element_visibility = (element_id, is_visible) => {
+  const element = document.getElementById(element_id);
+  if (element == null) {
+    console.error("Could not find element with id " + element_id + "!");
+    return;
+  }
+
+  if (is_visible) {
+    element.style.display = 'inline-block';
+  } else {
+    element.style.display = 'none';
+  }
+};
 
 const set_add_room_mode = () => {
   console.log("Switching to add-room mode.");
   clear_class("selected");
   const add_room_button = document.getElementById("add_room");
   add_room_button.classList.add("selected");
+  insert_template("inspector", "room_list_template");
+  set_element_visibility('inspector', true);
 };
 
 const set_add_item_mode = () => {
@@ -69,6 +99,8 @@ const set_add_item_mode = () => {
   clear_class("selected");
   const add_item_button = document.getElementById("add_item");
   add_item_button.classList.add("selected");
+  insert_template("inspector", "item_list_template");
+  set_element_visibility('inspector', true);
 };
 
 const set_add_npc_mode = () => {
@@ -76,6 +108,8 @@ const set_add_npc_mode = () => {
   clear_class("selected");
   const add_npc_button = document.getElementById("add_npc");
   add_npc_button.classList.add("selected");
+  insert_template("inspector", "npc_list_template");
+  set_element_visibility('inspector', true);
 };
 
 const set_select_mode = () => {
@@ -83,6 +117,7 @@ const set_select_mode = () => {
   clear_class("selected");
   const select_button = document.getElementById("select");
   select_button.classList.add("selected");
+  set_element_visibility('inspector', false);
 };
 
 const setup_buttons = () => {
@@ -119,6 +154,7 @@ const main = () => {
   window.addEventListener("resize", resize);
 
   setup_buttons();
+  set_select_mode();
 };
 
 // Start the app once the document has been loaded.
