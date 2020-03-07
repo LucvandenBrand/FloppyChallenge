@@ -106,13 +106,34 @@ const set_add_room_mode = () => {
   set_element_visibility('inspector', true);
 };
 
+const update_item_list = () => {
+  const list_element = document.getElementById("item_list");
+  const template = document.getElementById("item_item_template");
+  for (let index = 0; index < current_game_data.items.length; index++) {
+    const item_element = document.createElement("div");
+    item_element.innerHTML = template.innerHTML;
+    list_element.innerHTML += item_element.innerHTML;
+  }
+};
+
 const set_add_item_mode = () => {
   console.log("Switching to add-item mode.");
   clear_class("selected");
   const add_item_button = document.getElementById("add_item");
   add_item_button.classList.add("selected");
   insert_template("inspector", "item_list_template");
+  update_item_list();
   set_element_visibility('inspector', true);
+};
+
+const update_npc_list = () => {
+  const list_element = document.getElementById("npc_list");
+  const template = document.getElementById("npc_item_template");
+  for (let index = 0; index < current_game_data.entities.length; index++) {
+    const npc_element = document.createElement("div");
+    npc_element.innerHTML = template.innerHTML;
+    list_element.innerHTML += npc_element.innerHTML;
+  }
 };
 
 const set_add_npc_mode = () => {
@@ -121,6 +142,7 @@ const set_add_npc_mode = () => {
   const add_npc_button = document.getElementById("add_npc");
   add_npc_button.classList.add("selected");
   insert_template("inspector", "npc_list_template");
+  update_npc_list();
   set_element_visibility('inspector', true);
 };
 
