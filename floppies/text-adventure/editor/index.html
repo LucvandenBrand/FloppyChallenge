@@ -1,0 +1,68 @@
+<html>
+  <head>
+    <title>Story Editor</title>
+    <meta charset="utf-8" name="viewport" content= "width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="code.js"></script> 
+  </head>
+  <body>
+    <div id="editor">
+      <div id="menu">
+        <div id="load" class="button"></div>
+        <div id="save" class="button"></div>
+        <div class="spacer"></div>
+        <div id="add_room" class="button"></div>
+        <div id="add_item" class="button"></div>
+        <div id="add_npc" class="button"></div>
+        <div class="spacer"></div>
+        <div id="select" class="button"></div>
+      </div>
+      <div id="flexbox">
+        <div id="canvas_container">
+          <canvas id="canvas"></canvas>
+        </div>
+        <div id="inspector">
+        </div>
+      </div>
+    </div>
+  </body>
+
+  <template id="room_list_template">
+      <div class="title">Room List</div>
+      <div id="room_list" class="list">
+      </div>
+      <div id="add_new_room" class="button"></div>
+  </template>
+
+  <template id="room_item_template">
+    <div class="item">
+      ROOM
+    </div>
+  </template>
+
+  <template id="item_list_template">
+      <div class="title">Item List</div>
+      <div id="item_list" class="list">
+      </div>
+      <div id="add_new_item" class="button"></div>
+  </template>
+
+  <template id="item_item_template">
+    <div class="item">
+      ITEM
+    </div>
+  </template>
+
+  <template id="npc_list_template">
+      <div class="title">NPC List</div>
+      <div id="npc_list" class="list">
+      </div>
+      <div id="add_new_npc" class="button"></div>
+  </template>
+
+  <template id="npc_item_template">
+    <div class="item">
+      NPC
+    </div>
+  </template>
+</html>
