@@ -11,6 +11,11 @@ For Linux, this comes down to:
 2. `cmake ..`
 3. `make`
 
+## Editing
+The actual story can be edited through direct manipulation of the `data\game_data.json` file, but be sure to have a backup!
+The recommended (and more fun) method is to use the **story editor** in the `editor` folder.
+Open the `index.html` file with your web browser.
+
 ### Testing
 This project is tested using Check. To perform the the test, replace step 3 above with: `make test`.
 
