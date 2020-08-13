@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <memory/safe_memory.h>
 #include <string.h>
+#include <string/string_ops.h>
 
 DoorList init_door_list()
 {
@@ -53,8 +54,22 @@ bool has_door_with_direction(DoorList list, Direction direction)
 ID get_door_id_with_name(DoorList list, const char * name)
 {
     for (ID id=0; id < list.num_doors; id++)
-        if (list.doors[id].name != NULL && strcmp(list.doors[id].name, name) == 0)
+    {
+        const char * door_name = list.doors[id].name;
+        unsigned long door_name_length = strlen(door_name);
+        unsigned long name_length = strlen(name);
+        if (door_name_length != name_length)
+            continue;
+
+        char * lower_door_name = safe_malloc((door_name_length + 1) * sizeof(char));
+        strncpy(lower_door_name, door_name, door_name_length + 1);
+        string_to_lowercase(lower_door_name, door_name_length);
+        int equality = strncmp(lower_door_name, name, sizeof(door_name));
+        free(lower_door_name);
+
+        if (equality == 0)
             return id;
+    }
     return ID_EMPTY;
 }
 

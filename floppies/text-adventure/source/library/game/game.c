@@ -106,7 +106,7 @@ ItemID get_item_id(const char * search_name, GameState game)
         char * lower_item_name = safe_malloc((item_name_length+1) * sizeof(char));
         strncpy(lower_item_name, item_name, item_name_length+1);
         string_to_lowercase(lower_item_name, item_name_length);
-        int equality = strncmp(lower_item_name, search_name, sizeof(item_name));
+        int equality = strncmp(lower_item_name, search_name, item_name_length);
         free(lower_item_name);
 
         if (equality == 0)
