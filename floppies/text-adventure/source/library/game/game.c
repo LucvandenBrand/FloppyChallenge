@@ -12,6 +12,12 @@
 void game_loop()
 {
     GameState game = init_game_state(GAME_DATA_PATH);
+    if (!game.is_running)
+    {
+        free_game_state(&game);
+        return;
+    }
+
     char input[MAX_INPUT_SIZE] = "";
     put_text("%s\n", game.intro_text);
     while (game.is_running)
