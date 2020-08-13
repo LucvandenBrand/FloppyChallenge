@@ -114,7 +114,7 @@
       "entities": []
     },
     {
-      "description": "The room is filled to the brim with fauna. The ceiling seems to be hidden behind the tick leaves of tall trees. The hot moist air makes you sweat.",
+      "description": "The room is filled to the brim with fauna. The ceiling seems to be hidden behind the thick leaves of tall trees. The hot moist air makes you sweat.",
       "doors": [
         {
           "name":"Wooden door",
@@ -563,7 +563,7 @@
       "holds": 11,
       "vulnerability": 5,
       "attack": "As you blink, you hear hear an audible *SNAP* as your neck is pulverized by two cold stone hands. Your eyes never open.",
-      "die": "The stone statue slips forwards and falls head-first on the hard diamond floor. It smashes to in multiple large pieces.",
+      "die": "The stone statue slips forwards and falls head-first on the hard diamond floor. It smashes to multiple large pieces.",
       "kill_count": 2
     },
     {
@@ -590,7 +590,7 @@
       "holds": -1,
       "vulnerability": 13,
       "attack": "The old lady throws her bucket over your head in one quick swoop. You don't know where the thick black liquid is coming from, but it fills your lungs. You die struggling to breathe water.",
-      "die": "You shoot the old woman through her heart, making her drop the bucket and fall limp to the ground.",
+      "die": "You shoot the old woman through her heart, making her drop the bucket and fall limp to the ground. The bucket smashes to pieces on the floor.",
       "kill_count": 3
     },
     {

@@ -64,7 +64,7 @@ ID get_door_id_with_name(DoorList list, const char * name)
         char * lower_door_name = safe_malloc((door_name_length + 1) * sizeof(char));
         strncpy(lower_door_name, door_name, door_name_length + 1);
         string_to_lowercase(lower_door_name, door_name_length);
-        int equality = strncmp(lower_door_name, name, sizeof(door_name));
+        int equality = strncmp(lower_door_name, name, door_name_length);
         free(lower_door_name);
 
         if (equality == 0)

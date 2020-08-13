@@ -109,6 +109,12 @@ bool accept_inspecting(TokenList token_list, unsigned * token_index, GameState *
             put_text("That item is not in your inventory nor in the room.\n");
         }
     }
+    else if (accept_token(token_list, token_index, ENTITY))
+    {
+        EntityID entity_id = token_list.tokens[*token_index - 1].value;
+        Entity entity = game->entities[entity_id];
+        put_text("%s\n", entity.description);
+    }
     else
         put_text("You try to look for it, but you cannot find it.\n");
     return true;
