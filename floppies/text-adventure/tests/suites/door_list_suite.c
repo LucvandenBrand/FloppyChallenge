@@ -42,7 +42,7 @@ START_TEST(test_has_door_with_name)
     strcpy(door_name, "A door\0");
     Door door = init_door(door_name, NORTH, 1, 2, false);
     add_door(&list, door);
-    ck_assert(has_door_with_name(list, "A door"));
+    ck_assert(has_door_with_name(list, "a door\0"));
     free_door_list(&list);
 }
 END_TEST
@@ -81,7 +81,7 @@ START_TEST(test_get_door_id_with_name)
     strcpy(door_name, "A door\0");
     Door door = init_door(door_name, EAST, 1, 2, false);
     add_door(&list, door);
-    ck_assert_int_eq(get_door_id_with_name(list, "A door"), 0);
+    ck_assert_int_eq(get_door_id_with_name(list, "a door\0"), 0);
     free_door_list(&list);
 }
 END_TEST

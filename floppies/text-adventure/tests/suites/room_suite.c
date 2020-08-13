@@ -119,7 +119,7 @@ START_TEST(test_room_has_door_with_name)
     Room room = create_test_room();
     Door door = create_test_door();
     add_door_to_room(&room, door);
-    ck_assert(room_has_door_with_name(room, "A door"));
+    ck_assert(room_has_door_with_name(room, "a door"));
     free_room(&room);
 }
 END_TEST
