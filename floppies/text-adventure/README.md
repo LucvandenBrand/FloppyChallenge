@@ -1,5 +1,7 @@
-# text-adventure
-Short text adventure to play on your terminal.
+# Text-Adventure
+Short text-based adventure to play on your terminal. This is a good example of recursive decent parsers and data-driven games.
+Content warning: the story in `data\game_data.json` is silly, poor written, but also gruesome. If you're not into that, you can
+also use the test game data as a starting template for your own story.
 
 ## Building
 This project can be compiled using CMake:
@@ -13,8 +15,6 @@ For Linux, this comes down to:
 
 ## Editing
 The actual story can be edited through direct manipulation of the `data\game_data.json` file, but be sure to have a backup!
-The recommended (and more fun) method is to use the **story editor** in the `editor` folder.
-Open the `index.html` file with your web browser.
 
 ### Testing
 This project is tested using Check. To perform the the test, replace step 3 above with: `make test`.
