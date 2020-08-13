@@ -2,77 +2,605 @@
   "introduction":"Your car suddenly stops working.\nThere is an old cottage up the hill, you walk to it in search of some shelter from the storm. As you knock, the door creaks open... With hesitance you enter.\nWHAM! The door slams shut!\nYou adjust to the darkness and look at your surroundings...",
   "rooms": [
     {
-      "description": "A boring room.",
+      "description": "You are in what used to be the main hallway, or at least you think so. There is dirt all over the tiled floor and plants growing through its many cracks. The wallpaper is barely visible, due to it not only being covered with graffiti, but also with many types of moulds. The room has a strong atmosphere of being 'abandoned'.",
       "doors": [
         {
-          "name":"yellow door",
+          "name":"Old door",
           "direction":"E",
-          "key":1,
+          "key":-1,
           "room":1,
-          "locked":true
-        }
-      ],
-      "items": [0, 1],
-      "entities": []
-    },
-    {
-      "description": "A fun room.",
-      "doors": [
-        {
-          "name":"yellow door",
-          "direction":"W",
-          "key":1,
-          "room":0,
           "locked":false
         },
         {
-          "name":"winning door",
+          "name":"Bone door",
           "direction":"N",
-          "key":2,
+          "key":0,
+          "room":2,
+          "locked":true
+        },
+        {
+          "name":"Front door",
+          "direction":"S",
+          "key":15,
           "room":-2,
           "locked":true
         }
       ],
-      "items": [2],
-      "entities": [0, 1]
+      "items": [0],
+      "entities": []
+    },
+    {
+      "description": "This room must have been a living room of some kind. A rotting couch sits in a corner, and the remnants of what used to be a table stand in the middle of the room.",
+      "doors": [
+        {
+          "name":"Old door",
+          "direction":"W",
+          "key":-1,
+          "room":0,
+          "locked":false
+        },
+        {
+          "name":"Velvet door",
+          "direction":"E",
+          "key":14,
+          "room":18,
+          "locked":true
+        }
+      ],
+      "items": [1],
+      "entities": []
+    },
+    {
+      "description": "The floor is wet and sticky, red slime sticks to your shoes. The crimson, shiny walls seem to pulse slightly.",
+      "doors": [
+        {
+          "name":"Bone door",
+          "direction":"S",
+          "key":0,
+          "room":0,
+          "locked":false
+        },
+        {
+          "name":"Meat door",
+          "direction":"N",
+          "key":-1,
+          "room":3,
+          "locked":false
+        }
+      ],
+      "items": [],
+      "entities": [0]
+    },
+    {
+      "description": "The room is filled with a thin mist, the reddish tones of the room are still clearly visible however.",
+      "doors": [
+        {
+          "name":"Meat door",
+          "direction":"S",
+          "key":-1,
+          "room":2,
+          "locked":false
+        },
+        {
+          "name":"White door",
+          "direction":"E",
+          "key":-1,
+          "room":4,
+          "locked":false
+        },
+        {
+          "name":"Wooden door",
+          "direction":"N",
+          "key":4,
+          "room":5,
+          "locked":true
+        }
+      ],
+      "items": [],
+      "entities": [1]
+    },
+    {
+      "description": "You are in a very old kitchen. Rotten meat hangs from the ceiling, some of the flesh might be of human origin.",
+      "doors": [
+        {
+          "name":"White door",
+          "direction":"W",
+          "key":-1,
+          "room":3,
+          "locked":false
+        }
+      ],
+      "items": [3, 5],
+      "entities": []
+    },
+    {
+      "description": "The room is filled to the brim with fauna. The ceiling seems to be hidden behind the tick leaves of tall trees. The hot moist air makes you sweat.",
+      "doors": [
+        {
+          "name":"Wooden door",
+          "direction":"S",
+          "key":4,
+          "room":3,
+          "locked":false
+        },
+        {
+          "name":"Vine passage",
+          "direction":"E",
+          "key":-1,
+          "room":6,
+          "locked":false
+        },
+        {
+          "name":"Flower passage",
+          "direction":"W",
+          "key":-1,
+          "room":7,
+          "locked":false
+        },
+        {
+          "name":"Tree-trunk door",
+          "direction":"N",
+          "key":-1,
+          "room":10,
+          "locked":false
+        }
+      ],
+      "items": [],
+      "entities": []
+    },
+    {
+      "description": "You appear to be in some decrepit storage space.",
+      "doors": [
+        {
+          "name":"Vine passage",
+          "direction":"W",
+          "key":-1,
+          "room":5,
+          "locked":false
+        }
+      ],
+      "items": [6],
+      "entities": []
+    },
+    {
+      "description": "A beautifully room, covered with all sorts of flowers from the floor up to the ceiling.",
+      "doors": [
+        {
+          "name":"Flower passage",
+          "direction":"E",
+          "key":-1,
+          "room":5,
+          "locked":false
+        },
+        {
+          "name":"Vine passage",
+          "direction":"W",
+          "key":-1,
+          "room":8,
+          "locked":false
+        }
+      ],
+      "items": [],
+      "entities": [2]
+    },
+    {
+      "description": "This rooms is covered with black little specks, on closer inspection they seem like dead partially-consumed flea's.",
+      "doors": [
+        {
+          "name":"Vine passage",
+          "direction":"E",
+          "key":-1,
+          "room":7,
+          "locked":false
+        },
+        {
+          "name":"Mouldy door",
+          "direction":"S",
+          "key":-1,
+          "room":9,
+          "locked":false
+        }
+      ],
+      "items": [],
+      "entities": [3]
+    },
+    {
+      "description": "The air is difficult to breathe, and the smell is even more horrible. The room is covered in fungi.",
+      "doors": [
+        {
+          "name":"Mouldy door",
+          "direction":"N",
+          "key":-1,
+          "room":8,
+          "locked":false
+        }
+      ],
+      "items": [9],
+      "entities": []
+    },
+    {
+      "description": "The walls of this room are covered with the legs of insects, from top to bottom.",
+      "doors": [
+        {
+          "name":"Tree-trunk door",
+          "direction":"S",
+          "key":-1,
+          "room":5,
+          "locked":false
+        },
+        {
+          "name":"Door with leg hole",
+          "direction":"N",
+          "key":8,
+          "room":11,
+          "locked":true
+        }
+      ],
+      "items": [],
+      "entities": []
+    },
+    {
+      "description": "You are deafened by the sound of chirping birds. Pictures of a growing tree hang on the almost completely overgrown wall.",
+      "doors": [
+        {
+          "name":"Stone gate",
+          "direction":"E",
+          "key":10,
+          "room":12,
+          "locked":true
+        },
+        {
+          "name":"Door with leg hole",
+          "direction":"S",
+          "key":8,
+          "room":10,
+          "locked":false
+        }
+      ],
+      "items": [],
+      "entities": [4]
+    },
+    {
+      "description": "The room glitters and shines brightly. On the ceiling there is a beautiful diamond chandelier, sparkling light onto the diamond walls and floor.",
+      "doors": [
+        {
+          "name":"Stone gate",
+          "direction":"W",
+          "key":10,
+          "room":11,
+          "locked":false
+        },
+        {
+          "name":"Stone door",
+          "direction":"E",
+          "key":-1,
+          "room":13,
+          "locked":false
+        }
+      ],
+      "items": [],
+      "entities": []
+    },
+    {
+      "description": "The room glitters dimly. The diamond walls and floor are illuminated via the light creeping in through the stone archway.",
+      "doors": [
+        {
+          "name":"Stone door",
+          "direction":"W",
+          "key":10,
+          "room":12,
+          "locked":false
+        },
+        {
+          "name":"Stone archway",
+          "direction":"S",
+          "key":-1,
+          "room":14,
+          "locked":false
+        }
+      ],
+      "items": [],
+      "entities": [5, 6]
+    },
+    {
+      "description": "A long hallway, the walls are made of cobblestone and are illuminated using large torches.",
+      "doors": [
+        {
+          "name":"Stone archway",
+          "direction":"N",
+          "key":-1,
+          "room":13,
+          "locked":false
+        },
+        {
+          "name":"Stone door",
+          "direction":"S",
+          "key":-1,
+          "room":15,
+          "locked":false
+        }
+      ],
+      "items": [],
+      "entities": [7]
+    },
+    {
+      "description": "A square cobblestone room, thick wooden beams hold up the ceiling. The air smells somewhat humid.",
+      "doors": [
+        {
+          "name":"Stone door",
+          "direction":"N",
+          "key":-1,
+          "room":14,
+          "locked":false
+        },
+        {
+          "name":"Lapis door",
+          "direction":"S",
+          "key":12,
+          "room":16,
+          "locked":true
+        },
+        {
+          "name":"One-way door",
+          "direction":"W",
+          "key":-1,
+          "room":4,
+          "locked":false
+        }
+      ],
+      "items": [],
+      "entities": []
+    },
+    {
+      "description": "The floor is slippery and wet. Along the edges of the room there are drains, catching water flowing from stone mouths carved in the wall.",
+      "doors": [
+        {
+          "name":"Lapis door",
+          "direction":"N",
+          "key":12,
+          "room":15,
+          "locked":false
+        },
+        {
+          "name":"Black door",
+          "direction":"E",
+          "key":-1,
+          "room":17,
+          "locked":false
+        },
+        {
+          "name":"Copper door",
+          "direction":"S",
+          "key":-1,
+          "room":18,
+          "locked":false
+        }
+      ],
+      "items": [],
+      "entities": [8]
+    },
+    {
+      "description": "A wooden floor creaks under your feet. Underneath the floor there seems to be a strong current of water. There is a table to the far end of the room.",
+      "doors": [
+        {
+          "name":"Black door",
+          "direction":"W",
+          "key":-1,
+          "room":16,
+          "locked":false
+        }
+      ],
+      "items": [13],
+      "entities": [9]
+    },
+    {
+      "description": "The floor is made out of soggy velvet, the walls are stone but equally moist.",
+      "doors": [
+        {
+          "name":"Copper door",
+          "direction":"N",
+          "key":-1,
+          "room":16,
+          "locked":false
+        },
+        {
+          "name":"Bathroom door",
+          "direction":"E",
+          "key":-1,
+          "room":19,
+          "locked":false
+        },
+        {
+          "name":"Velvet door",
+          "direction":"W",
+          "key":14,
+          "room":1,
+          "locked":true
+        }
+      ],
+      "items": [],
+      "entities": []
+    },
+    {
+      "description": "An old dirty bathroom, some tiles are broken and mould is growing on the ceiling. The mirror on the wall is shattered and all water taps are running.",
+      "doors": [
+        {
+          "name":"Bathroom door",
+          "direction":"W",
+          "key":-1,
+          "room":18,
+          "locked":false
+        }
+      ],
+      "items": [],
+      "entities": [10]
     }
   ],
   "items": [
     {
-      "name": "Game Console",
-      "description": "It looks like a PlayStation, but on closer inspection it's just a plastic toy."
+      "name": "Fungus",
+      "description": "Yellow fungus, it seems to ooze dark purple fluid. It tends to get excited whenever it's near wood."
     },
     {
-      "name": "Orb",
-      "description": "A strangely glowing orb."
+      "name": "Bone Key",
+      "description": "A white key, seemingly made from bone. It has a skull engraved on it, and the length of the key looks like a spine."
     },
     {
-      "name": "Tiger toy",
-      "description": "A toy for a tiger."
+      "name": "Top-hat",
+      "description": "A sleek black hat. The label inside says it belongs to a certain Mr. Mashington."
     },
     {
-      "name": "Gun",
-      "description": "A plain old gun."
+      "name": "Salt",
+      "description": "A big sack of SupaSalt (TM)! 'Puts the Supa in your Salt!'."
+    },
+    {
+      "name": "Wooden key",
+      "description": "A beautifully carved wooden key, small animals are engraved in its sides."
+    },
+    {
+      "name": "Banana peel",
+      "description": "A slippery brown slimy skin, only the rough shape is a subtle reminder of the fruit that was once contained within."
+    },
+    {
+      "name": "Flea Killer",
+      "description": "A full bottle of Grim Creeper (TM) 'Kills Flea's with a single drop of sweet, sweet death juice!'."
+    },
+    {
+      "name": "Poisoned Flea Meat",
+      "description": "A tiny speck of meat, you'd think it was dust."
+    },
+    {
+      "name": "Large Ladybug Leg",
+      "description": "The front leg of a giant ladybug."
+    },
+    {
+      "name": "Fungus",
+      "description": "A disgusting patch of pulsating fungus."
+    },
+    {
+      "name": "Stone key",
+      "description": "A heavy key mainly made out of granite, although the handle seems to be decorated with many smaller stones."
+    },
+    {
+      "name": "Large stone",
+      "description": "The head of a broken stone statue, on its face is a look of surprise frozen in time."
+    },
+    {
+      "name": "Water key",
+      "description": "A silver key with a droplet-shaped lapis stone on the handle."
+    },
+    {
+      "name": "Handgun",
+      "description": "The gun seems to be a 'Colt Peacemaker', made around 1873. It's old and rusted, but it might still work."
+    },
+    {
+      "name": "Velvet key",
+      "description": "A key covered in wet velvet, its teeth show that its made of iron from the inside."
+    },
+    {
+      "name": "Golden key",
+      "description": "A shiny gold-plated key. It feels warm and reassuring in your hand."
     }
   ],
   "entities":[
     {
-      "name": "ghost",
-      "description": "A spooky ghost!",
-      "holds": 3,
-      "vulnerability": 1,
-      "attack": "The ghost consumes your soul.",
-      "die": "The ghost thanks you, and passes beyond.",
+      "name": "Meat monster",
+      "description": "It looks like a skinless man wearing a top-hat, but bloated an angry. It makes you feel sick.",
+      "holds": 2,
+      "vulnerability": 3,
+      "attack": "The thing grips you tightly. You feel your clothes soak with blood and pus. Your skin starts to melt.",
+      "die": "The skinless man screeches, shrivels up, and dies.",
       "kill_count": 2
     },
     {
-      "name": "zombie",
-      "description": "A walking corpse.",
+      "name": "Bald ghost",
+      "description": "A translucent man, screaming for his lost top-hat.",
+      "holds": 4,
+      "vulnerability": 2,
+      "attack": "The ghost rips off your head and tries to wear you as a hat.",
+      "die": "The ghost thanks you kindly, and passes on in a fashionable state.",
+      "kill_count": 2
+    },
+    {
+      "name": "Vicious Flea",
+      "description": "A tiny flea, but something about it makes you feel fear you've never felt before.",
+      "holds": 7,
+      "vulnerability": 6,
+      "attack": "The flea jumps into your eye-socket and worms its way into your brain, you start scratching your brains out to make the itching stop.",
+      "die": "The Flea makes a tiny squeak, shrivels up and dies.",
+      "kill_count": 2
+    },
+    {
+      "name": "Giant Ladybug",
+      "description": "A huge ladybug, it almost fills the room. It has hunger in its eyes.",
+      "holds": 8,
+      "vulnerability": 7,
+      "attack": "The ladybug stabs you with its front leg and pulls you towards its gaping mouth. The last thing you hear is an audible sound of disappointment as you are tossed to the side with your guts hanging out.",
+      "die": "You hear a large choking sound as the ladybug whimpers and becomes motionless.",
+      "kill_count": 2
+    },
+    {
+      "name": "Old Tree",
+      "description": "The ancient tree stands tall within the middle of the room, it's many branches covered with birds.",
+      "holds": 10,
+      "vulnerability": 9,
+      "attack": "The tree shakes its branches vividly, and as a result a torrent of birds swoops down at you. You die through the cuts of a thousand beaks.",
+      "die": "The fungus feasts on the tree, growing faster than you've ever seen fungus grow. The tree and birds quickly rot and decay into black ooze.",
+      "kill_count": 2
+    },
+    {
+      "name": "Glass Statue",
+      "description": "A stern, muscly looking fellow. It's features are well defined in somewhat brittle glass, but it's definitely a statue.",
       "holds": -1,
-      "vulnerability": 1,
-      "attack": "The zombie lunges at your throat and slashes your jugular. Slowly the world fades to black.",
-      "die": "The zombie falls to the ground, finally truly dead.",
+      "vulnerability": 5,
+      "attack": "As you blink, the glass statue slashes your artery with its sharp nails. Your blood sparkles among the glass and diamond.",
+      "die": "The glass statue slips backwards and falls on the hard diamond floor. It smashes to a thousand tiny pieces.",
+      "kill_count": 2
+    },
+    {
+      "name": "Stone Statue",
+      "description": "A broadly smiling, muscly looking woman. It's features are well defined in solid stone, but it's definitely a statue.",
+      "holds": 11,
+      "vulnerability": 5,
+      "attack": "As you blink, you hear hear an audible *SNAP* as your neck is pulverized by two cold stone hands. Your eyes never open.",
+      "die": "The stone statue slips forwards and falls head-first on the hard diamond floor. It smashes to in multiple large pieces.",
+      "kill_count": 2
+    },
+    {
+      "name": "Half-stone Man",
+      "description": "The man is gargling and screaming, half is body and face is turned to stone. It looks painful.",
+      "holds": 12,
+      "vulnerability": 11,
+      "attack": "The man stumbles towards you and grabs your hand. The stone spreads from your hand to the rest of your body. You breathe your last breath as your lungs turn solid and cold.",
+      "die": "The stone covering the half-stone man shatters, making the man drop to the ground. His death is a swift but unpleasant one.",
+      "kill_count": 2
+    },
+    {
+      "name": "Drowned Zombie",
+      "description": "With a rattling breath, the undead woman gargles words you cannot hear.",
+      "holds": 14,
+      "vulnerability": 13,
+      "attack": "The woman grips you tightly and pushes your face into a puddle. You slowly drown as you fail to overthrow her undead strength.",
+      "die": "As you shoot her in the head, her body becomes limp and splats down on the wet floor. Finally resting.",
       "kill_count": 3
+    },
+    {
+      "name": "Old lady",
+      "description": "A hunchbacked woman somewhere in her 80's, limply holding a bucket in her left hand. Her face is difficult to see through long strands of wet hair.",
+      "holds": -1,
+      "vulnerability": 13,
+      "attack": "The old lady throws her bucket over your head in one quick swoop. You don't know where the thick black liquid is coming from, but it fills your lungs. You die struggling to breathe water.",
+      "die": "You shoot the old woman through her heart, making her drop the bucket and fall limp to the ground.",
+      "kill_count": 3
+    },
+    {
+      "name": "Ragged man",
+      "description": "A skinny, pale young man, his clothes are old and torn. He's holding two large knifes in both his hands.",
+      "holds": 15,
+      "vulnerability": 13,
+      "attack": "'I'm sorry', the young man says as he stabs you in the chest. He whispers 'You almost made it...' as the life drains from your body.",
+      "die": "You shoot the ragged man in his neck, making him stumble backwards. A second mercy shot makes him fall to the ground as his knifes turn to ashes.",
+      "kill_count": 2
     }
   ],
   "reset":"Darkness...\nTotal darkness...\nThen suddenly a shocking flash of light.\nAs you slowly adjust your eyes, you see where you are.",
