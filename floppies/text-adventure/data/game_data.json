@@ -30,7 +30,7 @@
       "entities": []
     },
     {
-      "description": "This room must have been a living room of some kind. A rotting couch sits in a corner, and the remnants of what used to be a table stand in the middle of the room.",
+      "description": "This room must have been a living room of some kind.\nA rotting couch sits in a corner, and the remnants of what used to be a table stand in the middle of the room.",
       "doors": [
         {
           "name":"Old door",
@@ -51,7 +51,7 @@
       "entities": []
     },
     {
-      "description": "The floor is wet and sticky, red slime sticks to your shoes. The crimson, shiny walls seem to pulse slightly.",
+      "description": "The floor is wet and sticky, red slime sticks to your shoes.\nThe crimson, shiny walls seem to pulse slightly.",
       "doors": [
         {
           "name":"Bone door",
@@ -100,7 +100,7 @@
       "entities": [1]
     },
     {
-      "description": "You are in a very old kitchen. Rotten meat hangs from the ceiling, some of the flesh might be of human origin.",
+      "description": "You are in a very old kitchen.\nRotten meat hangs from the ceiling, some of the flesh might be of human origin.",
       "doors": [
         {
           "name":"White door",
@@ -114,7 +114,7 @@
       "entities": []
     },
     {
-      "description": "The room is filled to the brim with fauna. The ceiling seems to be hidden behind the thick leaves of tall trees. The hot moist air makes you sweat.",
+      "description": "The room is filled to the brim with fauna.\nThe ceiling seems to be hidden behind the thick leaves of tall trees.\nThe hot moist air makes you sweat.",
       "doors": [
         {
           "name":"Wooden door",
@@ -184,7 +184,7 @@
       "entities": [2]
     },
     {
-      "description": "This rooms is covered with black little specks, on closer inspection they seem like dead partially-consumed flea's.",
+      "description": "This rooms is covered with black little specks,\non closer inspection they seem like dead partially-consumed flea's.",
       "doors": [
         {
           "name":"Vine passage",
@@ -205,7 +205,7 @@
       "entities": [3]
     },
     {
-      "description": "The air is difficult to breathe, and the smell is even more horrible. The room is covered in fungi.",
+      "description": "The air is difficult to breathe, and the smell is even more horrible.\nThe room is covered in fungi.",
       "doors": [
         {
           "name":"Mouldy door",
@@ -240,7 +240,7 @@
       "entities": []
     },
     {
-      "description": "You are deafened by the sound of chirping birds. Pictures of a growing tree hang on the almost completely overgrown wall.",
+      "description": "You are deafened by the sound of chirping birds.\nPictures of a growing tree hang on the almost completely overgrown wall.",
       "doors": [
         {
           "name":"Stone gate",
@@ -261,7 +261,7 @@
       "entities": [4]
     },
     {
-      "description": "The room glitters and shines brightly. On the ceiling there is a beautiful diamond chandelier, sparkling light onto the diamond walls and floor.",
+      "description": "The room glitters and shines brightly.\nOn the ceiling there is a beautiful diamond chandelier,\nsparkling light onto the diamond walls and floor.",
       "doors": [
         {
           "name":"Stone gate",
@@ -282,7 +282,7 @@
       "entities": []
     },
     {
-      "description": "The room glitters dimly. The diamond walls and floor are illuminated via the light creeping in through the stone archway.",
+      "description": "The room glitters dimly.\nThe diamond walls and floor are illuminated via the light creeping in through the stone archway.",
       "doors": [
         {
           "name":"Stone door",
@@ -324,7 +324,7 @@
       "entities": [7]
     },
     {
-      "description": "A square cobblestone room, thick wooden beams hold up the ceiling. The air smells somewhat humid.",
+      "description": "A square cobblestone room, thick wooden beams hold up the ceiling.\nThe air smells somewhat humid.",
       "doors": [
         {
           "name":"Stone door",
@@ -352,7 +352,7 @@
       "entities": []
     },
     {
-      "description": "The floor is slippery and wet. Along the edges of the room there are drains, catching water flowing from stone mouths carved in the wall.",
+      "description": "The floor is slippery and wet.\nAlong the edges of the room there are drains, catching water flowing from stone mouths carved in the wall.",
       "doors": [
         {
           "name":"Lapis door",
@@ -380,7 +380,7 @@
       "entities": [8]
     },
     {
-      "description": "A wooden floor creaks under your feet. Underneath the floor there seems to be a strong current of water. There is a table to the far end of the room.",
+      "description": "A wooden floor creaks under your feet.\nUnderneath the floor there seems to be a strong current of water.\nThere is a table to the far end of the room.",
       "doors": [
         {
           "name":"Black door",
@@ -422,7 +422,7 @@
       "entities": []
     },
     {
-      "description": "An old dirty bathroom, some tiles are broken and mould is growing on the ceiling. The mirror on the wall is shattered and all water taps are running.",
+      "description": "An old dirty bathroom, some tiles are broken and mould is growing on the ceiling.\nThe mirror on the wall is shattered and all water taps are running.",
       "doors": [
         {
           "name":"Bathroom door",
@@ -443,14 +443,14 @@
     },
     {
       "name": "Bone Key",
-      "description": "A white key, seemingly made from bone. It has a skull engraved on it, and the length of the key looks like a spine."
+      "description": "A white key, seemingly made from bone.\nIt has a skull engraved on it, and the length of the key looks like a spine."
     },
     {
       "name": "Top-hat",
       "description": "A sleek black hat. The label inside says it belongs to a certain Mr. Mashington."
     },
     {
-      "name": "Salt",
+      "name": "SupaSalt",
       "description": "A big sack of SupaSalt (TM)! 'Puts the Supa in your Salt!'."
     },
     {
@@ -510,7 +510,7 @@
       "vulnerability": 3,
       "attack": "The thing grips you tightly. You feel your clothes soak with blood and pus. Your skin starts to melt.",
       "die": "The skinless man screeches, shrivels up, and dies.",
-      "kill_count": 2
+      "kill_count": 3
     },
     {
       "name": "Bald ghost",
@@ -519,7 +519,7 @@
       "vulnerability": 2,
       "attack": "The ghost rips off your head and tries to wear you as a hat.",
       "die": "The ghost thanks you kindly, and passes on in a fashionable state.",
-      "kill_count": 2
+      "kill_count": 3
     },
     {
       "name": "Vicious Flea",
@@ -528,7 +528,7 @@
       "vulnerability": 6,
       "attack": "The flea jumps into your eye-socket and worms its way into your brain, you start scratching your brains out to make the itching stop.",
       "die": "The Flea makes a tiny squeak, shrivels up and dies.",
-      "kill_count": 2
+      "kill_count": 3
     },
     {
       "name": "Giant Ladybug",
