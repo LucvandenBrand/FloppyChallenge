@@ -165,7 +165,9 @@ Room load_room_from_json_tokens(const char * json_string, jsmntok_t * tokens, in
             (*token_index)++;
             char * description = strndup(json_string + tokens[*token_index].start,
                     tokens[*token_index].end - tokens[*token_index].start);
-            room.description = description;
+            char * escaped_description = replace_string(description, "\\n", "\n");
+            room.description = escaped_description;
+            free(description);
             (*token_index)++;
         }
         else if (json_equal(json_string, &tokens[*token_index], "doors") == 0)
