@@ -21,7 +21,7 @@ add_executable(test_text-adventure ${TEST_SOURCES})
 target_link_libraries(test_text-adventure text-adventurelib ${CHECK_LIBRARIES} pthread)
 
 # Create testing target and redirect its output to `Testing` folder
-add_test(NAME test_text-adventure COMMAND test_text-adventure WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/Testing)
+add_test(NAME test_text-adventure COMMAND test_text-adventure WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests)
 set_tests_properties(test_text-adventure PROPERTIES TIMEOUT 30)
 
 # Aditional Valgrind test to check memory leaks in code
