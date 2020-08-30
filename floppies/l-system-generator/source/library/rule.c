@@ -1,5 +1,20 @@
+#include <memory.h>
 #include "rule.h"
 #include "memory/safe_alloc.h"
+
+Rule alloc_rule(char antecedent, const char * consequent)
+{
+    Rule rule;
+    rule.antecedent = antecedent;
+    rule.consequent = string_to_symbol_list(consequent, strlen(consequent));
+    return rule;
+}
+
+void free_rule(Rule * rule)
+{
+    rule->antecedent = '\0';
+    free_symbol_list(&(rule->consequent));
+}
 
 RuleList alloc_empty_rule_list()
 {
@@ -7,10 +22,15 @@ RuleList alloc_empty_rule_list()
     list.length = 0;
     list.space = 2;
     list.rules = safe_malloc(sizeof(Rule) * list.space);
+    return list;
 }
 
 void free_rule_list(RuleList * list)
 {
+    for (size_t index = 0; index < list->length; index++)
+    {
+        free_rule(&list->rules[index]);
+    }
     free(list->rules);
     list->rules = NULL;
     list->space = 0;
@@ -23,7 +43,7 @@ void add_rule_to_list(Rule rule, RuleList * list)
     if (list->length == list->space)
     {
         list->space *= 2;
-        list->rules = safe_realloc(list->rules, list->space);
+        list->rules = safe_realloc(list->rules, sizeof(Rule) * list->space);
     }
 }
 

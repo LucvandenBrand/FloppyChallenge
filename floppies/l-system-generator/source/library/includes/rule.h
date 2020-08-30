@@ -7,8 +7,7 @@
 typedef struct 
 {
     Symbol antecedent;
-    Symbol * consequent;
-    size_t rewrite_length;
+    SymbolList consequent;
 } Rule;
 
 typedef struct 
@@ -18,6 +17,8 @@ typedef struct
     size_t space;
 } RuleList;
 
+Rule alloc_rule(char antecedent, const char * consequent);
+void free_rule(Rule * rule);
 RuleList alloc_empty_rule_list();
 void free_rule_list(RuleList * list);
 void add_rule_to_list(Rule rule, RuleList * list);

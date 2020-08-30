@@ -3,33 +3,33 @@
 
 #define NUM_SUITES 1
 
-Suite * makeAddSuite();
+Suite * make_rule_suite();
 
-SRunner * createSuiteRunner(Suite** suites, int numSuites)
+SRunner * create_suite_runner(Suite** suites, int num_suites)
 {
-    if (numSuites < 1)
+    if (num_suites < 1)
         return NULL;
-    SRunner *suiteRunner = srunner_create(suites[0]);
-    for (int index = 1; index < numSuites; ++index)
-        srunner_add_suite(suiteRunner, suites[index]);
+    SRunner *suite_runner = srunner_create(suites[0]);
+    for (int index = 1; index < num_suites; ++index)
+        srunner_add_suite(suite_runner, suites[index]);
 
-    srunner_set_fork_status(suiteRunner, CK_NOFORK);
-    srunner_set_log(suiteRunner, "test.log");
-    srunner_set_xml(suiteRunner, "test.xml");
+    srunner_set_fork_status(suite_runner, CK_NOFORK);
+    srunner_set_log(suite_runner, "test.log");
+    srunner_set_xml(suite_runner, "test.xml");
 
-    return suiteRunner;
+    return suite_runner;
 }
 
 int main()
 {
     Suite * suites[NUM_SUITES] = {
-            makeAddSuite()
+            make_rule_suite()
     };
 
-    SRunner * suiteRunner = createSuiteRunner(suites, NUM_SUITES);
-    srunner_run_all(suiteRunner, CK_VERBOSE);
+    SRunner * suite_runner = create_suite_runner(suites, NUM_SUITES);
+    srunner_run_all(suite_runner, CK_VERBOSE);
 
-    int numberFailed = srunner_ntests_failed(suiteRunner);
-    srunner_free(suiteRunner);
-    return (numberFailed == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
+    int number_failed = srunner_ntests_failed(suite_runner);
+    srunner_free(suite_runner);
+    return (number_failed == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
 }
