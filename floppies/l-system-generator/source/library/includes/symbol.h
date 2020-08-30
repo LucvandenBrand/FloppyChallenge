@@ -1,7 +1,7 @@
 #ifndef SYMBOL_H
 #define SYMBOL_H
 
-#include "stdlib.h"
+#include <stdlib.h>
 
 typedef char Symbol;
 

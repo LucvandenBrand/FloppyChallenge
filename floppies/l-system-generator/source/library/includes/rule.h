@@ -1,13 +1,13 @@
 #ifndef RULE_H
 #define RULE_H
 
-#include "stdlib.h"
+#include <stdlib.h>
 #include "./symbol.h"
 
 typedef struct 
 {
-    const Symbol antecedent;
-    const Symbol * consequent;
+    Symbol antecedent;
+    Symbol * consequent;
     size_t rewrite_length;
 } Rule;
 

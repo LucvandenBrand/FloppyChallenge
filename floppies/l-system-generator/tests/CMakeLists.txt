@@ -17,17 +17,17 @@ include(CheckTypeSize)
 # Since Check uses Threads to paralelize the tests, it's mandatory
 # add pthread as a dependency, alongside the Check libraries.
 file(GLOB_RECURSE TEST_SOURCES *.c)
-add_executable(test_L-system generator ${TEST_SOURCES})
-target_link_libraries(test_L-system generator L-system generatorlib ${CHECK_LIBRARIES} pthread)
+add_executable(test_lindengen ${TEST_SOURCES})
+target_link_libraries(test_lindengen lindengenlib ${CHECK_LIBRARIES} pthread)
 
 # Create testing target and redirect its output to `Testing` folder
-add_test(NAME test_L-system generator COMMAND test_L-system generator WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/Testing)
-set_tests_properties(test_L-system generator PROPERTIES TIMEOUT 30)
+add_test(NAME test_lindengen COMMAND test_lindengen WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/Testing)
+set_tests_properties(test_lindengen PROPERTIES TIMEOUT 30)
 
 # Aditional Valgrind test to check memory leaks in code
 include(FindValgrind)
 
-add_custom_target(valgrind_test_L-system generator
-    COMMAND ${VALGRIND_PROGRAM} --leak-check=full $<TARGET_FILE:test_L-system generator>
-    DEPENDS test_L-system generator
+add_custom_target(valgrind_test_lindengen
+    COMMAND ${VALGRIND_PROGRAM} --leak-check=full $<TARGET_FILE:test_lindengen>
+    DEPENDS test_lindengen
 )

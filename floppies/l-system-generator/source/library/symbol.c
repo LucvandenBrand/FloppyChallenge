@@ -1,4 +1,5 @@
 #include "rule.h"
+#include "memory/safe_alloc.h"
 
 SymbolList alloc_empty_symbol_list()
 {
