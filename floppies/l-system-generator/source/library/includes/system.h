@@ -6,8 +6,8 @@
 
 typedef struct 
 {
-    const SymbolList axiom;
-    const RuleList rules;
+    SymbolList axiom;
+    RuleList rules;
 } LSystem;
 
 #endif

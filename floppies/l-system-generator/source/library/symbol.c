@@ -47,3 +47,15 @@ void add_symbols_to_list(SymbolList from_list, SymbolList * to_list)
         add_symbol_to_list(symbol, to_list);
     }
 }
+
+void swap_symbol_lists(SymbolList * first_list, SymbolList * second_list)
+{
+    SymbolList temp_list = {first_list->symbols, first_list->length, first_list->space};
+    first_list->symbols = second_list->symbols;
+    first_list->length = second_list->length;
+    first_list->space = second_list->space;
+
+    second_list->symbols = temp_list.symbols;
+    second_list->length = temp_list.length;
+    second_list->space = temp_list.space;
+}

@@ -60,6 +60,36 @@ START_TEST(test_add_symbols_to_list)
 }
 END_TEST
 
+START_TEST(test_swap_symbol_lists)
+{
+    SymbolList first_list = alloc_empty_symbol_list();
+    add_symbol_to_list('A', &first_list);
+    add_symbol_to_list('B', &first_list);
+
+    SymbolList second_list = alloc_empty_symbol_list();
+    add_symbol_to_list('C', &second_list);
+    add_symbol_to_list('D', &second_list);
+    add_symbol_to_list('E', &second_list);
+    add_symbol_to_list('F', &second_list);
+
+    swap_symbol_lists(&first_list, &second_list);
+    ck_assert_int_eq(first_list.length, 4);
+    ck_assert_int_eq(first_list.space, 8);
+    ck_assert(first_list.symbols[0] == 'C');
+    ck_assert(first_list.symbols[1] == 'D');
+    ck_assert(first_list.symbols[2] == 'E');
+    ck_assert(first_list.symbols[3] == 'F');
+
+    ck_assert_int_eq(second_list.length, 2);
+    ck_assert_int_eq(second_list.space, 4);
+    ck_assert(second_list.symbols[0] == 'A');
+    ck_assert(second_list.symbols[1] == 'B');
+
+    free_symbol_list(&first_list);
+    free_symbol_list(&second_list);
+}
+END_TEST
+
 Suite * make_symbol_suite()
 {
     Suite *suite = suite_create("Symbol Test Suite");
@@ -68,6 +98,7 @@ Suite * make_symbol_suite()
     tcase_add_test(test_case, test_alloc_symbol_list);
     tcase_add_test(test_case, test_add_symbol_to_list);
     tcase_add_test(test_case, test_add_symbols_to_list);
+    tcase_add_test(test_case, test_swap_symbol_lists);
     suite_add_tcase(suite, test_case);
 
     return suite;
