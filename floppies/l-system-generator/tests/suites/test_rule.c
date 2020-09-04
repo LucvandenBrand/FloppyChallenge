@@ -4,10 +4,12 @@
 START_TEST(test_alloc_rule)
 {
     Rule rule = alloc_rule('A', "AB");
-    ck_assert_int_eq((int) rule.antecedent, (int) 'A');
+    ck_assert(rule.antecedent == 'A');
     ck_assert_int_eq(rule.consequent.length, 2);
+    ck_assert(rule.consequent.symbols[0] == 'A');
+    ck_assert(rule.consequent.symbols[1] == 'B');
     free_rule(&rule);
-    ck_assert_int_eq((int) rule.antecedent, (int) '\0');
+    ck_assert(rule.antecedent == '\0');
     ck_assert_int_eq(rule.consequent.length, 0);
 }
 END_TEST

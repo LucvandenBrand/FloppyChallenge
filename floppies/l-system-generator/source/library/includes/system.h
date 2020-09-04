@@ -10,4 +10,6 @@ typedef struct
     RuleList rules;
 } LSystem;
 
+void free_system(LSystem * system);
+
 #endif

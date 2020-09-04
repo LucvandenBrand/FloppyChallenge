@@ -15,7 +15,7 @@ SymbolList string_to_symbol_list(const char * string, size_t length)
     SymbolList list = alloc_empty_symbol_list();
     for (size_t index = 0; index < length; index++)
     {
-        Symbol symbol = string[length];
+        Symbol symbol = string[index];
         add_symbol_to_list(symbol, &list);
     }
     return list;

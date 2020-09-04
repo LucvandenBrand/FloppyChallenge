@@ -14,6 +14,17 @@ START_TEST(test_alloc_symbol_list)
 }
 END_TEST
 
+START_TEST(test_string_to_symbol_list)
+{
+    SymbolList list = string_to_symbol_list("ABC", 3);
+    ck_assert(list.symbols[0] == 'A');
+    ck_assert(list.symbols[1] == 'B');
+    ck_assert(list.symbols[2] == 'C');
+    ck_assert_int_eq(list.length, 3);
+    free_symbol_list(&list);
+}
+END_TEST
+
 START_TEST(test_add_symbol_to_list)
 {
     SymbolList list = alloc_empty_symbol_list();
@@ -96,6 +107,7 @@ Suite * make_symbol_suite()
 
     TCase * test_case = tcase_create("Test Cases");
     tcase_add_test(test_case, test_alloc_symbol_list);
+    tcase_add_test(test_case, test_string_to_symbol_list);
     tcase_add_test(test_case, test_add_symbol_to_list);
     tcase_add_test(test_case, test_add_symbols_to_list);
     tcase_add_test(test_case, test_swap_symbol_lists);
