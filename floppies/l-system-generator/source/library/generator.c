@@ -1,4 +1,4 @@
-#include <z3.h>
+#include <stdio.h>
 #include "generator.h"
 
 void generate_system(LSystem * system, unsigned int num_iterations)

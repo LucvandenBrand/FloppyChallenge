@@ -1,6 +1,7 @@
 #ifndef SYSTEM_H
 #define SYSTEM_H
 
+#include <stdbool.h>
 #include "rule.h"
 #include "symbol.h"
 
