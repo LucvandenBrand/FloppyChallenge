@@ -38,7 +38,7 @@ void set_pixel(Canvas * canvas, Colour colour, size_t row, size_t col)
 Colour get_pixel(Canvas canvas, size_t row, size_t col)
 {
     // If outside bounds, return black
-    Colour colour = {0, 0, 0};
+    Colour colour = create_colour_greyscale(0);
     if (row < 0 || row >= canvas.height || col < 0 || col >= canvas.width)
         return colour;
 
