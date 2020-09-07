@@ -7,6 +7,7 @@ typedef struct {
    const char * input_path;
    const char * output_path;
    long num_iterations;
+   bool save_symbols;
 } Job;
 
 Job parse_args_to_job(int argc, char ** argv);

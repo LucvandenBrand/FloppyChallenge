@@ -6,7 +6,7 @@
 
 Job parse_args_to_job(int argc, char ** argv)
 {
-    Job job = { "", "", -1};
+    Job job = { "", "", -1, false};
     for (size_t index = 0; index < argc; index++)
     {
         // Check if we have an option in the form of '--arg_name'
@@ -20,6 +20,11 @@ Job parse_args_to_job(int argc, char ** argv)
         {
             print_usage();
             exit(EXIT_SUCCESS);
+        }
+        else if (strcmp(argument, "symbols") == 0)
+        {
+            job.save_symbols = true;
+            continue;
         }
 
         // Check if the option has an invalid next value.
@@ -58,7 +63,7 @@ Job parse_args_to_job(int argc, char ** argv)
 
 void print_usage()
 {
-    printf("Usage: lindengen --input <filename> --output <filename> --num_iterations <number>\n");
+    printf("Usage: lindengen --input <filename> --output <filename> --num_iterations <number> {--symbols}\n");
 }
 
 bool string_starts_with(const char * string, const char * check_string)

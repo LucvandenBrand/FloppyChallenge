@@ -24,7 +24,7 @@ int handle_job(Job job)
         return EXIT_FAILURE;
     }
     char * input_buffer = safe_malloc(sizeof(char) * input_size);
-    load_file(job.input_path, input_buffer, input_size);
+    try_load_file(job.input_path, input_buffer, input_size);
 
     LSystem system = alloc_empty_system();
     bool load_success = try_load_system_from_json_string(&system, input_buffer);
@@ -38,9 +38,23 @@ int handle_job(Job job)
 
     // Load successful, start generating the system.
     generate_system(&system, job.num_iterations);
+
+    if (job.save_symbols)
+    {
+        printf("Writing symbols to output...\n");
+        if (!try_write_file(job.output_path, (char *) system.axiom.symbols, system.axiom.length))
+        {
+            printf("Could not write to output file.\n");
+            free_system(&system);
+            return EXIT_FAILURE;
+        }
+        printf("Success!\n");
+    }
+    else {
+        // TODO: Render the system.
+    }
+
+
     free_system(&system);
-
-    // TODO: Render the system.
-
     return EXIT_SUCCESS;
 }
