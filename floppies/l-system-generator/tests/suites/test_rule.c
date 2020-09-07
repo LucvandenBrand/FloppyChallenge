@@ -1,6 +1,16 @@
 #include <check.h>
 #include <rule.h>
 
+START_TEST(test_alloc_empty_rule)
+{
+    Rule rule = alloc_empty_rule();
+    ck_assert(rule.antecedent == '\0');
+    ck_assert_int_eq(rule.consequent.length, 0);
+    ck_assert_int_eq(rule.consequent.space, 2);
+    free_rule(&rule);
+}
+END_TEST
+
 START_TEST(test_alloc_rule)
 {
     Rule rule = alloc_rule('A', "AB");
@@ -72,6 +82,7 @@ Suite * make_rule_suite()
     Suite * suite = suite_create("Rule Test Suite");
 
     TCase * test_case = tcase_create("Test Cases");
+    tcase_add_test(test_case, test_alloc_empty_rule);
     tcase_add_test(test_case, test_alloc_rule);
     tcase_add_test(test_case, test_alloc_rule_list);
     tcase_add_test(test_case, test_add_rule_to_list);

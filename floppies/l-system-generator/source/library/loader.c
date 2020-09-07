@@ -53,9 +53,11 @@ bool try_load_system_from_json_tokens(LSystem * system, const char * input_buffe
                 }
                 int num_rule_children = tokens[token_index].size;
                 token_index++;
-                Rule rule;
+                Rule rule = alloc_empty_rule();
                 if (try_load_rule_from_json_tokens(&rule, input_buffer, tokens, num_rule_children, &token_index))
                     add_rule_to_list(rule, &system->rules);
+                else
+                    free_rule(&rule);
             }
         }
         else
@@ -94,8 +96,10 @@ bool try_load_rule_from_json_tokens(Rule * rule, const char * input_buffer, jsmn
             }
 
             char *consequent = strndup(input_buffer + tokens[*token_index].start, consequent_length);
-            rule->consequent = string_to_symbol_list(consequent, consequent_length);
+            SymbolList symbols = string_to_symbol_list(consequent, consequent_length);
             free(consequent);
+            add_symbols_to_list(symbols, &rule->consequent);
+            free_symbol_list(&symbols);
             (*token_index)++;
         }
         else {

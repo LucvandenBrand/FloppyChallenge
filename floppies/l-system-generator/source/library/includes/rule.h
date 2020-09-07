@@ -17,6 +17,7 @@ typedef struct
     size_t space;
 } RuleList;
 
+Rule alloc_empty_rule();
 Rule alloc_rule(char antecedent, const char * consequent);
 void free_rule(Rule * rule);
 RuleList alloc_empty_rule_list();

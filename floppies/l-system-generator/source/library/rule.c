@@ -2,6 +2,14 @@
 #include "rule.h"
 #include "memory/safe_alloc.h"
 
+Rule alloc_empty_rule()
+{
+    Rule rule;
+    rule.antecedent = '\0';
+    rule.consequent = alloc_empty_symbol_list();
+    return rule;
+}
+
 Rule alloc_rule(char antecedent, const char * consequent)
 {
     Rule rule;
