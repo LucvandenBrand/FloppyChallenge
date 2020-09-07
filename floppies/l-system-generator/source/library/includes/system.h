@@ -11,6 +11,7 @@ typedef struct
     RuleList rules;
 } LSystem;
 
+LSystem alloc_empty_system();
 void free_system(LSystem * system);
 
 #endif

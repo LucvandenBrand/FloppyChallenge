@@ -103,7 +103,7 @@ END_TEST
 
 Suite * make_symbol_suite()
 {
-    Suite *suite = suite_create("Symbol Test Suite");
+    Suite * suite = suite_create("Symbol Test Suite");
 
     TCase * test_case = tcase_create("Test Cases");
     tcase_add_test(test_case, test_alloc_symbol_list);

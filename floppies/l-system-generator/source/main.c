@@ -16,6 +16,7 @@ int main(int argc, char ** argv)
 
 int handle_job(Job job)
 {
+    // Load the L-system into memory
     long input_size = get_file_size(job.input_path);
     if (input_size < 1)
     {
@@ -25,15 +26,21 @@ int handle_job(Job job)
     char * input_buffer = safe_malloc(sizeof(char) * input_size);
     load_file(job.input_path, input_buffer, input_size);
 
-    LSystem system;
-    if (!try_load_system_from_json_string(&system, input_buffer))
+    LSystem system = alloc_empty_system();
+    bool load_success = try_load_system_from_json_string(&system, input_buffer);
+    free(input_buffer);
+    if (!load_success)
     {
         printf("Invalid input file.\n");
+        free_system(&system);
         return EXIT_FAILURE;
     }
 
+    // Load successful, start generating the system.
     generate_system(&system, job.num_iterations);
+    free_system(&system);
 
-    free(input_buffer);
+    // TODO: Render the system.
+
     return EXIT_SUCCESS;
 }

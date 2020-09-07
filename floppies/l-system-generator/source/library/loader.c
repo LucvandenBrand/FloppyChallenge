@@ -21,7 +21,7 @@ bool try_load_system_from_json_string(LSystem * system, const char * input_buffe
 bool try_load_system_from_json_tokens(LSystem * system, const char * input_buffer, jsmntok_t * tokens, int num_tokens)
 {
     if (num_tokens < 2 || tokens[0].type != JSMN_OBJECT) {
-        printf("System data should contain only a single top-level object.");
+        printf("System data should contain only a single top-level object.\n");
         return false;
     }
 
@@ -33,16 +33,77 @@ bool try_load_system_from_json_tokens(LSystem * system, const char * input_buffe
             token_index++;
             size_t axiom_length = tokens[token_index].end - tokens[token_index].start;
             char * axiom_string = strndup(input_buffer + tokens[token_index].start, axiom_length);
-            system->axiom = string_to_symbol_list(axiom_string, axiom_length);
+            SymbolList axiom = string_to_symbol_list(axiom_string, axiom_length);
+            add_symbols_to_list(axiom, &system->axiom);
             free(axiom_string);
+            free_symbol_list(&axiom);
             token_index++;
+        }
+        else if (json_equal(input_buffer, &tokens[token_index], "rules"))
+        {
+            token_index++;
+            int num_rules = tokens[token_index].size;
+            token_index++;
+            for (size_t rule_index = 0; rule_index < num_rules; rule_index++)
+            {
+                if (tokens[token_index].type != JSMN_OBJECT)
+                {
+                    printf("The rule list should only contain rule objects.\n");
+                    return false;
+                }
+                int num_rule_children = tokens[token_index].size;
+                token_index++;
+                Rule rule;
+                if (try_load_rule_from_json_tokens(&rule, input_buffer, tokens, num_rule_children, &token_index))
+                    add_rule_to_list(rule, &system->rules);
+            }
         }
         else
         {
-            printf("Unknown attribute.\n");
+            printf("Unknown system attribute.\n");
             return false;
         }
     }
+    return true;
+}
+
+bool try_load_rule_from_json_tokens(Rule * rule, const char * input_buffer, jsmntok_t * tokens, int num_children, unsigned * token_index)
+{
+    for (unsigned child_index = 0; child_index < num_children; child_index++) {
+        if (json_equal(input_buffer, &tokens[*token_index], "antecedent")) {
+            (*token_index)++;
+            int antecedent_length = tokens[*token_index].end - tokens[*token_index].start;
+            if (antecedent_length < 1)
+            {
+                printf("The antecedent of a rule is empty.\n");
+                return false;
+            }
+
+            char *antecedent = strndup(input_buffer + tokens[*token_index].start, antecedent_length);
+            rule->antecedent = antecedent[0];
+            free(antecedent);
+            (*token_index)++;
+        }
+        else if (json_equal(input_buffer, &tokens[*token_index], "consequent")) {
+            (*token_index)++;
+            int consequent_length = tokens[*token_index].end - tokens[*token_index].start;
+            if (consequent_length < 1)
+            {
+                printf("The consequent of a rule is empty.\n");
+                return false;
+            }
+
+            char *consequent = strndup(input_buffer + tokens[*token_index].start, consequent_length);
+            rule->consequent = string_to_symbol_list(consequent, consequent_length);
+            free(consequent);
+            (*token_index)++;
+        }
+        else {
+            printf("Unknown rule attribute.\n");
+            return false;
+        }
+    }
+    return true;
 }
 
 bool json_equal(const char *json, jsmntok_t *tok, const char *s)

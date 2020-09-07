@@ -69,7 +69,7 @@ END_TEST
 
 Suite * make_rule_suite()
 {
-    Suite *suite = suite_create("Rule Test Suite");
+    Suite * suite = suite_create("Rule Test Suite");
 
     TCase * test_case = tcase_create("Test Cases");
     tcase_add_test(test_case, test_alloc_rule);

@@ -44,7 +44,7 @@ END_TEST
 
 Suite * make_generator_suite()
 {
-    Suite *suite = suite_create("Rule Generator Suite");
+    Suite * suite = suite_create("Generator Test Suite");
 
     TCase * test_case = tcase_create("Test Cases");
     tcase_add_test(test_case, test_generate_system);

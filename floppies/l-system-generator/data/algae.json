@@ -1,0 +1,14 @@
+{
+  "axiom": "A",
+  "rules":
+  [
+    {
+      "antecedent": "A",
+      "consequent": "AB"
+    },
+    {
+      "antecedent": "B",
+      "consequent": "A"
+    }
+  ]
+}
