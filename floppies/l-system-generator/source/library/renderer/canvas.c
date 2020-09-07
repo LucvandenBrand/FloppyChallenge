@@ -35,14 +35,14 @@ void set_pixel(Canvas * canvas, Colour colour, size_t row, size_t col)
     canvas->pixels[index] = colour;
 }
 
-Colour get_pixel(Canvas * canvas, size_t row, size_t col)
+Colour get_pixel(Canvas canvas, size_t row, size_t col)
 {
     // If outside bounds, return black
     Colour colour = {0, 0, 0};
-    if (row < 0 || row >= canvas->height || col < 0 || col >= canvas->width)
+    if (row < 0 || row >= canvas.height || col < 0 || col >= canvas.width)
         return colour;
 
     // Find the position in the 1D array and return the value
-    size_t index = row * canvas->width + col;
-    return canvas->pixels[index];
+    size_t index = row * canvas.width + col;
+    return canvas.pixels[index];
 }

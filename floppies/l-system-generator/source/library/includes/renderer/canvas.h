@@ -15,6 +15,6 @@ Canvas alloc_canvas(size_t width, size_t height);
 void free_canvas(Canvas * canvas);
 void clear_canvas(Canvas * canvas, Colour colour);
 void set_pixel(Canvas * canvas, Colour colour, size_t row, size_t col);
-Colour get_pixel(Canvas * canvas, size_t row, size_t col);
+Colour get_pixel(Canvas canvas, size_t row, size_t col);
 
 #endif
