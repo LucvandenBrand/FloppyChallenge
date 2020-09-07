@@ -17,7 +17,7 @@ END_TEST
 START_TEST(test_clear_canvas)
 {
     Canvas canvas = alloc_canvas(100, 100);
-    Colour colour = {50, 10, 30};
+    Colour colour = create_colour(0.4f, 0.5f, 0.9f);
     clear_canvas(&canvas, colour);
     for (size_t row = 0; row < canvas.height; row++)
         for (size_t col = 0; col < canvas.width; col++)
@@ -34,9 +34,9 @@ END_TEST
 START_TEST(test_get_set_pixel)
 {
     Canvas canvas = alloc_canvas(100, 100);
-    Colour clear_colour = {(char) 255, (char) 255, (char) 255};
+    Colour clear_colour = create_colour(1, 1, 1);
     clear_canvas(&canvas, clear_colour);
-    Colour draw_colour = {(char) 255, (char) 255, (char) 255};
+    Colour draw_colour = create_colour(0.5f, 0.3f, 0.6f);
     set_pixel(&canvas, draw_colour, 25, 44);
     Colour read_colour = get_pixel(canvas, 25, 44);
     ck_assert(draw_colour.red == read_colour.red);
