@@ -1,12 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "generator.h"
+#include "generator/generator.h"
 #include "memory/safe_alloc.h"
 #include "main.h"
 #include "io/files.h"
-#include "system.h"
+#include "system/system.h"
 #define JSMN_HEADER
-#include "loader.h"
+#include "io/loader.h"
 
 int main(int argc, char ** argv)
 {

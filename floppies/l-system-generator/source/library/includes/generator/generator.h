@@ -1,7 +1,7 @@
 #ifndef GENERATOR_H
 #define GENERATOR_H
 
-#include "system.h"
+#include "system/system.h"
 
 #define MAX_AXIOM_SIZE 6e9
 

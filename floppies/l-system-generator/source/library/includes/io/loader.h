@@ -2,7 +2,7 @@
 #define LOADER_H
 
 #include <stdbool.h>
-#include "system.h"
+#include "system/system.h"
 #include "io/jsmn.h"
 
 bool try_load_system_from_json_string(LSystem * system, const char * input_buffer);

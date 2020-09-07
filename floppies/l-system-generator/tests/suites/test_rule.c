@@ -1,5 +1,5 @@
 #include <check.h>
-#include <rule.h>
+#include <system/rule.h>
 
 START_TEST(test_alloc_empty_rule)
 {

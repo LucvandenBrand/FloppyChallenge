@@ -1,5 +1,5 @@
 #include <check.h>
-#include "system.h"
+#include "system/system.h"
 
 START_TEST(test_alloc_system)
 {

@@ -1,6 +1,6 @@
 #include <check.h>
 #define JSMN_HEADER
-#include "loader.h"
+#include "io/loader.h"
 
 START_TEST(test_load_system_from_json_string)
 {

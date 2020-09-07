@@ -1,5 +1,5 @@
 #include <check.h>
-#include "generator.h"
+#include "generator/generator.h"
 
 LSystem alloc_test_system()
 {

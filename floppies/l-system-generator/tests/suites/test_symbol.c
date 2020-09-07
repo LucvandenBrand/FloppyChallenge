@@ -1,5 +1,5 @@
 #include <check.h>
-#include <symbol.h>
+#include <system/symbol.h>
 
 START_TEST(test_alloc_symbol_list)
 {

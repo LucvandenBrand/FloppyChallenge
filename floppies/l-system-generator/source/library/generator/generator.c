@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "generator.h"
+#include "generator/generator.h"
 
 void generate_system(LSystem * system, unsigned int num_iterations)
 {

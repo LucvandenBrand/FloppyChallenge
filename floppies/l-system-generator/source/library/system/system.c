@@ -1,4 +1,4 @@
-#include "system.h"
+#include "system/system.h"
 
 LSystem alloc_empty_system()
 {

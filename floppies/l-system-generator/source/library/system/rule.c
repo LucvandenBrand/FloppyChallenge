@@ -1,5 +1,5 @@
 #include <memory.h>
-#include "rule.h"
+#include "system/rule.h"
 #include "memory/safe_alloc.h"
 
 Rule alloc_empty_rule()

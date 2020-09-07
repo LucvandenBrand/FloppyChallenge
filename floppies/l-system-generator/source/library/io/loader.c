@@ -1,7 +1,7 @@
 #include <string.h>
 #include <stdio.h>
 #include "memory/safe_alloc.h"
-#include "loader.h"
+#include "io/loader.h"
 
 bool try_load_system_from_json_string(LSystem * system, const char * input_buffer)
 {
