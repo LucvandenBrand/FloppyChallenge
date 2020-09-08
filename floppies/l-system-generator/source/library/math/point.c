@@ -32,11 +32,16 @@ void add_point_to_list(Point point, PointList * list)
 
 void normalize_point_list(PointList * list)
 {
-    float max_length = get_max_point_length(*list);
-    for (size_t index = 0; index < list.length; index++)
+    Point min, max;
+    get_list_bounds(*list, &min, &max);
+    Point diagonal = subtract_points(max, min);
+    float diagonal_length = point_length(diagonal);
+
+    for (size_t index = 0; index < list->length; index++)
     {
         Point point = list->points[index];
-        list->points[index] = divide_point(point, max_length);
+        point = subtract_points(point, min);
+        list->points[index] = divide_point(point, diagonal_length);
     }
 }
 
