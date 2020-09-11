@@ -97,11 +97,43 @@ START_TEST(test_divide_point)
 }
 END_TEST
 
+START_TEST(test_move_point_in_rad_direction)
+{
+    Point point = {0, 0};
+
+    point = move_point_in_rad_direction(point, 0); // move right
+    ck_assert(point.x == 1.0f);
+    ck_assert(point.y == 0.0f);
+
+    point = move_point_in_rad_direction(point, M_PI); // move left
+    ck_assert(point.x == 0.0f);
+    ck_assert(point.y == 0.0f);
+
+    point = move_point_in_rad_direction(point, (float) (3.0/2.0 * M_PI)); // move down
+    ck_assert(point.x == 0.0f);
+    ck_assert(point.y == -1.0f);
+
+    point = move_point_in_rad_direction(point, (float) (1.0/2.0 * M_PI)); // move up
+    ck_assert(point.x == 0.0f);
+    ck_assert(point.y == 0.0f);
+}
+END_TEST
+
+START_TEST(test_add_points)
+{
+    Point point = {4, -7};
+    Point secondPoint = {1, 8};
+    point = add_points(point, secondPoint);
+    ck_assert(point.x == 5.0f);
+    ck_assert(point.y == 1.0f);
+}
+END_TEST
+
 START_TEST(test_subtract_points)
 {
     Point point = {4, 7};
-    Point subtractor = {1, 8};
-    point = subtract_points(point, subtractor);
+    Point secondPoint = {1, 8};
+    point = subtract_points(point, secondPoint);
     ck_assert(point.x == 3.0f);
     ck_assert(point.y == -1.0f);
 }
@@ -118,6 +150,8 @@ Suite * make_point_suite()
     tcase_add_test(test_case, test_get_list_bounds);
     tcase_add_test(test_case, test_point_length);
     tcase_add_test(test_case, test_divide_point);
+    tcase_add_test(test_case, test_move_point_in_rad_direction);
+    tcase_add_test(test_case, test_add_points);
     tcase_add_test(test_case, test_subtract_points);
 
     suite_add_tcase(suite, test_case);

@@ -1,14 +1,10 @@
 #include <limits.h>
 #include "renderer/colour.h"
+#include "math/bounds.h"
 
 Colour create_colour_greyscale(float value)
 {
     return create_colour(value, value, value);
-}
-
-float clamp(float value, float min_value, float max_value) {
-    const float clamp_min = value < min_value ? min_value : value;
-    return clamp_min > max_value ? max_value : value;
 }
 
 Colour create_colour(float red, float green, float blue)

@@ -2,6 +2,7 @@
 #include <math.h>
 #include "math/point.h"
 #include "memory/safe_alloc.h"
+#include "math/bounds.h"
 
 PointList alloc_empty_point_list()
 {
@@ -98,8 +99,27 @@ Point divide_point(Point point, float scalar)
     return divided_point;
 }
 
+Point move_point_in_rad_direction(Point point, float direction)
+{
+    Point movement = {cosf(direction), sinf(direction)};
+    Point new_point = add_points(point, movement);
+    // Cos and Sin can have precision problems, so snap to 0 if low enough
+    new_point.x = snap_to_value(new_point.x, 0, 0.1f);
+    new_point.y = snap_to_value(new_point.y, 0, 0.1f);
+    // Same goes for 1.
+    new_point.x = snap_to_value(new_point.x, 1, 0.1f);
+    new_point.y = snap_to_value(new_point.y, 1, 0.1f);
+    return new_point;
+}
+
+Point add_points(Point first_point, Point second_point)
+{
+    Point point = {first_point.x + second_point.x, first_point.y + second_point.y};
+    return point;
+}
+
 Point subtract_points(Point first_point, Point second_point)
 {
-    Point subtraction = {first_point.x - second_point.x, first_point.y - second_point.y};
-    return subtraction;
+    Point point = {first_point.x - second_point.x, first_point.y - second_point.y};
+    return point;
 }
