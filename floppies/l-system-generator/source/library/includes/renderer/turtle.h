@@ -3,6 +3,7 @@
 
 #include "system/system.h"
 #include "renderer/canvas.h"
+#include "math/point.h"
 
 void render_system_to_canvas(LSystem system, Canvas * canvas);
 void build_polyline_from_system(PointList * polyline, LSystem system);
