@@ -18,5 +18,5 @@ Valgrind tests are also supported: `make valgrind_test_L-system generator`.
 
 ### Dependencies
 For this project to compile, you will need:
-- The SDL2 development library.
+- The libpng library. Install using apt: `sudo apt-get install libpng-dev`.
 - The Check Unit Testing library.
