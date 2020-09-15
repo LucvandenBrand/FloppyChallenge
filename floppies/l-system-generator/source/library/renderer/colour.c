@@ -18,3 +18,10 @@ Colour create_colour(float red, float green, float blue)
     colour.blue = (char) (blue * (float) UCHAR_MAX);
     return colour;
 }
+
+void colour_to_png_byte(png_byte * byte, Colour colour)
+{
+    byte[0] = colour.red;
+    byte[1] = colour.green;
+    byte[2] = colour.blue;
+}

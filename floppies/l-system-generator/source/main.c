@@ -66,12 +66,12 @@ bool try_save_job(Job job, LSystem system)
         }
     }
     else {
-        // TODO: Render the system.
         printf("Rendering system....\n");
         Canvas canvas = alloc_canvas(100, 100); // TODO : Made size options
         render_system_to_canvas(system, &canvas);
         printf("Done!\n");
         printf("Writing image to output...\n");
+        save_canvas_as_png(canvas, job.output_path);
     }
 
     printf("Success!\n");
