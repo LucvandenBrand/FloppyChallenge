@@ -99,6 +99,12 @@ Point divide_point(Point point, float scalar)
     return divided_point;
 }
 
+Point multiply_points(Point first_point, Point second_point)
+{
+    Point point = {first_point.x * second_point.x, first_point.y * second_point.y};
+    return point;
+}
+
 Point move_point_in_rad_direction(Point point, float direction)
 {
     Point movement = {cosf(direction), sinf(direction)};

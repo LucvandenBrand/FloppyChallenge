@@ -57,6 +57,11 @@ void render_polyline_to_canvas(PointList polyline, Canvas * canvas)
 
 void render_line_to_canvas(Point start, Point end, Canvas * canvas)
 {
+    // TODO: Rasterize the line in a not so stupid way.
     Colour draw_colour = create_colour_greyscale(0);
-    // TODO: Rasterize the line
+    Point canvas_size = {canvas->width, canvas->height};
+    start = multiply_points(start, canvas_size);
+    set_pixel(canvas, draw_colour, (size_t) start.y, (size_t) start.x);
+    end = multiply_points(end, canvas_size);
+    set_pixel(canvas, draw_colour, (size_t) end.y, (size_t) end.x);
 }

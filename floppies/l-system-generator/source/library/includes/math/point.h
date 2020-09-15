@@ -26,6 +26,7 @@ Point max_point(Point first_point, Point second_point);
 float get_max_point_length(PointList list);
 float point_length(Point point);
 Point divide_point(Point point, float scalar);
+Point multiply_points(Point first_point, Point second_point);
 Point move_point_in_rad_direction(Point point, float direction);
 Point subtract_points(Point first_point, Point second_point);
 Point add_points(Point first_point, Point second_point);
