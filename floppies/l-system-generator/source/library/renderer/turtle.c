@@ -1,6 +1,7 @@
 #include <math.h>
 #include "math/point.h"
 #include "renderer/turtle.h"
+#include "renderer/canvas.h"
 
 void render_system_to_canvas(LSystem system, Canvas * canvas)
 {
@@ -43,5 +44,19 @@ void build_polyline_from_system(PointList * polyline, LSystem system)
 
 void render_polyline_to_canvas(PointList polyline, Canvas * canvas)
 {
+    Colour clear_colour = create_colour_greyscale(1);
+    clear_canvas(canvas, clear_colour);
+    normalize_point_list(&polyline);
+    for (size_t index = 0; index < polyline.length - 1; index++)
+    {
+        Point start = polyline.points[index];
+        Point end = polyline.points[index+1];
+        render_line_to_canvas(start, end, canvas);
+    }
+}
 
+void render_line_to_canvas(Point start, Point end, Canvas * canvas)
+{
+    Colour draw_colour = create_colour_greyscale(0);
+    // TODO: Rasterize the line
 }

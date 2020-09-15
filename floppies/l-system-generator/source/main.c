@@ -5,6 +5,7 @@
 #include "main.h"
 #include "io/files.h"
 #include "system/system.h"
+#include "renderer/turtle.h"
 #define JSMN_HEADER
 #include "io/loader.h"
 
@@ -55,10 +56,9 @@ bool try_load_job(Job job, LSystem * system)
 
 bool try_save_job(Job job, LSystem system)
 {
-    printf("Writing to output...\n");
-
     if (job.save_symbols)
     {
+        printf("Writing symbols to output...\n");
         if (!try_write_file(job.output_path, system.axiom.symbols, system.axiom.length))
         {
             printf("Could not write to output file.\n");
@@ -67,6 +67,11 @@ bool try_save_job(Job job, LSystem system)
     }
     else {
         // TODO: Render the system.
+        printf("Rendering system....\n");
+        Canvas canvas = alloc_canvas(100, 100); // TODO : Made size options
+        render_system_to_canvas(system, &canvas);
+        printf("Done!\n");
+        printf("Writing image to output...\n");
     }
 
     printf("Success!\n");
