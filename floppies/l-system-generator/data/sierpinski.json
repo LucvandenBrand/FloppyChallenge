@@ -1,0 +1,22 @@
+{
+  "axiom": "A",
+  "rules":
+  [
+    {
+      "antecedent" : "A",
+      "consequent" : "B+A+B"
+    },
+    {
+      "antecedent" : "B",
+      "consequent" : "A-B-A"
+    },
+    {
+      "antecedent" : "+",
+      "consequent" : "+"
+    },
+    {
+      "antecedent" : "-",
+      "consequent" : "-"
+    }
+  ]
+}
