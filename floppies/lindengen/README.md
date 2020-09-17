@@ -11,6 +11,16 @@ For Linux, this comes down to:
 2. `cmake ..`
 3. `make`
 
+## Usage
+Simply call the executable with the following parameters:
+
+- `--input <filename>` : the `.json` file describing the L-system (examples in the `data` folder).
+- `--output <filename>` : the output file to which to write.
+- `--num_iterations <number>` : the number of iterations to generate the system for.
+- `--width <number>` : **optional**, the width of the image. Set to 100 by default.
+- `--height <number>` : **optional**, the height of the image. Set to 100 by default.
+- `--symbols` : **optional**, write the generated symbols in text format to the output file.
+
 ### Testing
 This project is tested using Check. To perform the the test, replace step 3 above with: `make test`.
 
