@@ -58,7 +58,11 @@ void render_polyline_to_canvas(PointList polyline, Canvas * canvas)
 
 void render_line_to_canvas(Point start, Point end, Canvas * canvas)
 {
-    Colour draw_colour = create_colour_greyscale(0);
+    Colour draw_colour = create_colour(0, 0.2f, 0);
+
+    // Flip Y axis for a correct image axis
+    start.y = 1 - start.y;
+    end.y = 1 - end.y;
 
     // Scale normalized points to canvas locations.
     Point canvas_size = {canvas->width, canvas->height};
