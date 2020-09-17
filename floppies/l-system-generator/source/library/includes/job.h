@@ -7,6 +7,8 @@ typedef struct {
    const char * input_path;
    const char * output_path;
    long num_iterations;
+   long height;
+   long width;
    bool save_symbols;
 } Job;
 

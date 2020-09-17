@@ -6,7 +6,7 @@
 
 Job parse_args_to_job(int argc, char ** argv)
 {
-    Job job = { "", "", -1, false};
+    Job job = { "", "", -1, 100, 100, false};
     for (size_t index = 0; index < argc; index++)
     {
         // Check if we have an option in the form of '--arg_name'
@@ -49,6 +49,18 @@ Job parse_args_to_job(int argc, char ** argv)
             long value = strtol(argv[index+1], &end_ptr, 10);
             job.num_iterations = value;
         }
+        else if (strcmp(argument, "height") == 0)
+        {
+            char * end_ptr;
+            long value = strtol(argv[index+1], &end_ptr, 10);
+            job.height = value;
+        }
+        else if (strcmp(argument, "width") == 0)
+        {
+            char * end_ptr;
+            long value = strtol(argv[index+1], &end_ptr, 10);
+            job.width = value;
+        }
         else
         {
             printf("Did not understand option '%s'.\n", argument);
@@ -85,6 +97,16 @@ void validate_job(Job job)
     if (strlen(job.output_path) == 0)
     {
         printf("No valid output path provided.\n");
+        exit(EXIT_FAILURE);
+    }
+    if (job.height < 1)
+    {
+        printf("Height cannot be less than 1.\n");
+        exit(EXIT_FAILURE);
+    }
+    if (job.width < 1)
+    {
+        printf("Width cannot be less than 1.\n");
         exit(EXIT_FAILURE);
     }
     if (job.num_iterations < 1)
