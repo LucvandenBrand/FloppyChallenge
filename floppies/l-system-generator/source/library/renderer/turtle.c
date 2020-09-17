@@ -1,5 +1,6 @@
 #include <math.h>
 #include "math/point.h"
+#include "math/generic.h"
 #include "renderer/turtle.h"
 #include "renderer/canvas.h"
 
@@ -57,11 +58,46 @@ void render_polyline_to_canvas(PointList polyline, Canvas * canvas)
 
 void render_line_to_canvas(Point start, Point end, Canvas * canvas)
 {
-    // TODO: Rasterize the line in a not so stupid way.
     Colour draw_colour = create_colour_greyscale(0);
+
+    // Scale normalized points to canvas locations.
     Point canvas_size = {canvas->width, canvas->height};
     start = multiply_points(start, canvas_size);
-    set_pixel(canvas, draw_colour, (size_t) start.y, (size_t) start.x);
     end = multiply_points(end, canvas_size);
-    set_pixel(canvas, draw_colour, (size_t) end.y, (size_t) end.x);
+
+    // Bresenham's algorithm for drawing a line on a raster
+    Point delta = subtract_points(end, start);
+    Point abs_delta = {fabsf(delta.x)*2, fabsf(delta.y)*2};
+    Point sign_delta = {signf(delta.x), signf(delta.y)};
+    Point point = start;
+    if (abs_delta.x > abs_delta.y) // x increases faster than y
+    {
+        float decision = abs_delta.y - abs_delta.x / 2;
+        while (point.x <= end.x)
+        {
+            set_pixel(canvas, draw_colour, (size_t) point.y, (size_t) point.x);
+            if (decision >= 0)
+            {
+                point.y += sign_delta.y;
+                decision -= abs_delta.x;
+            }
+            point.x += sign_delta.x;
+            decision += abs_delta.y;
+        }
+    }
+    else // y increases faster than x
+    {
+        float decision = abs_delta.x - abs_delta.y / 2;
+        while (point.y <= end.y)
+        {
+            set_pixel(canvas, draw_colour, (size_t) point.y, (size_t) point.x);
+            if (decision >= 0)
+            {
+                point.x += sign_delta.x;
+                decision -= abs_delta.y;
+            }
+            point.y += sign_delta.y;
+            decision += abs_delta.x;
+        }
+    }
 }
