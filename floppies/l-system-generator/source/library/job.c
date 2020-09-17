@@ -75,7 +75,8 @@ Job parse_args_to_job(int argc, char ** argv)
 
 void print_usage()
 {
-    printf("Usage: lindengen --input <filename> --output <filename> --num_iterations <number> {--symbols}\n");
+    printf("Usage: lindengen --input <filename> --output <filename> --num_iterations <number>"
+                  " {--width <number>} {--height <number>} {--symbols}\n");
 }
 
 bool string_starts_with(const char * string, const char * check_string)
