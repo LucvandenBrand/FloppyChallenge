@@ -1,4 +1,4 @@
-# L-system generator
+# Lindengen
 Simple L-system generator.
 
 ## Building

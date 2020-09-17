@@ -1,6 +1,0 @@
-find_package(PNG REQUIRED)
-file(GLOB_RECURSE PROJECT_SOURCES *.c)
-add_library(lindengenlib ${PROJECT_SOURCES})
-target_link_libraries(lindengenlib m)
-target_link_libraries(lindengenlib PNG::PNG)
-target_include_directories(lindengenlib PUBLIC includes)
