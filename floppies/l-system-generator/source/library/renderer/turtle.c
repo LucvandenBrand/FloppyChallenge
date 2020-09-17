@@ -73,9 +73,14 @@ void render_line_to_canvas(Point start, Point end, Canvas * canvas)
     if (abs_delta.x > abs_delta.y) // x increases faster than y
     {
         float decision = abs_delta.y - abs_delta.x / 2;
-        while (point.x <= end.x)
+        while (true)
         {
+            // Break if we're over our bounds.
+            if (start.x < end.x && point.x > end.x || start.x > end.x && point.x < end.x)
+                break;
+
             set_pixel(canvas, draw_colour, (size_t) point.y, (size_t) point.x);
+
             if (decision >= 0)
             {
                 point.y += sign_delta.y;
@@ -88,9 +93,14 @@ void render_line_to_canvas(Point start, Point end, Canvas * canvas)
     else // y increases faster than x
     {
         float decision = abs_delta.x - abs_delta.y / 2;
-        while (point.y <= end.y)
+        while (true)
         {
+            // Break if we're over our bounds.
+            if (start.y < end.y && point.y > end.y || start.y > end.y && point.y < end.y)
+                break;
+
             set_pixel(canvas, draw_colour, (size_t) point.y, (size_t) point.x);
+
             if (decision >= 0)
             {
                 point.x += sign_delta.x;
