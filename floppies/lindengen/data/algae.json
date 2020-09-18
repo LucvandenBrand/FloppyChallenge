@@ -1,0 +1,20 @@
+{
+  "axiom": "A",
+  "rules":
+  [
+    {
+      "antecedent": "A",
+      "consequent": "AB"
+    },
+    {
+      "antecedent": "B",
+      "consequent": "A"
+    }
+  ],
+  "moves":
+  {
+    "move": "A",
+    "rotate_right": "B",
+    "rotate_angle": 1.0471975512
+  }
+}

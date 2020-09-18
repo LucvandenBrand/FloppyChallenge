@@ -1,0 +1,29 @@
+{
+  "axiom": "A",
+  "rules":
+  [
+    {
+      "antecedent" : "A",
+      "consequent" : "B+A+B"
+    },
+    {
+      "antecedent" : "B",
+      "consequent" : "A-B-A"
+    },
+    {
+      "antecedent" : "+",
+      "consequent" : "+"
+    },
+    {
+      "antecedent" : "-",
+      "consequent" : "-"
+    }
+  ],
+  "moves":
+  {
+    "move": "AB",
+    "rotate_right": "+",
+    "rotate_left": "-",
+    "rotate_angle": 1.0471975512
+  }
+}

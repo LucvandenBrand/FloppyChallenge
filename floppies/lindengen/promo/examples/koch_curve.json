@@ -1,0 +1,24 @@
+{
+  "axiom": "F",
+  "rules": [
+    {
+      "antecedent" : "F",
+      "consequent" : "F+F--F+F"
+    },
+    {
+      "antecedent" : "+",
+      "consequent" : "+"
+    },
+    {
+      "antecedent" : "-",
+      "consequent" : "-"
+    }
+  ],
+  "moves":
+  {
+    "move": "F",
+    "rotate_right": "+",
+    "rotate_left": "-",
+    "rotate_angle": 1.0471975512
+  }
+}
