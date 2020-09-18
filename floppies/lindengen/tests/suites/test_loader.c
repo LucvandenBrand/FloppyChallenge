@@ -21,7 +21,8 @@ START_TEST(test_load_system_from_json_string)
             "}";
 
     LSystem system = alloc_empty_system();
-    try_load_system_from_json_string(&system, test_json);
+    MoveMap move_map = alloc_empty_move_map();
+    try_load_system_from_json_string(&system, &move_map, test_json);
 
     ck_assert_int_eq(system.axiom.length, 1);
     ck_assert(system.axiom.symbols[0] == 'A');
@@ -37,6 +38,7 @@ START_TEST(test_load_system_from_json_string)
     ck_assert(system.rules.rules[1].consequent.symbols[0] == 'A');
 
     free_system(&system);
+    free_move_map(&move_map);
 }
 END_TEST
 

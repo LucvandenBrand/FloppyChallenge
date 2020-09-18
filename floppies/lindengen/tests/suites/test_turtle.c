@@ -20,8 +20,14 @@ START_TEST(test_build_polyline_from_system)
 {
     LSystem system = alloc_test_line_system();
     PointList polyline = alloc_empty_point_list();
+    MoveMap move_map = alloc_empty_move_map();
+    set_symbol_direction('A', MOVE, &move_map);
+    set_symbol_direction('B', MOVE, &move_map);
+    set_symbol_direction('+', ROTATE_RIGHT, &move_map);
+    set_symbol_direction('-', ROTATE_LEFT, &move_map);
+    move_map.rotation_angle = 1.0471975512f;
 
-    build_polyline_from_system(&polyline, system);
+    build_polyline_from_system(&polyline, move_map, system);
     ck_assert_int_eq(polyline.length, 4);
     ck_assert(polyline.points[0].x == 0);
     ck_assert(polyline.points[0].y == 0);
@@ -32,6 +38,7 @@ START_TEST(test_build_polyline_from_system)
     ck_assert(polyline.points[3].x == 0);
     ck_assert(polyline.points[3].y == 3);
 
+    free_move_map(&move_map);
     free_point_list(&polyline);
     free_system(&system);
 }

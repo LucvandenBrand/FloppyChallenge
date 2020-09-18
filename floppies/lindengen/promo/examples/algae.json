@@ -15,6 +15,6 @@
   {
     "move": "A",
     "rotate_right": "B",
-    "rotate_angle": 1.0471975512
+    "rotate_angle": 0.1
   }
 }
