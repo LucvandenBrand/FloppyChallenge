@@ -3,7 +3,7 @@
 #include "memory/safe_alloc.h"
 #include "io/loader.h"
 
-bool try_load_system_from_json_string(LSystem * system, const char * input_buffer)
+bool try_load_system_from_json_string(LSystem * system, MoveMap * move_map, const char * input_buffer)
 {
     jsmn_parser json_parser;
     jsmn_init(&json_parser);
@@ -13,12 +13,13 @@ bool try_load_system_from_json_string(LSystem * system, const char * input_buffe
     jsmntok_t * tokens = safe_malloc(num_tokens * sizeof(jsmntok_t));
     jsmn_init(&json_parser);
     jsmn_parse(&json_parser, input_buffer, strlen(input_buffer), tokens, num_tokens);
-    bool success_status = try_load_system_from_json_tokens(system, input_buffer, tokens, num_tokens);
+    bool success_status = try_load_system_from_json_tokens(system, move_map, input_buffer, tokens, num_tokens);
     free(tokens);
     return success_status;
 }
 
-bool try_load_system_from_json_tokens(LSystem * system, const char * input_buffer, jsmntok_t * tokens, int num_tokens)
+bool try_load_system_from_json_tokens(LSystem * system,  MoveMap * move_map, const char * input_buffer,
+                                      jsmntok_t * tokens, int num_tokens)
 {
     if (num_tokens < 2 || tokens[0].type != JSMN_OBJECT) {
         printf("System data should contain only a single top-level object.\n");

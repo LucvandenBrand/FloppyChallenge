@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <renderer/movemap.h>
 #include "generator/generator.h"
 #include "memory/safe_alloc.h"
 #include "main.h"
@@ -17,8 +18,10 @@ int main(int argc, char ** argv)
 
 bool handle_job(Job job) {
     LSystem system = alloc_empty_system();
-    if (!try_load_job(job, &system)) {
+    MoveMap move_map = alloc_empty_move_map();
+    if (!try_load_job(job, &system, &move_map)) {
         free_system(&system);
+        free_move_map(&move_map);
         return false;
     }
 
@@ -27,14 +30,16 @@ bool handle_job(Job job) {
     if (!try_save_job(job, system))
     {
         free_system(&system);
+        free_move_map(&move_map);
         return false;
     }
 
     free_system(&system);
+    free_move_map(&move_map);
     return true;
 }
 
-bool try_load_job(Job job, LSystem * system)
+bool try_load_job(Job job, LSystem * system, MoveMap * move_map)
 {
     long input_size = get_file_size(job.input_path);
     if (input_size < 1)
@@ -44,7 +49,7 @@ bool try_load_job(Job job, LSystem * system)
     }
     char * input_buffer = safe_malloc(sizeof(char) * input_size);
     try_load_file(job.input_path, input_buffer, input_size);
-    bool load_success = try_load_system_from_json_string(system, input_buffer);
+    bool load_success = try_load_system_from_json_string(system, move_map, input_buffer);
     free(input_buffer);
     if (!load_success)
     {
