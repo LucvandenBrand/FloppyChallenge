@@ -75,7 +75,7 @@ Job parse_args_to_job(int argc, char ** argv)
 
 void print_usage()
 {
-    printf("Usage: lindengen --input <filename> --output <filename> --num_iterations <number>"
+    printf("Usage: lindengen --input <filename> --output <filename> --iterations <number>"
                   " {--width <number>} {--height <number>} {--symbols}\n");
 }
 

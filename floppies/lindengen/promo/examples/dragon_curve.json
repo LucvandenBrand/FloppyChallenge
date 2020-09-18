@@ -1,0 +1,33 @@
+
+{
+  "axiom": "FX",
+  "rules": [
+    {
+      "antecedent" : "X",
+      "consequent" : "X+YF+"
+    },
+    {
+      "antecedent" : "Y",
+      "consequent" : "-FX-Y"
+    },
+    {
+      "antecedent" : "F",
+      "consequent" : "F"
+    },
+    {
+      "antecedent" : "+",
+      "consequent" : "+"
+    },
+    {
+      "antecedent" : "-",
+      "consequent" : "-"
+    }
+  ],
+  "moves":
+  {
+    "move": "F",
+    "rotate_right": "+",
+    "rotate_left": "-",
+    "rotate_angle": 1.0471975512
+  }
+}
