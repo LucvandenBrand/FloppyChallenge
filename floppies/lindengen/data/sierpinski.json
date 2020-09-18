@@ -18,5 +18,12 @@
       "antecedent" : "-",
       "consequent" : "-"
     }
-  ]
+  ],
+  "moves":
+  {
+    "up": "AB",
+    "rotate_right": "+",
+    "rotate_left": "-",
+    "rotate_angle": 0.3
+  }
 }

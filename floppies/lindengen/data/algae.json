@@ -10,5 +10,11 @@
       "antecedent": "B",
       "consequent": "A"
     }
-  ]
+  ],
+  "moves":
+  {
+    "up": "A",
+    "rotate_right": "B",
+    "rotate_angle": 0.1
+  }
 }
