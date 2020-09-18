@@ -27,7 +27,7 @@ bool handle_job(Job job) {
 
     generate_system(&system, job.num_iterations);
 
-    if (!try_save_job(job, system))
+    if (!try_save_job(job, system, move_map))
     {
         free_system(&system);
         free_move_map(&move_map);
@@ -59,7 +59,7 @@ bool try_load_job(Job job, LSystem * system, MoveMap * move_map)
     return true;
 }
 
-bool try_save_job(Job job, LSystem system)
+bool try_save_job(Job job, LSystem system, MoveMap move_map)
 {
     if (job.save_symbols)
     {
@@ -73,7 +73,7 @@ bool try_save_job(Job job, LSystem system)
     else {
         printf("Rendering system....\n");
         Canvas canvas = alloc_canvas(job.width, job.height);
-        render_system_to_canvas(system, &canvas);
+        render_system_to_canvas(system, move_map, &canvas);
         printf("Done!\n");
         printf("Writing image to output...\n");
         save_canvas_as_png(canvas, job.output_path);

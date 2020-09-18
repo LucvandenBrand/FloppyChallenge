@@ -24,6 +24,6 @@
     "up": "AB",
     "rotate_right": "+",
     "rotate_left": "-",
-    "rotate_angle": 0.3
+    "rotate_angle": 1.0471975512
   }
 }

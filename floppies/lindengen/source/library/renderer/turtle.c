@@ -4,16 +4,15 @@
 #include "renderer/turtle.h"
 #include "renderer/canvas.h"
 
-void render_system_to_canvas(LSystem system, Canvas * canvas)
+void render_system_to_canvas(LSystem system, MoveMap move_map, Canvas * canvas)
 {
-    // TODO: Actually render the system to the canvas.
     PointList polyline = alloc_empty_point_list();
-    build_polyline_from_system(&polyline, system);
+    build_polyline_from_system(&polyline, move_map, system);
     render_polyline_to_canvas(polyline, canvas);
     free_point_list(&polyline);
 }
 
-void build_polyline_from_system(PointList * polyline, LSystem system)
+void build_polyline_from_system(PointList * polyline, MoveMap move_map, LSystem system)
 {
     Point turtle = {0, 0};
     float turtle_direction =  M_PI / 2;
@@ -21,24 +20,24 @@ void build_polyline_from_system(PointList * polyline, LSystem system)
     for (size_t index = 0; index < system.axiom.length; index++)
     {
         Symbol symbol = system.axiom.symbols[index];
-        // The following part should not be hardcoded, but it is.
-        // It would be best to have an interpretation map in the l-system definition.
-        if (symbol == 'A' || symbol == 'B')
-        {
-            turtle = move_point_in_rad_direction(turtle, turtle_direction);
-            add_point_to_list(turtle, polyline);
-        }
-        else if (symbol == '+')
-        {
-            turtle_direction -= (float) (M_PI / 3);
-            if (turtle_direction < 0)
-                turtle_direction += (float) (2 * M_PI);
-        }
-        else if (symbol == '-')
-        {
-            turtle_direction += (float) (M_PI / 3);
-            if (turtle_direction > (float) (2 * M_PI))
-                turtle_direction -= (float) (2 * M_PI);
+        Direction direction = get_symbol_direction(symbol, move_map);
+        switch (direction) {
+            case UP:
+                turtle = move_point_in_rad_direction(turtle, turtle_direction);
+                add_point_to_list(turtle, polyline);
+                break;
+            case ROTATE_LEFT:
+                turtle_direction += move_map.rotation_angle;
+                if (turtle_direction > (float) (2 * M_PI))
+                    turtle_direction -= (float) (2 * M_PI);
+                break;
+            case ROTATE_RIGHT:
+                turtle_direction -= move_map.rotation_angle;
+                if (turtle_direction < 0)
+                    turtle_direction += (float) (2 * M_PI);
+                break;
+            default:
+                break;
         }
     }
 }
