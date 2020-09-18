@@ -59,3 +59,13 @@ void swap_symbol_lists(SymbolList * first_list, SymbolList * second_list)
     second_list->length = temp_list.length;
     second_list->space = temp_list.space;
 }
+
+bool symbol_in_list(Symbol symbol, SymbolList list)
+{
+    for (size_t index = 0; index < list.length; index++)
+    {
+        if (symbol == list.symbols[index])
+            return true;
+    }
+    return false;
+}

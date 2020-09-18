@@ -1,7 +1,7 @@
 #include <check.h>
 #include <stdlib.h>
 
-#define NUM_SUITES 10
+#define NUM_SUITES 11
 
 Suite * make_rule_suite();
 Suite * make_symbol_suite();
@@ -13,6 +13,7 @@ Suite * make_canvas_suite();
 Suite * make_point_suite();
 Suite * make_bounds_suite();
 Suite * make_turtle_suite();
+Suite * make_move_map_suite();
 
 SRunner * create_suite_runner(Suite** suites, int num_suites)
 {
@@ -41,7 +42,8 @@ int main()
             make_canvas_suite(),
             make_point_suite(),
             make_bounds_suite(),
-            make_turtle_suite()
+            make_turtle_suite(),
+            make_move_map_suite()
     };
 
     SRunner * suite_runner = create_suite_runner(suites, NUM_SUITES);

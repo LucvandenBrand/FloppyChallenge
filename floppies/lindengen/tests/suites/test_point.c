@@ -57,6 +57,7 @@ START_TEST(test_normalize_point_list)
         ck_assert(point.y >= 0.0f);
         ck_assert(point.y <= 1.0f);
     }
+    free_point_list(&list);
 }
 END_TEST
 
