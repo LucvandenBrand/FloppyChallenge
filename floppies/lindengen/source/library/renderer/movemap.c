@@ -4,7 +4,7 @@
 MoveMap alloc_empty_move_map()
 {
     MoveMap map;
-    for (size_t index = 0; index < 6; index++)
+    for (size_t index = 0; index < 3; index++)
         map.directions[index] = alloc_empty_symbol_list();
     map.rotation_angle = 0;
     return map;
@@ -12,7 +12,7 @@ MoveMap alloc_empty_move_map()
 
 void free_move_map(MoveMap * map)
 {
-    for (size_t index = 0; index < 6; index++)
+    for (size_t index = 0; index < 3; index++)
         free_symbol_list(&map->directions[index]);
     map->rotation_angle = 0;
 }
@@ -26,7 +26,7 @@ void set_symbol_direction(Symbol symbol, Direction direction, MoveMap * map)
 
 Direction get_symbol_direction(Symbol symbol, MoveMap map)
 {
-    for (size_t index = 0; index < 6; index++)
+    for (size_t index = 0; index < 3; index++)
     {
         if (symbol_in_list(symbol, map.directions[index]))
             return index;

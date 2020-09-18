@@ -131,43 +131,13 @@ bool try_load_rule_from_json_tokens(Rule * rule, const char * input_buffer, jsmn
 bool try_load_move_map_from_json_tokens(MoveMap * move_map, const char * input_buffer, jsmntok_t * tokens, int num_moves, unsigned * token_index)
 {
     for (unsigned move_index = 0; move_index < num_moves; move_index++) {
-        if (json_equal(input_buffer, &tokens[*token_index], "up")) {
+        if (json_equal(input_buffer, &tokens[*token_index], "move")) {
             (*token_index)++;
             int symbols_length = tokens[*token_index].end - tokens[*token_index].start;
             char *map_symbols = strndup(input_buffer + tokens[*token_index].start, symbols_length);
             SymbolList symbols = string_to_symbol_list(map_symbols, symbols_length);
             free(map_symbols);
-            add_symbols_to_list(symbols, &move_map->directions[UP]);
-            free_symbol_list(&symbols);
-            (*token_index)++;
-        }
-        else if (json_equal(input_buffer, &tokens[*token_index], "left")) {
-            (*token_index)++;
-            int symbols_length = tokens[*token_index].end - tokens[*token_index].start;
-            char *map_symbols = strndup(input_buffer + tokens[*token_index].start, symbols_length);
-            SymbolList symbols = string_to_symbol_list(map_symbols, symbols_length);
-            free(map_symbols);
-            add_symbols_to_list(symbols, &move_map->directions[LEFT]);
-            free_symbol_list(&symbols);
-            (*token_index)++;
-        }
-        else if (json_equal(input_buffer, &tokens[*token_index], "right")) {
-            (*token_index)++;
-            int symbols_length = tokens[*token_index].end - tokens[*token_index].start;
-            char *map_symbols = strndup(input_buffer + tokens[*token_index].start, symbols_length);
-            SymbolList symbols = string_to_symbol_list(map_symbols, symbols_length);
-            free(map_symbols);
-            add_symbols_to_list(symbols, &move_map->directions[RIGHT]);
-            free_symbol_list(&symbols);
-            (*token_index)++;
-        }
-        else if (json_equal(input_buffer, &tokens[*token_index], "down")) {
-            (*token_index)++;
-            int symbols_length = tokens[*token_index].end - tokens[*token_index].start;
-            char *map_symbols = strndup(input_buffer + tokens[*token_index].start, symbols_length);
-            SymbolList symbols = string_to_symbol_list(map_symbols, symbols_length);
-            free(map_symbols);
-            add_symbols_to_list(symbols, &move_map->directions[DOWN]);
+            add_symbols_to_list(symbols, &move_map->directions[MOVE]);
             free_symbol_list(&symbols);
             (*token_index)++;
         }

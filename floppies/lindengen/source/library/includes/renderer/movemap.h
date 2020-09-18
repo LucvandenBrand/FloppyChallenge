@@ -5,19 +5,16 @@
 
 typedef struct
 {
-    SymbolList directions[6];
+    SymbolList directions[3];
     float rotation_angle;
 } MoveMap;
 
 typedef enum
 {
     NONE = -1,
-    UP = 0,
-    DOWN = 1,
-    LEFT = 2,
-    RIGHT = 3,
-    ROTATE_LEFT = 4,
-    ROTATE_RIGHT = 5
+    MOVE = 0,
+    ROTATE_LEFT = 1,
+    ROTATE_RIGHT = 2
 } Direction;
 
 MoveMap alloc_empty_move_map();

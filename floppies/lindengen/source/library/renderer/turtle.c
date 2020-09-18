@@ -22,7 +22,7 @@ void build_polyline_from_system(PointList * polyline, MoveMap move_map, LSystem 
         Symbol symbol = system.axiom.symbols[index];
         Direction direction = get_symbol_direction(symbol, move_map);
         switch (direction) {
-            case UP:
+            case MOVE:
                 turtle = move_point_in_rad_direction(turtle, turtle_direction);
                 add_point_to_list(turtle, polyline);
                 break;

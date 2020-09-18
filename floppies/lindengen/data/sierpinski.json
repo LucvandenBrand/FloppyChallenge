@@ -21,7 +21,7 @@
   ],
   "moves":
   {
-    "up": "AB",
+    "move": "AB",
     "rotate_right": "+",
     "rotate_left": "-",
     "rotate_angle": 1.0471975512
